@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		351D37DD1C2431580098F423 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37DC1C2431580098F423 /* TestViewController.m */; };
+		351D37DF1C2440AF0098F423 /* dribbble256_imageio.png in Resources */ = {isa = PBXBuildFile; fileRef = 351D37DE1C2440AF0098F423 /* dribbble256_imageio.png */; };
 		355D5C451C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C441C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png */; };
 		355D5C491C23106400409FFC /* ic_movie_filter_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C481C23106400409FFC /* ic_movie_filter_white_18pt_2x.png */; };
 		355D5C4B1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C4A1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png */; };
@@ -132,6 +133,7 @@
 /* Begin PBXFileReference section */
 		351D37DB1C2431580098F423 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		351D37DC1C2431580098F423 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		351D37DE1C2440AF0098F423 /* dribbble256_imageio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dribbble256_imageio.png; sourceTree = "<group>"; };
 		355D5C441C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_access_alarm_white_18pt_2x.png; sourceTree = "<group>"; };
 		355D5C481C23106400409FFC /* ic_movie_filter_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_movie_filter_white_18pt_2x.png; sourceTree = "<group>"; };
 		355D5C4A1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_photo_size_select_actual_white_18pt_2x.png; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 		C7821AB619480425008B952D /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				351D37DE1C2440AF0098F423 /* dribbble256_imageio.png */,
 				355D5C4E1C2314E000409FFC /* ic_settings_voice_white_18pt_2x.png */,
 				C7821AEE1949B404008B952D /* save@2x.png */,
 				C7821ADE19485FC0008B952D /* ic_add_tab@2x.png */,
@@ -705,6 +708,7 @@
 				C7821AEF1949B405008B952D /* save@2x.png in Resources */,
 				C7B282821A6E30F30072FAD3 /* LaunchScreen.xib in Resources */,
 				355D5C4B1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png in Resources */,
+				351D37DF1C2440AF0098F423 /* dribbble256_imageio.png in Resources */,
 				355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */,
 				355D5C4F1C2314E000409FFC /* ic_settings_voice_white_18pt_2x.png in Resources */,
 				355D5C8D1C24156100409FFC /* ImageViewController.xib in Resources */,

@@ -1,13 +1,17 @@
 //
 //  YYTextEditExample.h
-//  Voice2Note
+//  YYKitExample
 //
-//  Created by Tang Qi on 12/18/15.
-//  Copyright © 2015 jinxing. All rights reserved.
+//  Created by ibireme on 15/9/3.
+//  Copyright (c) 2015 ibireme. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
 @interface YYTextEditExample : UIViewController
+{
+    BOOL _isEditingTitle;
+}
+
 
 @end

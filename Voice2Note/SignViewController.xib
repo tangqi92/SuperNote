@@ -15,24 +15,26 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRo-72-lSD">
-                    <rect key="frame" x="0.0" y="394" width="375" height="30"/>
-                    <animations/>
-                    <state key="normal" title="Get Signature Image">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="getImageBtnPressed:" destination="-1" eventType="touchUpInside" id="R5M-Gy-b5g"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TrQ-pN-dP2">
-                    <rect key="frame" x="0.0" y="354" width="375" height="30"/>
+                    <rect key="frame" x="0.0" y="467" width="375" height="30"/>
                     <animations/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                     <state key="normal" title="Clear Signature">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="clearImageBtnPressed:" destination="-1" eventType="touchUpInside" id="tD2-Fa-DmU"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRo-72-lSD">
+                    <rect key="frame" x="0.0" y="531" width="375" height="30"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <state key="normal" title="Get Signature Image">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="getImageBtnPressed:" destination="-1" eventType="touchUpInside" id="R5M-Gy-b5g"/>
                     </connections>
                 </button>
             </subviews>

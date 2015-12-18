@@ -18,13 +18,27 @@
 #import "NSData+YYAdd.h"
 #import "UIGestureRecognizer+YYAdd.h"
 #import "YYTextExampleHelper.h"
+#import "VNConstants.h"
+#import "SignViewController.h"
+#import "UIColor+VNHex.h"
 
+static const CGFloat kViewOriginY = 70;
+static const CGFloat kTextFieldHeight = 30;
+static const CGFloat kToolbarHeight = 44;
+static const CGFloat kVoiceButtonWidth = 100;
 @interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver>
+
+
 @property (nonatomic, assign) YYTextView *textView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UISwitch *verticalSwitch;
 @property (nonatomic, strong) UISwitch *debugSwitch;
 @property (nonatomic, strong) UISwitch *exclusionSwitch;
+
+
+
+
+
 @end
 
 @implementation YYTextEditExample
@@ -48,10 +62,47 @@
     toolbar.top = kiOS7Later ? 64 : 0;
     [self.view addSubview:toolbar];
     
-    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the season of light, it was the season of darkness, it was the spring of hope, it was the winter of despair, we had everything before us, we had nothing before us. We were all going direct to heaven, we were all going direct the other way.\n\n这是最好的时代，这是最坏的时代；这是智慧的时代，这是愚蠢的时代；这是信仰的时期，这是怀疑的时期；这是光明的季节，这是黑暗的季节；这是希望之春，这是失望之冬；人们面前有着各样事物，人们面前一无所有；人们正在直登天堂，人们正在直下地狱。"];
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"这是最好的时代，这是最坏的时代；这是智慧的时代，这是愚蠢的时代；这是信仰的时期，这是怀疑的时期；这是光明的季节，这是黑暗的季节；这是希望之春，这是失望之冬；人们面前有着各样事物，人们面前一无所有；人们正在直登天堂，人们正在直下地狱。"];
     text.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
     text.yy_lineSpacing = 4;
     text.yy_firstLineHeadIndent = 20;
+    
+    
+    CGRect frame = CGRectMake(10.f, 70, self.view.frame.size.width - 10.f * 2, 30);
+    
+    
+    UIBarButtonItem *photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_photo_size_select_actual_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addPhoto)];
+    photoBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    
+    UIBarButtonItem *mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_movie_filter_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addMedia)];
+    mediaBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    
+    UIBarButtonItem *alarmBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_access_alarm_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addAlarm)];
+    alarmBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    
+    UIBarButtonItem *voiceBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings_voice_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(useVoiceInput)];
+    voiceBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    UIBarButtonItem *brushBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_brush_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addBrush)];
+    brushBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    
+    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(hideKeyboard)];
+    doneBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    UIToolbar *toolbarr = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    toolbarr.tintColor = [UIColor systemColor];
+    toolbarr.items = [NSArray arrayWithObjects:photoBarButton,mediaBarButton, alarmBarButton, brushBarButton, voiceBarButton, doneBarButton, nil];
+    
+    frame = CGRectMake(10.f,
+                       0,
+                       self.view.frame.size.width - 10.f * 2,
+                       self.view.frame.size.height - 100 - 10.f * 2);
+    
+    
     
     YYTextView *textView = [YYTextView new];
     textView.attributedText = text;
@@ -66,6 +117,7 @@
     textView.contentInset = UIEdgeInsetsMake(toolbar.bottom, 0, 0, 0);
     textView.scrollIndicatorInsets = textView.contentInset;
     textView.selectedRange = NSMakeRange(text.length, 0);
+    textView.inputAccessoryView = toolbarr;
     [self.view insertSubview:textView belowSubview:toolbar];
     self.textView = textView;
     
@@ -140,6 +192,21 @@
     
     
     [[YYTextKeyboardManager defaultManager] addObserver:self];
+    
+    
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
 }
 
 - (void)dealloc {
@@ -222,5 +289,83 @@
         _textView.frame = self.view.bounds;
     }
 }
+
+
+
+
+#pragma mark - Keyboard
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    [UIView animateWithDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]
+                          delay:0.f
+                        options:[userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]
+                     animations:^
+     {
+         CGRect keyboardFrame = [[userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+         CGFloat keyboardHeight = keyboardFrame.size.height;
+         
+         CGRect frame = _textView.frame;
+         self.view.frame.size.height - kTextFieldHeight - keyboardHeight,
+         _textView.frame = frame;
+     }               completion:NULL];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    [UIView animateWithDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]
+                          delay:0.f
+                        options:[userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]
+                     animations:^
+     {
+         CGRect frame = _textView.frame;
+         frame.size.height = self.view.frame.size.height - kViewOriginY - kTextFieldHeight - kVoiceButtonWidth - kVerticalMargin * 3;
+         _textView.frame = frame;
+     }               completion:NULL];
+}
+
+- (void)hideKeyboard
+{
+    if ([_textView isFirstResponder]) {
+        _isEditingTitle = NO;
+        [_textView resignFirstResponder];
+    }
+}
+
+
+#pragma mark - bar
+- (void)addPhoto
+{
+    
+}
+
+- (void)addMedia
+{
+    
+}
+
+- (void)addAlarm
+{
+    
+}
+
+- (void)addBrush
+{
+    
+    //    TestViewController *test = [[TestViewController alloc] init];
+    //    [self hideKeyboard];
+    //    [self.navigationController pushViewController:test animated:YES];
+    
+    SignViewController *test = [[SignViewController alloc] initWithNibName:@"SignViewController" bundle:nil];
+    [self hideKeyboard];
+    
+    [self.navigationController pushViewController:test animated:YES];
+}
+
+
+
+
 
 @end

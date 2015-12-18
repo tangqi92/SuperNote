@@ -20,6 +20,7 @@
 #import "SVProgressHUD.h"
 #import "UIColor+VNHex.h"
 #import "SignViewController.h"
+#import "YYTextEditExample.h"
 
 @interface NoteListController ()<IFlyRecognizerViewDelegate>
 {
@@ -226,18 +227,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.tableView.editing) {
-        [self updateDeleteButtonTitle];
-    } else {
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
-        VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
-        NoteDetailController *controller = [[NoteDetailController alloc] initWithNote:note];
-        controller.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:controller animated:YES];
-    }
+//    if (self.tableView.editing) {
+//        [self updateDeleteButtonTitle];
+//    } else {
+//        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+//        VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
+//        NoteDetailController *controller = [[NoteDetailController alloc] initWithNote:note];
+//        controller.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:controller animated:YES];
+//    }
     
 //    SignViewController *test = [[SignViewController alloc] initWithNibName:@"SignViewController" bundle:nil];
 //    [self.navigationController pushViewController:test animated:YES];
+    
+    YYTextEditExample *yy = [[YYTextEditExample alloc] init];
+    [self.navigationController pushViewController:yy animated:YES];
 
 }
 

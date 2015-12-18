@@ -203,12 +203,14 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
 - (void)addBrush
 {
     
-    TestViewController *test = [[TestViewController alloc] init];
-    [self hideKeyboard];
-    [self.navigationController pushViewController:test animated:YES];
-//    
-//    SignViewController *test = [[SignViewController alloc] initWithNibName:@"SignViewController" bundle:nil];
+//    TestViewController *test = [[TestViewController alloc] init];
+//    [self hideKeyboard];
 //    [self.navigationController pushViewController:test animated:YES];
+    
+    SignViewController *test = [[SignViewController alloc] initWithNibName:@"SignViewController" bundle:nil];
+    [self hideKeyboard];
+
+    [self.navigationController pushViewController:test animated:YES];
 }
 
 

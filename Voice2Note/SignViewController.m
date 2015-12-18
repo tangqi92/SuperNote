@@ -55,7 +55,7 @@
 {
     [super viewDidAppear:animated];
     
-    signatureView= [[PJRSignatureView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 300)];
+    signatureView= [[PJRSignatureView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 450)];
     [self.view addSubview:signatureView];
     
 }
