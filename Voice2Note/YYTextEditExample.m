@@ -433,9 +433,7 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"ActionSheetCancel", @"")
                                                destructiveButtonTitle:nil
-                                                    otherButtonTitles:NSLocalizedString(@"ActionSheetCopy", @""),
-                                  NSLocalizedString(@"ActionSheetMail", @""),
-                                  NSLocalizedString(@"ActionSheetWeixin", @""), nil];
+                                                    otherButtonTitles:NSLocalizedString(@"ActionSheetCopy", @""),NSLocalizedString(@"ActionSheetLock", @""), nil];
     [actionSheet showInView:self.view];
 }
 
@@ -446,40 +444,20 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
         pasteboard.string = _textView.text;
         [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CopySuccess", @"")];
     } else if (buttonIndex == 1) {
-        if ([MFMailComposeViewController canSendMail]) {
-            [self sendEmail];
-        } else {
-            [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CanNoteSendMail", @"")];
-        }
+    // 锁定文本，弹出输入密码
+        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请输入锁定密码"
+                                                        message:nil
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"OK", nil];
+        [alter setAlertViewStyle:UIAlertViewStyleSecureTextInput];
+        [alter show];
+    
     } else if (buttonIndex == 2) {
     }
 }
 
-#pragma mark - Eail
 
-- (void)sendEmail
-{
-    MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
-    [composer setMailComposeDelegate:self];
-    if ([MFMailComposeViewController canSendMail]) {
-        [composer setSubject:@"来超级记事本的一封信"];
-        [composer setMessageBody:_textView.text isHTML:NO];
-        [composer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-        [self presentViewController:composer animated:YES completion:nil];
-    } else {
-        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CanNoteSendMail", @"")];
-    }
-}
-
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    if (result == MFMailComposeResultFailed) {
-        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SendEmailFail", @"")];
-    } else if (result == MFMailComposeResultSent) {
-        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SendEmailSuccess", @"")];
-    }
-    [controller dismissViewControllerAnimated:YES completion:nil];
-}
 
 #pragma mark - HSDatePickerViewControllerDelegate
 - (void)hsDatePickerPickedDate:(NSDate *)date {
@@ -501,7 +479,18 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
     NSLog(@"Picker will dismiss with %lu", (unsigned long)method);
 }
 
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    UITextField *text_field = [alertView textFieldAtIndex:0];
+    
 
+    if (buttonIndex == 1) {
+        // 获取输入的密码
+        NSLog(@"text: %@", text_field.text);
+    }
+}
 
 
 @end

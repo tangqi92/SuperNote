@@ -22,6 +22,8 @@
 "ActionSheetCopy" = "复制";
 "ActionSheetMail" = "发邮件";
 "ActionSheetWeixin" = "分享到朋友圈";
+"ActionSheetLock" = "锁定文本";
+
 
 "AddTitleForNote" = "给笔记加个标题？";
 "Sure" = "确定";
@@ -57,4 +59,6 @@
 // Address book
 "GotoUploadAB" = "去上传";
 "UploadABForBetter" = "上传联系人，可以使语音识别人名更加精确。请放心，上传的数据仅用于提高语音识别准确度，不作其它用途";
+
+
 
