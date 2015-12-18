@@ -21,19 +21,35 @@
 #import "VNConstants.h"
 #import "SignViewController.h"
 #import "UIColor+VNHex.h"
+#import "VNNote.h"
+#import "iflyMSC/IFlyRecognizerView.h"
+#import "iflyMSC/IFlySpeechConstant.h"
+#import "iflyMSC/IFlySpeechUtility.h"
+#import "iflyMSC/IFlyRecognizerView.h"
+#import "iflyMSC/IFlyDataUploader.h"
+#import "iflyMSC/IFlyContact.h"
+#import "AppContext.h"
+#import "SVProgressHUD.h"
+#import "AppContext.h"
+
 
 static const CGFloat kViewOriginY = 70;
 static const CGFloat kTextFieldHeight = 30;
 static const CGFloat kToolbarHeight = 44;
 static const CGFloat kVoiceButtonWidth = 100;
-@interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver>
+
+@interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, UIActionSheetDelegate,
+MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 
 
 @property (nonatomic, assign) YYTextView *textView;
+@property (nonatomic, assign) IFlyRecognizerView *iflyRecognizerView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UISwitch *verticalSwitch;
 @property (nonatomic, strong) UISwitch *debugSwitch;
 @property (nonatomic, strong) UISwitch *exclusionSwitch;
+@property (nonatomic, strong) VNNote *note;
+@property (nonatomic) BOOL isEditingTitle;
 
 
 
@@ -42,6 +58,15 @@ static const CGFloat kVoiceButtonWidth = 100;
 @end
 
 @implementation YYTextEditExample
+
+- (instancetype)initWithNote:(VNNote *)note
+{
+    self = [super init];
+    if (self) {
+        _note = note;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -61,11 +86,6 @@ static const CGFloat kVoiceButtonWidth = 100;
     toolbar.size = CGSizeMake(kScreenWidth, 40);
     toolbar.top = kiOS7Later ? 64 : 0;
     [self.view addSubview:toolbar];
-    
-    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"这是最好的时代，这是最坏的时代；这是智慧的时代，这是愚蠢的时代；这是信仰的时期，这是怀疑的时期；这是光明的季节，这是黑暗的季节；这是希望之春，这是失望之冬；人们面前有着各样事物，人们面前一无所有；人们正在直登天堂，人们正在直下地狱。"];
-    text.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
-    text.yy_lineSpacing = 4;
-    text.yy_firstLineHeadIndent = 20;
     
     
     CGRect frame = CGRectMake(10.f, 70, self.view.frame.size.width - 10.f * 2, 30);
@@ -104,9 +124,24 @@ static const CGFloat kVoiceButtonWidth = 100;
     
     
     
+    
+    
+    
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:_note.content];
+    text.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
+    text.yy_lineSpacing = 4;
+    text.yy_firstLineHeadIndent = 20;
+    
+    
+    
+    
+    
+    
     YYTextView *textView = [YYTextView new];
     textView.attributedText = text;
     textView.size = self.view.size;
+    textView.autocorrectionType = UITextAutocorrectionTypeNo;
+    textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
     textView.delegate = self;
     if (kiOS7Later) {
@@ -142,53 +177,12 @@ static const CGFloat kVoiceButtonWidth = 100;
     _verticalSwitch.centerY = toolbar.height / 2;
     _verticalSwitch.left = label.right - 5;
     _verticalSwitch.layer.transformScale = 0.8;
+    // 选择逻辑
     [_verticalSwitch addBlockForControlEvents:UIControlEventValueChanged block:^(UISwitch *switcher) {
         [_self.textView endEditing:YES];
-        if (switcher.isOn) {
-            [_self setExclusionPathEnabled:NO];
-            _self.exclusionSwitch.on = NO;
-        }
-        _self.exclusionSwitch.enabled = !switcher.isOn;
         _self.textView.verticalForm = switcher.isOn; /// Set vertical form
     }];
     [toolbar addSubview:_verticalSwitch];
-    
-    label = [UILabel new];
-    label.backgroundColor = [UIColor clearColor];
-    label.font = [UIFont systemFontOfSize:14];
-    label.text = @"Debug:";
-    label.size = CGSizeMake([label.text widthForFont:label.font] + 2, toolbar.height);
-    label.left = _verticalSwitch.right + 5;
-    [toolbar addSubview:label];
-    
-    _debugSwitch = [UISwitch new];
-    [_debugSwitch sizeToFit];
-    _debugSwitch.on = [YYTextExampleHelper isDebug];
-    _debugSwitch.centerY = toolbar.height / 2;
-    _debugSwitch.left = label.right - 5;
-    _debugSwitch.layer.transformScale = 0.8;
-    [_debugSwitch addBlockForControlEvents:UIControlEventValueChanged block:^(UISwitch *switcher) {
-        [YYTextExampleHelper setDebug:switcher.isOn];
-    }];
-    [toolbar addSubview:_debugSwitch];
-    
-    label = [UILabel new];
-    label.backgroundColor = [UIColor clearColor];
-    label.font = [UIFont systemFontOfSize:14];
-    label.text = @"Exclusion:";
-    label.size = CGSizeMake([label.text widthForFont:label.font] + 2, toolbar.height);
-    label.left = _debugSwitch.right + 5;
-    [toolbar addSubview:label];
-    
-    _exclusionSwitch = [UISwitch new];
-    [_exclusionSwitch sizeToFit];
-    _exclusionSwitch.centerY = toolbar.height / 2;
-    _exclusionSwitch.left = label.right - 5;
-    _exclusionSwitch.layer.transformScale = 0.8;
-    [_exclusionSwitch addBlockForControlEvents:UIControlEventValueChanged block:^(UISwitch *switcher) {
-        [_self setExclusionPathEnabled:switcher.isOn];
-    }];
-    [toolbar addSubview:_exclusionSwitch];
     
     
     [[YYTextKeyboardManager defaultManager] addObserver:self];
@@ -260,10 +254,16 @@ static const CGFloat kVoiceButtonWidth = 100;
 #pragma mark text view
 
 - (void)textViewDidBeginEditing:(YYTextView *)textView {
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                target:self
-                                                                                action:@selector(edit:)];
-    self.navigationItem.rightBarButtonItem = buttonItem;
+    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ActionSheetSave", @"")
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                                                action:@selector(save)];
+    
+    UIBarButtonItem *moreItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_more_white"]
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                                                action:@selector(moreActionButtonPressed)];
+    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:moreItem, saveItem, nil];
 }
 
 - (void)textViewDidEndEditing:(YYTextView *)textView {
@@ -336,9 +336,35 @@ static const CGFloat kVoiceButtonWidth = 100;
 
 
 #pragma mark - bar
+
+- (void)startListenning
+{
+    [_iflyRecognizerView start];
+    NSLog(@"start listenning...");
+}
+
+- (void)useVoiceInput
+{
+    if (![AppContext appContext].hasUploadAddressBook) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:NSLocalizedString(@"UploadABForBetter", @"")
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"ActionSheetCancel", @"")
+                                                  otherButtonTitles:NSLocalizedString(@"GotoUploadAB", @""), nil];
+        [alertView show];
+        [[AppContext appContext] setHasUploadAddressBook:YES];
+        return;
+    }
+    
+    [self hideKeyboard];
+    [self startListenning];
+    
+}
+
+
 - (void)addPhoto
 {
-    
+    [self setExclusionPathEnabled:YES];
 }
 
 - (void)addMedia
@@ -362,6 +388,91 @@ static const CGFloat kVoiceButtonWidth = 100;
     [self hideKeyboard];
     
     [self.navigationController pushViewController:test animated:YES];
+}
+
+
+#pragma mark - Save
+
+- (void)save
+{
+    [self hideKeyboard];
+    if ((_textView.text == nil || _textView.text.length == 0)) {
+        return;
+    }
+    NSDate *createDate;
+    if (_note && _note.createdDate) {
+        createDate = _note.createdDate;
+    } else {
+        createDate = [NSDate date];
+    }
+    VNNote *note = [[VNNote alloc] initWithTitle:nil
+                                         content:_textView.text
+                                     createdDate:createDate
+                                      updateDate:[NSDate date]];
+    _note = note;
+    BOOL success = [note Persistence];
+    if (success) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationCreateFile object:nil userInfo:nil];
+    } else {
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SaveFail", @"")];
+    }
+    [self.navigationController popViewControllerAnimated:YES];
+}
+#pragma mark - More Action
+
+- (void)moreActionButtonPressed
+{
+    [self hideKeyboard];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"ActionSheetCancel", @"")
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:NSLocalizedString(@"ActionSheetCopy", @""),
+                                  NSLocalizedString(@"ActionSheetMail", @""),
+                                  NSLocalizedString(@"ActionSheetWeixin", @""), nil];
+    [actionSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        pasteboard.string = _textView.text;
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CopySuccess", @"")];
+    } else if (buttonIndex == 1) {
+        if ([MFMailComposeViewController canSendMail]) {
+            [self sendEmail];
+        } else {
+            [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CanNoteSendMail", @"")];
+        }
+    } else if (buttonIndex == 2) {
+    }
+}
+
+#pragma mark - Eail
+
+- (void)sendEmail
+{
+    MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
+    [composer setMailComposeDelegate:self];
+    if ([MFMailComposeViewController canSendMail]) {
+        [composer setSubject:@"来超级记事本的一封信"];
+        [composer setMessageBody:_textView.text isHTML:NO];
+        [composer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [self presentViewController:composer animated:YES completion:nil];
+    } else {
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CanNoteSendMail", @"")];
+    }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    if (result == MFMailComposeResultFailed) {
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SendEmailFail", @"")];
+    } else if (result == MFMailComposeResultSent) {
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SendEmailSuccess", @"")];
+    }
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 

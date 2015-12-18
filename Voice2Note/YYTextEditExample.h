@@ -6,12 +6,16 @@
 //  Copyright (c) 2015 ibireme. All rights reserved.
 //
 
+
+
 #import <UIKit/UIKit.h>
+#import <MessageUI/MFMailComposeViewController.h>
+
+#import "VNNote.h"
 
 @interface YYTextEditExample : UIViewController
-{
-    BOOL _isEditingTitle;
-}
+
+- (instancetype)initWithNote:(VNNote *)note;
 
 
 @end
