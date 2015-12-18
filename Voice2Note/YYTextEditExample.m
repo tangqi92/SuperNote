@@ -31,7 +31,7 @@
 #import "AppContext.h"
 #import "SVProgressHUD.h"
 #import "AppContext.h"
-
+#import "HSDatePickerViewController.h"
 
 static const CGFloat kViewOriginY = 70;
 static const CGFloat kTextFieldHeight = 30;
@@ -39,7 +39,7 @@ static const CGFloat kToolbarHeight = 44;
 static const CGFloat kVoiceButtonWidth = 100;
 
 @interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, UIActionSheetDelegate,
-MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
+MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, HSDatePickerViewControllerDelegate>
 
 
 @property (nonatomic, assign) YYTextView *textView;
@@ -49,6 +49,7 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
 @property (nonatomic, strong) UISwitch *debugSwitch;
 @property (nonatomic, strong) UISwitch *exclusionSwitch;
 @property (nonatomic, strong) VNNote *note;
+@property (nonatomic, strong) NSDate *selectedDate;
 @property (nonatomic) BOOL isEditingTitle;
 
 
@@ -374,7 +375,12 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
 
 - (void)addAlarm
 {
-    
+    HSDatePickerViewController *hsdpvc = [HSDatePickerViewController new];
+    hsdpvc.delegate = self;
+    if (self.selectedDate) {
+        hsdpvc.date = self.selectedDate;
+    }
+    [self presentViewController:hsdpvc animated:YES completion:nil];
 }
 
 - (void)addBrush
@@ -475,6 +481,25 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - HSDatePickerViewControllerDelegate
+- (void)hsDatePickerPickedDate:(NSDate *)date {
+    NSLog(@"Date picked %@", date);
+    NSDateFormatter *dateFormater = [NSDateFormatter new];
+    dateFormater.dateFormat = @"yyyy.MM.dd HH:mm:ss";
+//    self.dateLabel.text = [dateFormater stringFromDate:date];
+//    
+//    self.selectedDate = date;
+}
+
+//optional
+- (void)hsDatePickerDidDismissWithQuitMethod:(HSDatePickerQuitMethod)method {
+    NSLog(@"Picker did dismiss with %lu", (unsigned long)method);
+}
+
+//optional
+- (void)hsDatePickerWillDismissWithQuitMethod:(HSDatePickerQuitMethod)method {
+    NSLog(@"Picker will dismiss with %lu", (unsigned long)method);
+}
 
 
 

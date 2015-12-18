@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		351D37DD1C2431580098F423 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37DC1C2431580098F423 /* TestViewController.m */; };
 		351D37DF1C2440AF0098F423 /* dribbble256_imageio.png in Resources */ = {isa = PBXBuildFile; fileRef = 351D37DE1C2440AF0098F423 /* dribbble256_imageio.png */; };
+		351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37E21C245AD20098F423 /* HSDatePickerViewController.m */; };
+		351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */; };
 		355D5C451C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C441C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png */; };
 		355D5C491C23106400409FFC /* ic_movie_filter_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C481C23106400409FFC /* ic_movie_filter_white_18pt_2x.png */; };
 		355D5C4B1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C4A1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png */; };
@@ -134,6 +136,9 @@
 		351D37DB1C2431580098F423 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		351D37DC1C2431580098F423 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		351D37DE1C2440AF0098F423 /* dribbble256_imageio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dribbble256_imageio.png; sourceTree = "<group>"; };
+		351D37E11C245AD20098F423 /* HSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSDatePickerViewController.h; sourceTree = "<group>"; };
+		351D37E21C245AD20098F423 /* HSDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSDatePickerViewController.m; sourceTree = "<group>"; };
+		351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSDatePickerViewController.xib; sourceTree = "<group>"; };
 		355D5C441C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_access_alarm_white_18pt_2x.png; sourceTree = "<group>"; };
 		355D5C481C23106400409FFC /* ic_movie_filter_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_movie_filter_white_18pt_2x.png; sourceTree = "<group>"; };
 		355D5C4A1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_photo_size_select_actual_white_18pt_2x.png; sourceTree = "<group>"; };
@@ -279,6 +284,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		351D37E01C245AD20098F423 /* HSDatePickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				351D37E11C245AD20098F423 /* HSDatePickerViewController.h */,
+				351D37E21C245AD20098F423 /* HSDatePickerViewController.m */,
+				351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */,
+			);
+			path = HSDatePickerViewController;
+			sourceTree = "<group>";
+		};
 		355D5C871C2414D700409FFC /* view */ = {
 			isa = PBXGroup;
 			children = (
@@ -497,6 +512,7 @@
 		C7821AB719480434008B952D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				351D37E01C245AD20098F423 /* HSDatePickerViewController */,
 				355D5C8F1C2415BC00409FFC /* ImageViewController.h */,
 				355D5C901C2415BC00409FFC /* ImageViewController.m */,
 				355D5C911C2415BC00409FFC /* SignViewController.h */,
@@ -706,6 +722,7 @@
 				C7821A9119480417008B952D /* InfoPlist.strings in Resources */,
 				C7821ACE19482610008B952D /* Localizable.strings in Resources */,
 				C7821AEF1949B405008B952D /* save@2x.png in Resources */,
+				351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */,
 				C7B282821A6E30F30072FAD3 /* LaunchScreen.xib in Resources */,
 				355D5C4B1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png in Resources */,
 				351D37DF1C2440AF0098F423 /* dribbble256_imageio.png in Resources */,
@@ -812,6 +829,7 @@
 				355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */,
 				351D37DD1C2431580098F423 /* TestViewController.m in Sources */,
 				355D5C941C2415BC00409FFC /* SignViewController.m in Sources */,
+				351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */,
 				355D5C931C2415BC00409FFC /* ImageViewController.m in Sources */,
 				C7821A9319480417008B952D /* main.m in Sources */,
 				355D5C8A1C2414E600409FFC /* PJRSignatureView.m in Sources */,
