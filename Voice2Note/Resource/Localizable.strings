@@ -20,7 +20,7 @@
 "ActionSheetCancel" = "取消";
 "ActionSheetSave" = "保存";
 "ActionSheetCopy" = "复制";
-"ActionSheetMail" = "发邮件";
+"ActionSheetMail" = "发送邮件";
 "ActionSheetWeixin" = "分享到朋友圈";
 "ActionSheetLock" = "锁定文本";
 
@@ -61,4 +61,5 @@
 "UploadABForBetter" = "上传联系人，可以使语音识别人名更加精确。请放心，上传的数据仅用于提高语音识别准确度，不作其它用途";
 
 
-
+"ScopeButtonContent" = "Content";
+"ScopeButtonDate" = "Date";

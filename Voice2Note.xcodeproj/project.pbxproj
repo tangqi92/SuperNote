@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		351D37DD1C2431580098F423 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37DC1C2431580098F423 /* TestViewController.m */; };
 		351D37DF1C2440AF0098F423 /* dribbble256_imageio.png in Resources */ = {isa = PBXBuildFile; fileRef = 351D37DE1C2440AF0098F423 /* dribbble256_imageio.png */; };
 		351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37E21C245AD20098F423 /* HSDatePickerViewController.m */; };
 		351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */; };
+		351D37EA1C25569B0098F423 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351D37E91C25569B0098F423 /* MessageUI.framework */; };
 		355D5C451C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C441C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png */; };
 		355D5C491C23106400409FFC /* ic_movie_filter_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C481C23106400409FFC /* ic_movie_filter_white_18pt_2x.png */; };
 		355D5C4B1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C4A1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png */; };
@@ -60,7 +60,6 @@
 		C7821AAA19480417008B952D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C7821AA819480417008B952D /* InfoPlist.strings */; };
 		C7821AAC19480417008B952D /* Voice2NoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C7821AAB19480417008B952D /* Voice2NoteTests.m */; };
 		C7821ABD194804A4008B952D /* NoteListController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7821ABC194804A4008B952D /* NoteListController.m */; };
-		C7821AC0194804B6008B952D /* NoteDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7821ABF194804B6008B952D /* NoteDetailController.m */; };
 		C7821AC219482208008B952D /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7821AC119482208008B952D /* iflyMSC.framework */; };
 		C7821AC419482220008B952D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7821AC319482220008B952D /* AVFoundation.framework */; };
 		C7821AC61948222B008B952D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7821AC51948222B008B952D /* SystemConfiguration.framework */; };
@@ -133,12 +132,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		351D37DB1C2431580098F423 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
-		351D37DC1C2431580098F423 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		351D37DE1C2440AF0098F423 /* dribbble256_imageio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dribbble256_imageio.png; sourceTree = "<group>"; };
 		351D37E11C245AD20098F423 /* HSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSDatePickerViewController.h; sourceTree = "<group>"; };
 		351D37E21C245AD20098F423 /* HSDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSDatePickerViewController.m; sourceTree = "<group>"; };
 		351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSDatePickerViewController.xib; sourceTree = "<group>"; };
+		351D37E91C25569B0098F423 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		355D5C441C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_access_alarm_white_18pt_2x.png; sourceTree = "<group>"; };
 		355D5C481C23106400409FFC /* ic_movie_filter_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_movie_filter_white_18pt_2x.png; sourceTree = "<group>"; };
 		355D5C4A1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_photo_size_select_actual_white_18pt_2x.png; sourceTree = "<group>"; };
@@ -212,8 +210,6 @@
 		C7821AAB19480417008B952D /* Voice2NoteTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Voice2NoteTests.m; sourceTree = "<group>"; };
 		C7821ABB194804A4008B952D /* NoteListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoteListController.h; path = Source/Controller/NoteListController.h; sourceTree = "<group>"; };
 		C7821ABC194804A4008B952D /* NoteListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoteListController.m; path = Source/Controller/NoteListController.m; sourceTree = "<group>"; };
-		C7821ABE194804B6008B952D /* NoteDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoteDetailController.h; path = Source/Controller/NoteDetailController.h; sourceTree = "<group>"; };
-		C7821ABF194804B6008B952D /* NoteDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoteDetailController.m; path = Source/Controller/NoteDetailController.m; sourceTree = "<group>"; };
 		C7821AC119482208008B952D /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iflyMSC.framework; path = Framework/iflyMSC.framework; sourceTree = "<group>"; };
 		C7821AC319482220008B952D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C7821AC51948222B008B952D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -255,6 +251,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				351D37EA1C25569B0098F423 /* MessageUI.framework in Frameworks */,
 				C73B88521977CF19007EE3D0 /* libz.dylib in Frameworks */,
 				C711403E1A076A6C00E027E4 /* VNNoteManager.framework in Frameworks */,
 				C7821ADD1948489C008B952D /* AddressBook.framework in Frameworks */,
@@ -406,6 +403,7 @@
 		C7821A8519480417008B952D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				351D37E91C25569B0098F423 /* MessageUI.framework */,
 				C73B88511977CF19007EE3D0 /* libz.dylib */,
 				C7821ADB1948483F008B952D /* AddressBook.framework */,
 				C7821AC719482235008B952D /* AudioToolbox.framework */,
@@ -519,14 +517,10 @@
 				355D5C921C2415BC00409FFC /* SignViewController.m */,
 				C7821ABB194804A4008B952D /* NoteListController.h */,
 				C7821ABC194804A4008B952D /* NoteListController.m */,
-				C7821ABE194804B6008B952D /* NoteDetailController.h */,
-				C7821ABF194804B6008B952D /* NoteDetailController.m */,
 				C7821AE619499F47008B952D /* NoteListCell.h */,
 				C7821AE719499F47008B952D /* NoteListCell.m */,
 				355D5C5F1C23EFBE00409FFC /* YYTextEditExample.h */,
 				355D5C601C23EFBE00409FFC /* YYTextEditExample.m */,
-				351D37DB1C2431580098F423 /* TestViewController.h */,
-				351D37DC1C2431580098F423 /* TestViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -827,14 +821,12 @@
 				355D5C801C23F64B00409FFC /* YYTextExampleHelper.m in Sources */,
 				C7821AED1949AB2B008B952D /* AppDelegate.m in Sources */,
 				355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */,
-				351D37DD1C2431580098F423 /* TestViewController.m in Sources */,
 				355D5C941C2415BC00409FFC /* SignViewController.m in Sources */,
 				351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */,
 				355D5C931C2415BC00409FFC /* ImageViewController.m in Sources */,
 				C7821A9319480417008B952D /* main.m in Sources */,
 				355D5C8A1C2414E600409FFC /* PJRSignatureView.m in Sources */,
 				C7821AEB19499FC1008B952D /* UIColor+VNHex.m in Sources */,
-				C7821AC0194804B6008B952D /* NoteDetailController.m in Sources */,
 				355D5C731C23F59700409FFC /* CALayer+YYAdd.m in Sources */,
 				355D5C641C23F53600409FFC /* UIImage+YYWebImage.m in Sources */,
 				C7470A92196164CB00FD154B /* AppContext.m in Sources */,

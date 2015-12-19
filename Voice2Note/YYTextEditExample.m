@@ -38,12 +38,11 @@ static const CGFloat kTextFieldHeight = 30;
 static const CGFloat kToolbarHeight = 44;
 static const CGFloat kVoiceButtonWidth = 100;
 
-@interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, UIActionSheetDelegate,
-MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, HSDatePickerViewControllerDelegate>
+@interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate,UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 
 
 @property (nonatomic, assign) YYTextView *textView;
-@property (nonatomic, assign) IFlyRecognizerView *iflyRecognizerView;
+@property (nonatomic, strong) IFlyRecognizerView *iflyRecognizerView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UISwitch *verticalSwitch;
 @property (nonatomic, strong) UISwitch *debugSwitch;
@@ -51,9 +50,6 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
 @property (nonatomic, strong) VNNote *note;
 @property (nonatomic, strong) NSDate *selectedDate;
 @property (nonatomic) BOOL isEditingTitle;
-
-
-
 
 
 @end
@@ -76,6 +72,7 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     [self initImageView];
+    [self setupSpeechRecognizer];
     __weak typeof(self) _self = self;
     
     UIView *toolbar;
@@ -114,7 +111,7 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
     UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(hideKeyboard)];
     doneBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
     
-    UIToolbar *toolbarr = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    UIToolbar *toolbarr = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kToolbarHeight)];
     toolbarr.tintColor = [UIColor systemColor];
     toolbarr.items = [NSArray arrayWithObjects:photoBarButton,mediaBarButton, alarmBarButton, brushBarButton, voiceBarButton, doneBarButton, nil];
     
@@ -220,6 +217,19 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
     }
 }
 
+- (void)setupSpeechRecognizer
+{
+    NSString *initString = [NSString stringWithFormat:@"%@=%@", [IFlySpeechConstant APPID], kIFlyAppID];
+    
+    [IFlySpeechUtility createUtility:initString];
+    _iflyRecognizerView = [[IFlyRecognizerView alloc] initWithCenter:self.view.center];
+    _iflyRecognizerView.delegate = self;
+    
+    [_iflyRecognizerView setParameter:@"iat" forKey:[IFlySpeechConstant IFLY_DOMAIN]];
+    [_iflyRecognizerView setParameter:@"asr.pcm" forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
+    [_iflyRecognizerView setParameter:@"plain" forKey:[IFlySpeechConstant RESULT_TYPE]];
+}
+
 - (void)initImageView {
     NSData *data = [NSData dataNamed:@"dribbble256_imageio.png"];
     UIImage *image = [[YYImage alloc] initWithData:data scale:2];
@@ -291,9 +301,6 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
     }
 }
 
-
-
-
 #pragma mark - Keyboard
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -308,7 +315,7 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
          CGFloat keyboardHeight = keyboardFrame.size.height;
          
          CGRect frame = _textView.frame;
-         self.view.frame.size.height - kTextFieldHeight - keyboardHeight,
+         frame.size.height = self.view.frame.size.height - kViewOriginY - kTextFieldHeight - keyboardHeight - kVerticalMargin - kToolbarHeight,
          _textView.frame = frame;
      }               completion:NULL];
 }
@@ -335,8 +342,45 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
     }
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1) {
+        UITextField *text_field = [alertView textFieldAtIndex:0];
+        if (buttonIndex == 1) {
+            // 获取输入的密码
+            NSLog(@"text: %@", text_field.text);
+        }
+    } else if(alertView.tag == 2) {
+        if (buttonIndex == 1) {
+            IFlyDataUploader *_uploader = [[IFlyDataUploader alloc] init];
+            IFlyContact *iFlyContact = [[IFlyContact alloc] init]; NSString *contactList = [iFlyContact contact];
+            [_uploader setParameter:@"uup" forKey:@"subject"];
+            [_uploader setParameter:@"contact" forKey:@"dtt"];
+            //启动上传
+            [_uploader uploadDataWithCompletionHandler:^(NSString *grammerID, IFlySpeechError *error) {
+                [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+            } name:@"contact" data:contactList];
+        }
+    }
+}
 
-#pragma mark - bar
+
+#pragma mark IFlyRecognizerViewDelegate
+
+- (void)onResult:(NSArray *)resultArray isLast:(BOOL)isLast
+{
+    NSMutableString *result = [[NSMutableString alloc] init];
+    NSDictionary *dic = [resultArray objectAtIndex:0];
+    for (NSString *key in dic) {
+        [result appendFormat:@"%@", key];
+    }
+    _textView.text = [NSString stringWithFormat:@"%@%@", _textView.text, result];
+}
+
+- (void)onError:(IFlySpeechError *)error
+{
+    NSLog(@"errorCode:%@", [error errorDesc]);
+}
 
 - (void)startListenning
 {
@@ -352,6 +396,7 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"ActionSheetCancel", @"")
                                                   otherButtonTitles:NSLocalizedString(@"GotoUploadAB", @""), nil];
+        alertView.tag = 2;
         [alertView show];
         [[AppContext appContext] setHasUploadAddressBook:YES];
         return;
@@ -362,6 +407,8 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
     
 }
 
+
+#pragma mark - UIBarButtonItemAction
 
 - (void)addPhoto
 {
@@ -385,11 +432,6 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
 
 - (void)addBrush
 {
-    
-    //    TestViewController *test = [[TestViewController alloc] init];
-    //    [self hideKeyboard];
-    //    [self.navigationController pushViewController:test animated:YES];
-    
     SignViewController *test = [[SignViewController alloc] initWithNibName:@"SignViewController" bundle:nil];
     [self hideKeyboard];
     
@@ -424,6 +466,8 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
     }
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+
 #pragma mark - More Action
 
 - (void)moreActionButtonPressed
@@ -433,30 +477,69 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"ActionSheetCancel", @"")
                                                destructiveButtonTitle:nil
-                                                    otherButtonTitles:NSLocalizedString(@"ActionSheetCopy", @""),NSLocalizedString(@"ActionSheetLock", @""), nil];
+                                                    otherButtonTitles:NSLocalizedString(@"ActionSheetCopy", @""),
+                                  NSLocalizedString(@"ActionSheetLock", @""),
+                                  NSLocalizedString(@"ActionSheetMail", @""), nil];
     [actionSheet showInView:self.view];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
+        // 复制至剪切板
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = _textView.text;
         [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CopySuccess", @"")];
     } else if (buttonIndex == 1) {
-    // 锁定文本，弹出输入密码
-        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请输入锁定密码"
-                                                        message:nil
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"OK", nil];
-        [alter setAlertViewStyle:UIAlertViewStyleSecureTextInput];
-        [alter show];
-    
+        [self lockTextAction];
     } else if (buttonIndex == 2) {
+        if ([MFMailComposeViewController canSendMail]) { // 用户已设置邮件账户
+            [self sendEmailAction]; // 调用发送邮件的代码
+        }
     }
 }
 
+- (void)lockTextAction
+{
+    // 锁定文本，弹出输入密码
+    UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请输入锁定密码"
+                                                    message:nil
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"OK", nil];
+    [alter setAlertViewStyle:UIAlertViewStyleSecureTextInput];
+    // 以解决 Multiple UIAlertView 的代理事件
+    alter.tag = 1;
+    [alter show];
+    
+}
+
+/**
+ *  模拟器存在 BUG
+ */
+- (void)sendEmailAction
+{
+    MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
+    [composer setMailComposeDelegate:self];
+    if ([MFMailComposeViewController canSendMail]) {
+        [composer setSubject:@"来超级记事本的一封信"];
+        [composer setMessageBody:_textView.text isHTML:NO];
+        [composer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [self presentViewController:composer animated:YES completion:nil];
+    } else {
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CanNoteSendMail", @"")];
+    }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    if (result == MFMailComposeResultFailed) {
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SendEmailFail", @"")];
+    } else if (result == MFMailComposeResultSent) {
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SendEmailSuccess", @"")];
+    }
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 #pragma mark - HSDatePickerViewControllerDelegate
@@ -464,9 +547,9 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
     NSLog(@"Date picked %@", date);
     NSDateFormatter *dateFormater = [NSDateFormatter new];
     dateFormater.dateFormat = @"yyyy.MM.dd HH:mm:ss";
-//    self.dateLabel.text = [dateFormater stringFromDate:date];
-//    
-//    self.selectedDate = date;
+    // TODO: 获取日期后处理
+    //    self.dateLabel.text = [dateFormater stringFromDate:date];
+    //    self.selectedDate = date;
 }
 
 //optional
@@ -477,20 +560,6 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
 //optional
 - (void)hsDatePickerWillDismissWithQuitMethod:(HSDatePickerQuitMethod)method {
     NSLog(@"Picker will dismiss with %lu", (unsigned long)method);
-}
-
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    
-    UITextField *text_field = [alertView textFieldAtIndex:0];
-    
-
-    if (buttonIndex == 1) {
-        // 获取输入的密码
-        NSLog(@"text: %@", text_field.text);
-        
-    }
 }
 
 

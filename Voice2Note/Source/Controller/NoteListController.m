@@ -8,7 +8,6 @@
 
 #import "NoteListController.h"
 #import "NoteManager.h"
-#import "NoteDetailController.h"
 #import "VNNote.h"
 #import "VNConstants.h"
 #import "NoteListCell.h"
@@ -57,6 +56,9 @@
     _searchController.searchResultsUpdater = self;
     _searchController.dimsBackgroundDuringPresentation = YES; //在搜索状态下，设置背景框的颜色为灰色
     _searchController.hidesNavigationBarDuringPresentation = YES; //点击搜索框的时候，是否隐藏导航栏
+    // Configure the search bar with scope buttons and add it to the table view header
+    _searchController.searchBar.scopeButtonTitles = @[NSLocalizedString(@"ScopeButtonContent",@"Content"),
+                                                          NSLocalizedString(@"ScopeButtonDate",@"Date")];
     [_searchController.searchBar sizeToFit];
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -141,7 +143,7 @@
 - (void)createTask
 {
     [MobClick event:kEventAddNewNote];
-    NoteDetailController *controller = [[NoteDetailController alloc] init];
+    YYTextEditExample *controller = [[YYTextEditExample alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

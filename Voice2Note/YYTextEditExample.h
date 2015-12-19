@@ -9,13 +9,12 @@
 
 
 #import <UIKit/UIKit.h>
-#import <MessageUI/MFMailComposeViewController.h>
+#import <MessageUI/MessageUI.h>
 
 #import "VNNote.h"
 
 @interface YYTextEditExample : UIViewController
 
 - (instancetype)initWithNote:(VNNote *)note;
-
 
 @end
