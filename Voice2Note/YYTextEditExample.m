@@ -42,6 +42,7 @@ static const CGFloat kVoiceButtonWidth = 100;
 
 
 @property (nonatomic, assign) YYTextView *textView;
+@property (nonatomic, retain) NSMutableAttributedString *attrString;
 @property (nonatomic, strong) IFlyRecognizerView *iflyRecognizerView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UISwitch *verticalSwitch;
@@ -49,6 +50,7 @@ static const CGFloat kVoiceButtonWidth = 100;
 @property (nonatomic, strong) UISwitch *exclusionSwitch;
 @property (nonatomic, strong) VNNote *note;
 @property (nonatomic, strong) NSDate *selectedDate;
+@property (nonatomic, strong) UIToolbar *comps;
 @property (nonatomic) BOOL isEditingTitle;
 
 
@@ -65,13 +67,15 @@ static const CGFloat kVoiceButtonWidth = 100;
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     if ([self respondsToSelector:@selector(setAutomaticallyAdjustsScrollViewInsets:)]) {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     [self initImageView];
+    [self initComps];
     [self setupSpeechRecognizer];
     __weak typeof(self) _self = self;
     
@@ -85,58 +89,18 @@ static const CGFloat kVoiceButtonWidth = 100;
     toolbar.top = kiOS7Later ? 64 : 0;
     [self.view addSubview:toolbar];
     
+    if (_note) {
+         _attrString = [[NSMutableAttributedString alloc] initWithString:_note.content];
+    } else{
+        _attrString = [[NSMutableAttributedString alloc] initWithString:@"请输入内容："];
+    }
     
-    CGRect frame = CGRectMake(10.f, 70, self.view.frame.size.width - 10.f * 2, 30);
-    
-    
-    UIBarButtonItem *photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_photo_size_select_actual_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addPhoto)];
-    photoBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
-    
-    UIBarButtonItem *mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_movie_filter_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addMedia)];
-    mediaBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
-    
-    UIBarButtonItem *alarmBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_access_alarm_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addAlarm)];
-    alarmBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
-    
-    UIBarButtonItem *voiceBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings_voice_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(useVoiceInput)];
-    voiceBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
-    UIBarButtonItem *brushBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_brush_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addBrush)];
-    brushBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
-    
-    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(hideKeyboard)];
-    doneBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
-    UIToolbar *toolbarr = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kToolbarHeight)];
-    toolbarr.tintColor = [UIColor systemColor];
-    toolbarr.items = [NSArray arrayWithObjects:photoBarButton,mediaBarButton, alarmBarButton, brushBarButton, voiceBarButton, doneBarButton, nil];
-    
-    frame = CGRectMake(10.f,
-                       0,
-                       self.view.frame.size.width - 10.f * 2,
-                       self.view.frame.size.height - 100 - 10.f * 2);
-    
-    
-    
-    
-    
-    
-    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:_note.content];
-    text.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
-    text.yy_lineSpacing = 4;
-    text.yy_firstLineHeadIndent = 20;
-    
-    
-    
-    
-    
-    
+
+    _attrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
+    _attrString.yy_lineSpacing = 4;
+    _attrString.yy_firstLineHeadIndent = 20;
     YYTextView *textView = [YYTextView new];
-    textView.attributedText = text;
+    textView.attributedText = _attrString;
     textView.size = self.view.size;
     textView.autocorrectionType = UITextAutocorrectionTypeNo;
     textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -149,14 +113,14 @@ static const CGFloat kVoiceButtonWidth = 100;
     }
     textView.contentInset = UIEdgeInsetsMake(toolbar.bottom, 0, 0, 0);
     textView.scrollIndicatorInsets = textView.contentInset;
-    textView.selectedRange = NSMakeRange(text.length, 0);
-    textView.inputAccessoryView = toolbarr;
+    textView.selectedRange = NSMakeRange(_attrString.length, 0);
+    textView.inputAccessoryView = self.comps;
     [self.view insertSubview:textView belowSubview:toolbar];
     self.textView = textView;
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [textView becomeFirstResponder];
     });
+    
     
     
     
@@ -185,10 +149,6 @@ static const CGFloat kVoiceButtonWidth = 100;
     
     [[YYTextKeyboardManager defaultManager] addObserver:self];
     
-    
-    
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -201,11 +161,13 @@ static const CGFloat kVoiceButtonWidth = 100;
     
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[YYTextKeyboardManager defaultManager] removeObserver:self];
 }
 
-- (void)setExclusionPathEnabled:(BOOL)enabled {
+- (void)setExclusionPathEnabled:(BOOL)enabled
+{
     if (enabled) {
         [self.textView addSubview:self.imageView];
         UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.imageView.frame
@@ -215,6 +177,33 @@ static const CGFloat kVoiceButtonWidth = 100;
         [self.imageView removeFromSuperview];
         self.textView.exclusionPaths = nil;
     }
+}
+
+
+- (void)initComps
+{
+    UIBarButtonItem *photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_photo_size_select_actual_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addPhoto)];
+    photoBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    UIBarButtonItem *mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_movie_filter_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addMedia)];
+    mediaBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    UIBarButtonItem *alarmBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_access_alarm_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addAlarm)];
+    alarmBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    UIBarButtonItem *voiceBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings_voice_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(useVoiceInput)];
+    voiceBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    UIBarButtonItem *brushBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_brush_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addBrush)];
+    brushBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(hideKeyboard)];
+    doneBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    
+    _comps = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kToolbarHeight)];
+    _comps.tintColor = [UIColor systemColor];
+    _comps.items = [NSArray arrayWithObjects:photoBarButton,mediaBarButton, alarmBarButton, brushBarButton, voiceBarButton, doneBarButton, nil];
+    
 }
 
 - (void)setupSpeechRecognizer
@@ -262,7 +251,8 @@ static const CGFloat kVoiceButtonWidth = 100;
     }
 }
 
-#pragma mark text view
+
+#pragma mark - Text view
 
 - (void)textViewDidBeginEditing:(YYTextView *)textView {
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ActionSheetSave", @"")
@@ -282,65 +272,7 @@ static const CGFloat kVoiceButtonWidth = 100;
 }
 
 
-#pragma mark - keyboard
-
-- (void)keyboardChangedWithTransition:(YYTextKeyboardTransition)transition {
-    BOOL clipped = NO;
-    if (_textView.isVerticalForm && transition.toVisible) {
-        CGRect rect = [[YYTextKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
-        if (CGRectGetMaxY(rect) == self.view.height) {
-            CGRect textFrame = self.view.bounds;
-            textFrame.size.height -= rect.size.height;
-            _textView.frame = textFrame;
-            clipped = YES;
-        }
-    }
-    
-    if (!clipped) {
-        _textView.frame = self.view.bounds;
-    }
-}
-
-#pragma mark - Keyboard
-
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    NSDictionary *userInfo = notification.userInfo;
-    [UIView animateWithDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]
-                          delay:0.f
-                        options:[userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]
-                     animations:^
-     {
-         CGRect keyboardFrame = [[userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-         CGFloat keyboardHeight = keyboardFrame.size.height;
-         
-         CGRect frame = _textView.frame;
-         frame.size.height = self.view.frame.size.height - kViewOriginY - kTextFieldHeight - keyboardHeight - kVerticalMargin - kToolbarHeight,
-         _textView.frame = frame;
-     }               completion:NULL];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    NSDictionary *userInfo = notification.userInfo;
-    [UIView animateWithDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]
-                          delay:0.f
-                        options:[userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]
-                     animations:^
-     {
-         CGRect frame = _textView.frame;
-         frame.size.height = self.view.frame.size.height - kViewOriginY - kTextFieldHeight - kVoiceButtonWidth - kVerticalMargin * 3;
-         _textView.frame = frame;
-     }               completion:NULL];
-}
-
-- (void)hideKeyboard
-{
-    if ([_textView isFirstResponder]) {
-        _isEditingTitle = NO;
-        [_textView resignFirstResponder];
-    }
-}
+#pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -562,5 +494,62 @@ static const CGFloat kVoiceButtonWidth = 100;
     NSLog(@"Picker will dismiss with %lu", (unsigned long)method);
 }
 
+#pragma mark - Keyboard
+
+- (void)keyboardChangedWithTransition:(YYTextKeyboardTransition)transition {
+    BOOL clipped = NO;
+    if (_textView.isVerticalForm && transition.toVisible) {
+        CGRect rect = [[YYTextKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
+        if (CGRectGetMaxY(rect) == self.view.height) {
+            CGRect textFrame = self.view.bounds;
+            textFrame.size.height -= rect.size.height;
+            _textView.frame = textFrame;
+            clipped = YES;
+        }
+    }
+    
+    if (!clipped) {
+        _textView.frame = self.view.bounds;
+    }
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    [UIView animateWithDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]
+                          delay:0.f
+                        options:[userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]
+                     animations:^
+     {
+         CGRect keyboardFrame = [[userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+         CGFloat keyboardHeight = keyboardFrame.size.height;
+         
+         CGRect frame = _textView.frame;
+         frame.size.height = self.view.frame.size.height - kViewOriginY - kTextFieldHeight - keyboardHeight - kVerticalMargin - kToolbarHeight,
+         _textView.frame = frame;
+     }               completion:NULL];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    [UIView animateWithDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]
+                          delay:0.f
+                        options:[userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]
+                     animations:^
+     {
+         CGRect frame = _textView.frame;
+         frame.size.height = self.view.frame.size.height - kViewOriginY - kTextFieldHeight - kVoiceButtonWidth - kVerticalMargin * 3;
+         _textView.frame = frame;
+     }               completion:NULL];
+}
+
+- (void)hideKeyboard
+{
+    if ([_textView isFirstResponder]) {
+        _isEditingTitle = NO;
+        [_textView resignFirstResponder];
+    }
+}
 
 @end

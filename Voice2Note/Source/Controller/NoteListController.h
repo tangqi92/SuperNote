@@ -16,6 +16,7 @@
     UIBarButtonItem *editButton;
     UIBarButtonItem *deleteButton;
 }
+
 @property (nonatomic, strong) UISearchController *searchController;
 
 @end

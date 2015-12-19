@@ -20,6 +20,7 @@
 #import "UIColor+VNHex.h"
 #import "SignViewController.h"
 #import "YYTextEditExample.h"
+#import "NoteDetailController.h"
 
 @interface NoteListController ()<IFlyRecognizerViewDelegate>
 {
@@ -142,8 +143,10 @@
 
 - (void)createTask
 {
-    [MobClick event:kEventAddNewNote];
+
+//    NoteDetailController *controller = [[NoteDetailController alloc] init];
     YYTextEditExample *controller = [[YYTextEditExample alloc] init];
+
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -240,10 +243,6 @@
             cell.index = indexPath.row;
             [cell updateWithNote:note];
     }
-    
-    
-    
-
     return cell;
 }
 
