@@ -51,6 +51,14 @@
     [self setupVoiceRecognizerView];
     self.view.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    
+    
+    _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    _searchController.searchResultsUpdater = self;
+    _searchController.dimsBackgroundDuringPresentation = YES; //在搜索状态下，设置背景框的颜色为灰色
+    _searchController.hidesNavigationBarDuringPresentation = YES; //点击搜索框的时候，是否隐藏导航栏
+    [_searchController.searchBar sizeToFit];
+    self.tableView.tableHeaderView = self.searchController.searchBar;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -210,7 +218,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dataSource.count;
+    
+        return self.dataSource.count;
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -219,9 +229,19 @@
     if (!cell) {
         cell = [[NoteListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ListCell"];
     }
-    VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
-    cell.index = indexPath.row;
-    [cell updateWithNote:note];
+    
+    if (self.searchController.active) {
+//        [cell.textLabel setText:self.searchList[indexPath.row]];
+    }
+    else{
+            VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
+            cell.index = indexPath.row;
+            [cell updateWithNote:note];
+    }
+    
+    
+    
+
     return cell;
 }
 
@@ -251,6 +271,13 @@
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self updateDeleteButtonTitle];
+}
+
+-(void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    
+    
+    
 }
 
 #pragma mark - EditMode

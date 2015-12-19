@@ -489,6 +489,7 @@ MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertView
     if (buttonIndex == 1) {
         // 获取输入的密码
         NSLog(@"text: %@", text_field.text);
+        
     }
 }
 
