@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, strong) NSDate *createdDate;
 @property (nonatomic, strong) NSDate *updatedDate;
-@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) int index;
 
 - (id)initWithTitle:(NSString *)title
             content:(NSString *)content

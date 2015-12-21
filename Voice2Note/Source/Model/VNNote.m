@@ -67,13 +67,13 @@
     return [[NoteManager sharedManager] storeNote:self];
 }
 
-- (NSInteger)index
-{
-    if (!_index) {
-        _index = (int)[self.createdDate timeIntervalSince1970];
-    }
-    return _index;
-}
+//- (NSInteger)index
+//{
+//    if (!_index) {
+//        _index = (int)[self.createdDate timeIntervalSince1970];
+//    }
+//    return _index;
+//}
 
 @end
 

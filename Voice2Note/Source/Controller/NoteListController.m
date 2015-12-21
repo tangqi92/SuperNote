@@ -20,12 +20,13 @@
 #import "UIColor+VNHex.h"
 #import "SignViewController.h"
 #import "YYTextEditExample.h"
-#import "NoteDetailController.h"
 
-@interface NoteListController ()<IFlyRecognizerViewDelegate>
+
+@interface NoteListController ()<IFlyRecognizerViewDelegate, UIAlertViewDelegate>
 {
     IFlyRecognizerView *_iflyRecognizerView;
     NSMutableString *_resultString;
+    NSInteger selectedIndex;
 }
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
@@ -241,6 +242,7 @@
     else{
             VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
             cell.index = indexPath.row;
+        note.index = indexPath.row;
             [cell updateWithNote:note];
     }
     return cell;
@@ -251,22 +253,30 @@
     if (self.tableView.editing) {
         [self updateDeleteButtonTitle];
     } else {
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
-        VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
-//        NoteDetailController *controller = [[NoteDetailController alloc] initWithNote:note];
-//        controller.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:controller animated:YES];
-        
-        
-        YYTextEditExample *yy = [[YYTextEditExample alloc] initWithNote:note];
-        [self.navigationController pushViewController:yy animated:YES];
-    }
-    
-//    SignViewController *test = [[SignViewController alloc] initWithNibName:@"SignViewController" bundle:nil];
-//    [self.navigationController pushViewController:test animated:YES];
-    
-   
+        selectedIndex = indexPath.row;
+        NSLog(@"----------selectedIndex%d",selectedIndex);
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *pwd = [defaults objectForKey:[NSString stringWithFormat:@"%d", selectedIndex]];
+        if (pwd) {
+            // 锁定文本，弹出输入密码
+            UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请输入解锁密码"
+                                                            message:nil
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"OK", nil];
+            [alter setAlertViewStyle:UIAlertViewStyleSecureTextInput];
+            // 以解决 Multiple UIAlertView 的代理事件
+            [alter show];
 
+        } else {
+            [tableView deselectRowAtIndexPath:indexPath animated:NO];
+            VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
+            
+            YYTextEditExample *yy = [[YYTextEditExample alloc] initWithNote:note];
+            [self.navigationController pushViewController:yy animated:YES];
+        }
+        
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -349,6 +359,29 @@
         deleteButton.title = [NSString stringWithFormat:@"Delete (%d)", selectedRows.count];
     }
 }
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *pwd = [defaults objectForKey:[NSString stringWithFormat:@"%d", selectedIndex]];
+        UITextField *text_field = [alertView textFieldAtIndex:0];
+        if (buttonIndex == 1) {
+            // 获取输入的密码
+            NSLog(@"------------pwd%@", pwd);
+            NSLog(@"-------------text_field%@", text_field.text);
+            if ([pwd isEqualToString:text_field.text]) {
+          
+                VNNote *note = [self.dataSource objectAtIndex:selectedIndex];
+                
+                YYTextEditExample *yy = [[YYTextEditExample alloc] initWithNote:note];
+                [self.navigationController pushViewController:yy animated:NO];
+            }
+            
+        }
+}
+
 
 
 @end

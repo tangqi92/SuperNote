@@ -280,7 +280,11 @@ static const CGFloat kVoiceButtonWidth = 100;
         UITextField *text_field = [alertView textFieldAtIndex:0];
         if (buttonIndex == 1) {
             // 获取输入的密码
-            NSLog(@"text: %@", text_field.text);
+            NSLog(@"Password: %@", text_field.text);
+            NSLog(@"_note.index: %d", _note.index);
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:text_field.text forKey:[NSString stringWithFormat:@"%d", _note.index]];
+            
         }
     } else if(alertView.tag == 2) {
         if (buttonIndex == 1) {
