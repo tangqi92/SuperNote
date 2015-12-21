@@ -12,27 +12,22 @@
 #import "VNConstants.h"
 #import "NoteListCell.h"
 #import "MobClick.h"
-#import "iflyMSC/IFlyRecognizerView.h"
-#import "iflyMSC/IFlySpeechConstant.h"
-#import "iflyMSC/IFlyRecognizerView.h"
-#import "iflyMSC/IFlySpeechUtility.h"
 #import "SVProgressHUD.h"
 #import "UIColor+VNHex.h"
 #import "SignViewController.h"
 #import "YYTextEditExample.h"
 
 
-@interface NoteListController ()<IFlyRecognizerViewDelegate, UIAlertViewDelegate>
+@interface NoteListController ()<UIAlertViewDelegate>
+
 {
-    IFlyRecognizerView *_iflyRecognizerView;
     NSMutableString *_resultString;
-    NSInteger selectedIndex;
+    NSInteger _selectedIndex;
 }
+
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end
-
-#pragma mark -
 
 @implementation NoteListController
 
@@ -43,16 +38,14 @@
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
     self.navigationItem.title = kAppName;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
-    addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createTask)];
+    addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNote)];
     editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit)];
     deleteButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(delete)];
     [deleteButton setTintColor:[UIColor redColor]];
     
     [self updateButtonsToMatchTableState];
-    [self setupVoiceRecognizerView];
     self.view.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    
     
     _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     _searchController.searchResultsUpdater = self;
@@ -60,7 +53,7 @@
     _searchController.hidesNavigationBarDuringPresentation = YES; //点击搜索框的时候，是否隐藏导航栏
     // Configure the search bar with scope buttons and add it to the table view header
     _searchController.searchBar.scopeButtonTitles = @[NSLocalizedString(@"ScopeButtonContent",@"Content"),
-                                                          NSLocalizedString(@"ScopeButtonDate",@"Date")];
+                                                      NSLocalizedString(@"ScopeButtonDate",@"Date")];
     [_searchController.searchBar sizeToFit];
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -74,22 +67,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [IFlySpeechUtility destroy];
-}
-
-- (void)setupVoiceRecognizerView
-{
-    NSString *initString = [NSString stringWithFormat:@"%@=%@", [IFlySpeechConstant APPID], kIFlyAppID];
-    
-    [IFlySpeechUtility createUtility:initString];
-    _iflyRecognizerView = [[IFlyRecognizerView alloc] initWithCenter:self.view.center];
-    _iflyRecognizerView.delegate = self;
-    
-    [_iflyRecognizerView setParameter:@"iat" forKey:[IFlySpeechConstant IFLY_DOMAIN]];
-    [_iflyRecognizerView setParameter:@"asr.pcm" forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
-    [_iflyRecognizerView setParameter:@"plain" forKey:[IFlySpeechConstant RESULT_TYPE]];
-    
-    _resultString = [NSMutableString string];
 }
 
 - (void)reloadData
@@ -106,49 +83,14 @@
     return _dataSource;
 }
 
-- (void)createVoiceTask
+#pragma mark -
+#pragma mark === Toolbar Action ===
+#pragma mark -
+
+- (void)createNote
 {
-    [_iflyRecognizerView start];
-}
-
-#pragma mark IFlyRecognizerViewDelegate
-
-- (void)onResult:(NSArray *)resultArray isLast:(BOOL)isLast
-{
-    NSMutableString *result = [[NSMutableString alloc] init];
-    NSDictionary *dic = [resultArray objectAtIndex:0];
-    for (NSString *key in dic) {
-        [result appendFormat:@"%@", key];
-    }
-    [_resultString appendString:result];
-    if (isLast && _resultString.length > 0) {
-        VNNote *note = [[VNNote alloc] initWithTitle:nil
-                                             content:_resultString
-                                         createdDate:[NSDate date]
-                                          updateDate:[NSDate date]];
-        BOOL success = [note Persistence];
-        if (success) {
-            [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SaveSuccess", @"")];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationCreateFile object:nil userInfo:nil];
-        } else {
-            [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SaveFail", @"")];
-        }
-        _resultString = [NSMutableString string];
-    }
-}
-
-- (void)onError:(IFlySpeechError *)error
-{
-    NSLog(@"errorCode:%@", [error errorDesc]);
-}
-
-- (void)createTask
-{
-
-//    NoteDetailController *controller = [[NoteDetailController alloc] init];
-    YYTextEditExample *controller = [[YYTextEditExample alloc] init];
-
-    [self.navigationController pushViewController:controller animated:YES];
+    YYTextEditExample *note = [[YYTextEditExample alloc] init];
+    [self.navigationController pushViewController:note animated:YES];
 }
 
 - (void)edit
@@ -207,9 +149,9 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-
-
-#pragma mark - DataSource & Delegate
+#pragma mark -
+#pragma mark === DataSource & Delegate ===
+#pragma mark -
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -224,9 +166,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
-        return self.dataSource.count;
-    
+    return self.dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -235,15 +175,14 @@
     if (!cell) {
         cell = [[NoteListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ListCell"];
     }
-    
+    // 搜素状态
     if (self.searchController.active) {
-//        [cell.textLabel setText:self.searchList[indexPath.row]];
+        
     }
     else{
-            VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
-            cell.index = indexPath.row;
+        VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
         note.index = indexPath.row;
-            [cell updateWithNote:note];
+        [cell updateWithNote:note];
     }
     return cell;
 }
@@ -253,10 +192,10 @@
     if (self.tableView.editing) {
         [self updateDeleteButtonTitle];
     } else {
-        selectedIndex = indexPath.row;
-        NSLog(@"----------selectedIndex%d",selectedIndex);
+        _selectedIndex = indexPath.row;
+        NSLog(@"----------selectedIndex%d",_selectedIndex);
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *pwd = [defaults objectForKey:[NSString stringWithFormat:@"%d", selectedIndex]];
+        NSString *pwd = [defaults objectForKey:[NSString stringWithFormat:@"%d", _selectedIndex]];
         if (pwd) {
             // 锁定文本，弹出输入密码
             UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请输入解锁密码"
@@ -267,7 +206,7 @@
             [alter setAlertViewStyle:UIAlertViewStyleSecureTextInput];
             // 以解决 Multiple UIAlertView 的代理事件
             [alter show];
-
+            
         } else {
             [tableView deselectRowAtIndexPath:indexPath animated:NO];
             VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
@@ -275,7 +214,6 @@
             YYTextEditExample *yy = [[YYTextEditExample alloc] initWithNote:note];
             [self.navigationController pushViewController:yy animated:YES];
         }
-        
     }
 }
 
@@ -286,12 +224,12 @@
 
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-    
-    
-    
+    // TODO: 搜索逻辑
 }
 
-#pragma mark - EditMode
+#pragma mark -
+#pragma mark === EditMode ===
+#pragma mark -
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -314,31 +252,30 @@
     }
 }
 
-#pragma mark - Updating button state
+
+#pragma mark -
+#pragma mark === Updating button state ===
+#pragma mark -
 
 - (void)updateButtonsToMatchTableState
 {
+    // 处于编辑状态
     if (self.tableView.editing) {
         //显示取消按钮
         self.navigationItem.rightBarButtonItem = cancelButton;
         [self updateDeleteButtonTitle];
-        
         //显示删除按钮
         self.navigationItem.leftBarButtonItem = deleteButton;
     } else {
         //显示添加按钮
         self.navigationItem.leftBarButtonItem = addButton;
-        
-        
         if (self.dataSource.count > 0) {
             editButton.enabled = YES;
         } else {
             editButton.enabled = NO;
         }
         //显示编辑按钮
-        
         self.navigationItem.rightBarButtonItem = editButton;
-        
     }
 }
 
@@ -360,28 +297,31 @@
     }
 }
 
-#pragma mark - UIAlertViewDelegate
+#pragma mark -
+#pragma mark === UIAlertViewDelegate ===
+#pragma mark -
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *pwd = [defaults objectForKey:[NSString stringWithFormat:@"%d", selectedIndex]];
-        UITextField *text_field = [alertView textFieldAtIndex:0];
-        if (buttonIndex == 1) {
-            // 获取输入的密码
-            NSLog(@"------------pwd%@", pwd);
-            NSLog(@"-------------text_field%@", text_field.text);
-            if ([pwd isEqualToString:text_field.text]) {
-          
-                VNNote *note = [self.dataSource objectAtIndex:selectedIndex];
-                
-                YYTextEditExample *yy = [[YYTextEditExample alloc] initWithNote:note];
-                [self.navigationController pushViewController:yy animated:NO];
-            }
-            
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *default_pwd = [defaults objectForKey:[NSString stringWithFormat:@"%d", _selectedIndex]];
+    NSString *text_pwd = [[alertView textFieldAtIndex:0] text];
+    if (buttonIndex == 1) {
+        // 判读密码是否相等
+        if ([default_pwd isEqualToString:text_pwd]) {
+            VNNote *note = [self.dataSource objectAtIndex:_selectedIndex];
+            YYTextEditExample *yy = [[YYTextEditExample alloc] initWithNote:note];
+            [self.navigationController pushViewController:yy animated:NO];
+        } else {
+            // 密码错误
+            UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"密码错误"
+                                                            message:nil
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alter show];
         }
+    }
 }
-
-
 
 @end
