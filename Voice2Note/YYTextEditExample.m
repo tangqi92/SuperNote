@@ -72,7 +72,6 @@ static const CGFloat kVoiceButtonWidth = 100;
     if (self) {
         _note = note;
         _selectedMediaType = CRMediaPickerControllerMediaTypeImage | CRMediaPickerControllerMediaTypeVideo; // Both
-        
         _selectedSourceType = CRMediaPickerControllerSourceTypePhotoLibrary |
         CRMediaPickerControllerSourceTypeCamera |
         CRMediaPickerControllerSourceTypeSavedPhotosAlbum |
@@ -134,8 +133,6 @@ static const CGFloat kVoiceButtonWidth = 100;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [textView becomeFirstResponder];
     });
-    
-    
     
     
     /*------------------------------ Toolbar ---------------------------------*/
@@ -574,7 +571,7 @@ static const CGFloat kVoiceButtonWidth = 100;
          CGFloat keyboardHeight = keyboardFrame.size.height;
          
          CGRect frame = _textView.frame;
-         frame.size.height = self.view.frame.size.height - kViewOriginY - kTextFieldHeight - keyboardHeight - kVerticalMargin - kToolbarHeight,
+         frame.size.height = self.view.frame.size.height - keyboardHeight,
          _textView.frame = frame;
      }               completion:NULL];
 }
