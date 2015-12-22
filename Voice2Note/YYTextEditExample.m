@@ -32,13 +32,14 @@
 #import "SVProgressHUD.h"
 #import "AppContext.h"
 #import "HSDatePickerViewController.h"
+#import "CRMediaPickerController.h"
 
 static const CGFloat kViewOriginY = 70;
 static const CGFloat kTextFieldHeight = 30;
 static const CGFloat kToolbarHeight = 44;
 static const CGFloat kVoiceButtonWidth = 100;
-
-@interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate,UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
+@import MediaPlayer;
+@interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate,UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CRMediaPickerControllerDelegate>
 
 
 @property (nonatomic, assign) YYTextView *textView;
@@ -52,6 +53,13 @@ static const CGFloat kVoiceButtonWidth = 100;
 @property (nonatomic, strong) NSDate *selectedDate;
 @property (nonatomic, strong) UIToolbar *comps;
 @property (nonatomic) BOOL isEditingTitle;
+@property (nonatomic, strong) MPMoviePlayerController *moviePlayer;
+@property (nonatomic, strong) CRMediaPickerController *mediaPickerController;
+@property (nonatomic, assign) CRMediaPickerControllerMediaType selectedMediaType;
+@property (nonatomic, assign) CRMediaPickerControllerSourceType selectedSourceType;
+@property (nonatomic, assign) BOOL allowsEditing;
+@property (nonatomic, assign) BOOL cameraOverlay;
+@property (nonatomic, assign) NSInteger deviceCameraSelected;
 
 
 @end
@@ -63,6 +71,12 @@ static const CGFloat kVoiceButtonWidth = 100;
     self = [super init];
     if (self) {
         _note = note;
+        _selectedMediaType = CRMediaPickerControllerMediaTypeImage | CRMediaPickerControllerMediaTypeVideo; // Both
+        
+        _selectedSourceType = CRMediaPickerControllerSourceTypePhotoLibrary |
+        CRMediaPickerControllerSourceTypeCamera |
+        CRMediaPickerControllerSourceTypeSavedPhotosAlbum |
+        CRMediaPickerControllerSourceTypeLastPhotoTaken; // Prompt
     }
     return self;
 }
@@ -90,12 +104,12 @@ static const CGFloat kVoiceButtonWidth = 100;
     [self.view addSubview:toolbar];
     
     if (_note) {
-         _attrString = [[NSMutableAttributedString alloc] initWithString:_note.content];
+        _attrString = [[NSMutableAttributedString alloc] initWithString:_note.content];
     } else{
         _attrString = [[NSMutableAttributedString alloc] initWithString:@"请输入内容："];
     }
     
-
+    
     _attrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
     _attrString.yy_lineSpacing = 4;
     _attrString.yy_firstLineHeadIndent = 20;
@@ -164,6 +178,11 @@ static const CGFloat kVoiceButtonWidth = 100;
 - (void)dealloc
 {
     [[YYTextKeyboardManager defaultManager] removeObserver:self];
+    
+    _mediaPickerController = nil;
+    [self.moviePlayer stop];
+    [self.moviePlayer.view removeFromSuperview];
+    self.moviePlayer = nil;
 }
 
 - (void)setExclusionPathEnabled:(BOOL)enabled
@@ -251,14 +270,15 @@ static const CGFloat kVoiceButtonWidth = 100;
     }
 }
 
-
-#pragma mark - Text view
+#pragma mark -
+#pragma mark === YYTextViewDelegate ===
+#pragma mark -
 
 - (void)textViewDidBeginEditing:(YYTextView *)textView {
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ActionSheetSave", @"")
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:self
-                                                                action:@selector(save)];
+                                                                action:@selector(saveNote)];
     
     UIBarButtonItem *moreItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_more_white"]
                                                                  style:UIBarButtonItemStylePlain
@@ -271,8 +291,9 @@ static const CGFloat kVoiceButtonWidth = 100;
     self.navigationItem.rightBarButtonItem = nil;
 }
 
-
-#pragma mark - UIAlertViewDelegate
+#pragma mark -
+#pragma mark === UIAlertViewDelegate ===
+#pragma mark -
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -302,8 +323,9 @@ static const CGFloat kVoiceButtonWidth = 100;
     }
 }
 
-
-#pragma mark IFlyRecognizerViewDelegate
+#pragma mark -
+#pragma mark === IFlyRecognizerViewDelegate ===
+#pragma mark -
 
 - (void)onResult:(NSArray *)resultArray isLast:(BOOL)isLast
 {
@@ -345,8 +367,9 @@ static const CGFloat kVoiceButtonWidth = 100;
     
 }
 
-
-#pragma mark - UIBarButtonItemAction
+#pragma mark -
+#pragma mark === UIBarButtonItemAction ===
+#pragma mark -
 
 - (void)addPhoto
 {
@@ -355,7 +378,15 @@ static const CGFloat kVoiceButtonWidth = 100;
 
 - (void)addMedia
 {
+    [self hideKeyboard];
+    self.mediaPickerController = [[CRMediaPickerController alloc] init];
+    self.mediaPickerController.delegate = self;
+    self.mediaPickerController.mediaType = self.selectedMediaType;
+    self.mediaPickerController.sourceType = self.selectedSourceType;
+    self.mediaPickerController.allowsEditing = self.allowsEditing;
+    self.mediaPickerController.cameraDevice = (UIImagePickerControllerCameraDevice) self.deviceCameraSelected;
     
+    [self.mediaPickerController show];
 }
 
 - (void)addAlarm
@@ -376,10 +407,11 @@ static const CGFloat kVoiceButtonWidth = 100;
     [self.navigationController pushViewController:test animated:YES];
 }
 
+#pragma mark -
+#pragma mark === saveNote ===
+#pragma mark -
 
-#pragma mark - Save
-
-- (void)save
+- (void)saveNote
 {
     [self hideKeyboard];
     if ((_textView.text == nil || _textView.text.length == 0)) {
@@ -406,7 +438,10 @@ static const CGFloat kVoiceButtonWidth = 100;
 }
 
 
-#pragma mark - More Action
+
+#pragma mark -
+#pragma mark === More Action ===
+#pragma mark -
 
 - (void)moreActionButtonPressed
 {
@@ -418,21 +453,25 @@ static const CGFloat kVoiceButtonWidth = 100;
                                                     otherButtonTitles:NSLocalizedString(@"ActionSheetCopy", @""),
                                   NSLocalizedString(@"ActionSheetLock", @""),
                                   NSLocalizedString(@"ActionSheetMail", @""), nil];
+    actionSheet.tag = 256;
     [actionSheet showInView:self.view];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0) {
-        // 复制至剪切板
-        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-        pasteboard.string = _textView.text;
-        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CopySuccess", @"")];
-    } else if (buttonIndex == 1) {
-        [self lockTextAction];
-    } else if (buttonIndex == 2) {
-        if ([MFMailComposeViewController canSendMail]) { // 用户已设置邮件账户
-            [self sendEmailAction]; // 调用发送邮件的代码
+    
+   if(actionSheet.tag == 256){
+        if (buttonIndex == 0) {
+            // 复制至剪切板
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = _textView.text;
+            [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CopySuccess", @"")];
+        } else if (buttonIndex == 1) {
+            [self lockTextAction];
+        } else if (buttonIndex == 2) {
+            if ([MFMailComposeViewController canSendMail]) { // 用户已设置邮件账户
+                [self sendEmailAction]; // 调用发送邮件的代码
+            }
         }
     }
 }
@@ -479,8 +518,10 @@ static const CGFloat kVoiceButtonWidth = 100;
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark -
+#pragma mark === HSDatePickerViewControllerDelegate ===
+#pragma mark -
 
-#pragma mark - HSDatePickerViewControllerDelegate
 - (void)hsDatePickerPickedDate:(NSDate *)date {
     NSLog(@"Date picked %@", date);
     NSDateFormatter *dateFormater = [NSDateFormatter new];
@@ -500,7 +541,9 @@ static const CGFloat kVoiceButtonWidth = 100;
     NSLog(@"Picker will dismiss with %lu", (unsigned long)method);
 }
 
-#pragma mark - Keyboard
+#pragma mark -
+#pragma mark === Keyboard ===
+#pragma mark -
 
 - (void)keyboardChangedWithTransition:(YYTextKeyboardTransition)transition {
     BOOL clipped = NO;
@@ -556,6 +599,52 @@ static const CGFloat kVoiceButtonWidth = 100;
         _isEditingTitle = NO;
         [_textView resignFirstResponder];
     }
+}
+
+#pragma mark - CPDMediaPickerControllerDelegate
+
+- (void)CRMediaPickerController:(CRMediaPickerController *)mediaPickerController didFinishPickingAsset:(ALAsset *)asset error:(NSError *)error
+{
+    if (!error) {
+        
+        if (asset) {
+            
+            if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+                
+                ALAssetRepresentation *representation = asset.defaultRepresentation;
+                UIImage *image = [UIImage imageWithCGImage:representation.fullScreenImage];
+                self.imageView.image = image;
+                
+            } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+                
+                self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:asset.defaultRepresentation.url];
+                self.moviePlayer.movieSourceType = MPMediaTypeMovie;
+                self.moviePlayer.controlStyle = MPMovieControlStyleDefault;
+                self.moviePlayer.scalingMode = MPMovieScalingModeAspectFit;
+                self.moviePlayer.repeatMode = MPMovieRepeatModeNone;
+                self.moviePlayer.allowsAirPlay = NO;
+                self.moviePlayer.shouldAutoplay = NO;
+                
+//                self.moviePlayer.view.frame = self.videoView.bounds;
+//                self.moviePlayer.view.autoresizingMask = (UIViewAutoresizing)(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+//                [self.videoView addSubview:self.moviePlayer.view];
+                // TODO: 获取视频后操作
+                [self.moviePlayer prepareToPlay];
+                
+            }
+            
+        } else {
+            NSLog(@"No media selected");
+        }
+        
+    } else {
+        NSLog(@"%@", error.localizedDescription);
+    }
+}
+
+- (void)CRMediaPickerControllerDidCancel:(CRMediaPickerController *)mediaPickerController
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 @end
