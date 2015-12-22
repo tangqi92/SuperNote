@@ -91,6 +91,7 @@
                                           updateDate:[NSDate date]];
         [[NoteManager sharedManager] storeNote:note];
         [userDefaults setBool:YES forKey:@"hasInitFile"];
+        // 立即同步
         [userDefaults synchronize];
     }
 }

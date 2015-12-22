@@ -23,11 +23,17 @@
     return instance;
 }
 
+ /**
+ *  创建存储路径
+ *
+ *  @return <#return value description#>
+ */
 - (NSString *)createDataPathIfNeeded
 {
     NSString *documentsDirectory = [self documentDirectoryPath];
     self.docPath = documentsDirectory;
     
+    // defaultManager 创建单例对象，判断指定路径文件是否存在
     if ([[NSFileManager defaultManager] fileExistsAtPath:documentsDirectory]) {
         return self.docPath;
     }
@@ -47,6 +53,7 @@
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
+    // 在 Documents 目录下 kAppEngName 文件夹
     documentsDirectory = [documentsDirectory stringByAppendingPathComponent:kAppEngName];
     return documentsDirectory;
 }
@@ -91,6 +98,7 @@
 {
     [self createDataPathIfNeeded];
     NSString *dataPath = [_docPath stringByAppendingPathComponent:note.noteID];
+    // 通过归档，将复杂对象转换为NSData；通过反归档，将NSData转换为复杂对象
     NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:note];
     return [savedData writeToFile:dataPath atomically:YES];
 }

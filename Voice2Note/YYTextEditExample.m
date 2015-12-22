@@ -282,8 +282,10 @@ static const CGFloat kVoiceButtonWidth = 100;
             // 获取输入的密码
             NSLog(@"Password: %@", text_field.text);
             NSLog(@"_note.index: %d", _note.index);
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setObject:text_field.text forKey:[NSString stringWithFormat:@"%d", _note.index]];
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:text_field.text forKey:[NSString stringWithFormat:@"%d", _note.index]];
+            // 如果没有调用synchronize方法，系统会根据I/O情况不定时刻地保存到文件中!
+            [userDefaults synchronize];
             
         }
     } else if(alertView.tag == 2) {

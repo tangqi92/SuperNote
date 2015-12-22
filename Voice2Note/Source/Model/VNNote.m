@@ -44,13 +44,25 @@
     return self;
 }
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
+/**
+ *  归档，通过固定的编码规则转成 NSData 类型数据
+ *
+ *  @param encoder <#encoder description#>
+ */
+- (void)encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject:_noteID forKey:kNoteIDKey];
     [encoder encodeObject:_title forKey:kTitleKey];
     [encoder encodeObject:_content forKey:kContentKey];
     [encoder encodeObject:_createdDate forKey:kCreatedDate];
 }
 
+/**
+ *  //解档
+ *
+ *  @param decoder <#decoder description#>
+ *
+ *  @return <#return value description#>
+ */
 - (id)initWithCoder:(NSCoder *)decoder {
     NSString *title = [decoder decodeObjectForKey:kTitleKey];
     NSString *content = [decoder decodeObjectForKey:kContentKey];

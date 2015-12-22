@@ -303,12 +303,12 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *default_pwd = [defaults objectForKey:[NSString stringWithFormat:@"%d", _selectedIndex]];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *userDefaults_pwd = [userDefaults objectForKey:[NSString stringWithFormat:@"%d", _selectedIndex]];
     NSString *text_pwd = [[alertView textFieldAtIndex:0] text];
     if (buttonIndex == 1) {
         // 判读密码是否相等
-        if ([default_pwd isEqualToString:text_pwd]) {
+        if ([userDefaults_pwd isEqualToString:text_pwd]) {
             VNNote *note = [self.dataSource objectAtIndex:_selectedIndex];
             YYTextEditExample *yy = [[YYTextEditExample alloc] initWithNote:note];
             [self.navigationController pushViewController:yy animated:NO];
