@@ -16,24 +16,16 @@
 #import "UIColor+VNHex.h"
 #import "MobClick.h"
 #import "SignViewController.h"
-
+#import "LoginViewController.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // 初始化笔记
     [self addInitFileIfNeeded];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    
-    NoteListController *controller = [[NoteListController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    
-//   SignViewController *test = [[SignViewController alloc] initWithNibName:@"SignViewController" bundle:nil];
-//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:test];
-    
-    /* customize navigation style */
+
+      /* customize navigation style */
     [[UINavigationBar appearance] setBarTintColor:[UIColor systemColor]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
@@ -43,9 +35,6 @@
     [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    
-    self.window.rootViewController = navigationController;
-    [self.window makeKeyAndVisible];
     
     [WXApi registerApp:kWeixinAppID];
     

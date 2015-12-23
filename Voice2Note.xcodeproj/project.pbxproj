@@ -31,6 +31,12 @@
 		355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C8C1C24156100409FFC /* SignViewController.xib */; };
 		355D5C931C2415BC00409FFC /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C901C2415BC00409FFC /* ImageViewController.m */; };
 		355D5C941C2415BC00409FFC /* SignViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C921C2415BC00409FFC /* SignViewController.m */; };
+		35FCC8071C2AF66500909737 /* HyLoglnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC8021C2AF66500909737 /* HyLoglnButton.m */; };
+		35FCC8081C2AF66500909737 /* HyTransitions.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC8041C2AF66500909737 /* HyTransitions.m */; };
+		35FCC8091C2AF66500909737 /* SpinerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC8061C2AF66500909737 /* SpinerLayer.m */; };
+		35FCC80C1C2AF6A400909737 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35FCC80A1C2AF6A400909737 /* Main.storyboard */; };
+		35FCC80F1C2AF6E100909737 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC80E1C2AF6E100909737 /* LoginViewController.m */; };
+		35FCC8111C2AF8F000909737 /* Login.png in Resources */ = {isa = PBXBuildFile; fileRef = 35FCC8101C2AF8F000909737 /* Login.png */; };
 		8321E68A15AE491F981EE0DC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90D3642E47F94B6EAB1CE461 /* libPods.a */; };
 		C711402C1A076A6C00E027E4 /* VNNoteManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C711402B1A076A6C00E027E4 /* VNNoteManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C71140321A076A6C00E027E4 /* VNNoteManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71140271A076A6C00E027E4 /* VNNoteManager.framework */; };
@@ -170,6 +176,16 @@
 		355D5C901C2415BC00409FFC /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		355D5C911C2415BC00409FFC /* SignViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignViewController.h; sourceTree = "<group>"; };
 		355D5C921C2415BC00409FFC /* SignViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignViewController.m; sourceTree = "<group>"; };
+		35FCC8011C2AF66500909737 /* HyLoglnButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HyLoglnButton.h; path = "../../HySubmitTransitionObjective-C-master/HyLoglnButton.h"; sourceTree = "<group>"; };
+		35FCC8021C2AF66500909737 /* HyLoglnButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HyLoglnButton.m; path = "../../HySubmitTransitionObjective-C-master/HyLoglnButton.m"; sourceTree = "<group>"; };
+		35FCC8031C2AF66500909737 /* HyTransitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HyTransitions.h; path = "../../HySubmitTransitionObjective-C-master/HyTransitions.h"; sourceTree = "<group>"; };
+		35FCC8041C2AF66500909737 /* HyTransitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HyTransitions.m; path = "../../HySubmitTransitionObjective-C-master/HyTransitions.m"; sourceTree = "<group>"; };
+		35FCC8051C2AF66500909737 /* SpinerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpinerLayer.h; path = "../../HySubmitTransitionObjective-C-master/SpinerLayer.h"; sourceTree = "<group>"; };
+		35FCC8061C2AF66500909737 /* SpinerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpinerLayer.m; path = "../../HySubmitTransitionObjective-C-master/SpinerLayer.m"; sourceTree = "<group>"; };
+		35FCC80B1C2AF6A400909737 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "../../../HySubmitTransitionObjective-C-master/ExampleObjective-C/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
+		35FCC80D1C2AF6E100909737 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		35FCC80E1C2AF6E100909737 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		35FCC8101C2AF8F000909737 /* Login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Login.png; path = "../../HySubmitTransitionObjective-C-master/ExampleObjective-C/Images.xcassets/Login.imageset/Login.png"; sourceTree = "<group>"; };
 		90D3642E47F94B6EAB1CE461 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF272645A13CF49090BEC7E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C711400A1A075E9100E027E4 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -298,6 +314,12 @@
 				355D5C8C1C24156100409FFC /* SignViewController.xib */,
 				355D5C881C2414E600409FFC /* PJRSignatureView.h */,
 				355D5C891C2414E600409FFC /* PJRSignatureView.m */,
+				35FCC8011C2AF66500909737 /* HyLoglnButton.h */,
+				35FCC8021C2AF66500909737 /* HyLoglnButton.m */,
+				35FCC8031C2AF66500909737 /* HyTransitions.h */,
+				35FCC8041C2AF66500909737 /* HyTransitions.m */,
+				35FCC8051C2AF66500909737 /* SpinerLayer.h */,
+				35FCC8061C2AF66500909737 /* SpinerLayer.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -503,6 +525,7 @@
 				355D5C4C1C2310D900409FFC /* ic_brush_white_18pt_2x.png */,
 				C7821AD019483FD6008B952D /* ic_more_white@2x.png */,
 				C7821ACD19482610008B952D /* Localizable.strings */,
+				35FCC8101C2AF8F000909737 /* Login.png */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -521,6 +544,9 @@
 				C7821AE719499F47008B952D /* NoteListCell.m */,
 				355D5C5F1C23EFBE00409FFC /* YYTextEditExample.h */,
 				355D5C601C23EFBE00409FFC /* YYTextEditExample.m */,
+				35FCC80A1C2AF6A400909737 /* Main.storyboard */,
+				35FCC80D1C2AF6E100909737 /* LoginViewController.h */,
+				35FCC80E1C2AF6E100909737 /* LoginViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -678,6 +704,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = C7821A7A19480417008B952D;
 			productRefGroup = C7821A8419480417008B952D /* Products */;
@@ -717,10 +744,12 @@
 				C7821ACE19482610008B952D /* Localizable.strings in Resources */,
 				C7821AEF1949B405008B952D /* save@2x.png in Resources */,
 				351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */,
+				35FCC80C1C2AF6A400909737 /* Main.storyboard in Resources */,
 				C7B282821A6E30F30072FAD3 /* LaunchScreen.xib in Resources */,
 				355D5C4B1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png in Resources */,
 				351D37DF1C2440AF0098F423 /* dribbble256_imageio.png in Resources */,
 				355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */,
+				35FCC8111C2AF8F000909737 /* Login.png in Resources */,
 				355D5C4F1C2314E000409FFC /* ic_settings_voice_white_18pt_2x.png in Resources */,
 				355D5C8D1C24156100409FFC /* ImageViewController.xib in Resources */,
 				C7821AD219483FD6008B952D /* ic_more_white@2x.png in Resources */,
@@ -814,12 +843,15 @@
 			files = (
 				355D5C6A1C23F56000409FFC /* NSBundle+YYAdd.m in Sources */,
 				355D5C701C23F58C00409FFC /* UIControl+YYAdd.m in Sources */,
+				35FCC8071C2AF66500909737 /* HyLoglnButton.m in Sources */,
 				355D5C761C23F5A100409FFC /* NSData+YYAdd.m in Sources */,
 				C7821AE819499F47008B952D /* NoteListCell.m in Sources */,
 				355D5C611C23EFBE00409FFC /* YYTextEditExample.m in Sources */,
 				C7821ABD194804A4008B952D /* NoteListController.m in Sources */,
 				355D5C801C23F64B00409FFC /* YYTextExampleHelper.m in Sources */,
+				35FCC80F1C2AF6E100909737 /* LoginViewController.m in Sources */,
 				C7821AED1949AB2B008B952D /* AppDelegate.m in Sources */,
+				35FCC8081C2AF66500909737 /* HyTransitions.m in Sources */,
 				355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */,
 				355D5C941C2415BC00409FFC /* SignViewController.m in Sources */,
 				351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */,
@@ -827,6 +859,7 @@
 				C7821A9319480417008B952D /* main.m in Sources */,
 				355D5C8A1C2414E600409FFC /* PJRSignatureView.m in Sources */,
 				C7821AEB19499FC1008B952D /* UIColor+VNHex.m in Sources */,
+				35FCC8091C2AF66500909737 /* SpinerLayer.m in Sources */,
 				355D5C731C23F59700409FFC /* CALayer+YYAdd.m in Sources */,
 				355D5C641C23F53600409FFC /* UIImage+YYWebImage.m in Sources */,
 				C7470A92196164CB00FD154B /* AppContext.m in Sources */,
@@ -869,6 +902,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		35FCC80A1C2AF6A400909737 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				35FCC80B1C2AF6A400909737 /* Base */,
+			);
+			name = Main.storyboard;
+			path = HSDatePickerViewController;
+			sourceTree = "<group>";
+		};
 		C7821A8F19480417008B952D /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
