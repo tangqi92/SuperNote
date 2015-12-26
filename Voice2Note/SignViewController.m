@@ -33,6 +33,7 @@
 
 #import "SignViewController.h"
 #import "ImageViewController.h"
+#import "PJRSignatureView.h"
 
 @interface SignViewController ()
 

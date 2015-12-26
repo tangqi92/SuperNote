@@ -33,6 +33,7 @@
 #import "AppContext.h"
 #import "HSDatePickerViewController.h"
 #import "CRMediaPickerController.h"
+#import "VNNote.h"
 
 static const CGFloat kViewOriginY = 70;
 static const CGFloat kTextFieldHeight = 30;

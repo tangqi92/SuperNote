@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VNNote.h"
+@class VNNote;
 
 @interface NoteListCell : UITableViewCell
 

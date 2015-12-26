@@ -10,8 +10,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
-
-#import "VNNote.h"
+@class VNNote;
 
 @interface YYTextEditExample : UIViewController
 

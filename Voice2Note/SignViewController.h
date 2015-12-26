@@ -32,7 +32,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "PJRSignatureView.h"
+@class PJRSignatureView;
 
 @interface SignViewController : UIViewController
 {

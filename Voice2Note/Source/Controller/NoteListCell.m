@@ -10,6 +10,7 @@
 #import "UIColor+VNHex.h"
 #import "VNConstants.h"
 #import "Colours.h"
+#import "VNNote.h"
 
 static const CGFloat kCellHorizontalMargin = 0;
 static const CGFloat kCellPadding = 15;
