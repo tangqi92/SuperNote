@@ -37,11 +37,9 @@
 @interface SignViewController : UIViewController
 {
     PJRSignatureView *signatureView;
-
 }
 
 - (IBAction)getImageBtnPressed:(id)sender;
 - (IBAction)clearImageBtnPressed:(id)sender;
-
 
 @end

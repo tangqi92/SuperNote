@@ -15,6 +15,7 @@
 
 @interface YYTextEditExample : UIViewController
 
+// 返回类型和调用方法的对象类型相同
 - (instancetype)initWithNote:(VNNote *)note;
 
 @end

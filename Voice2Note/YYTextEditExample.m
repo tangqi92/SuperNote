@@ -77,6 +77,7 @@ static const CGFloat kVoiceButtonWidth = 100;
         CRMediaPickerControllerSourceTypeSavedPhotosAlbum |
         CRMediaPickerControllerSourceTypeLastPhotoTaken; // Prompt
     }
+    // 返回初始化后的对象的新地址
     return self;
 }
 

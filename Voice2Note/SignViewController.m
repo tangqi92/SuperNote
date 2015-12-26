@@ -56,11 +56,12 @@
     [super viewDidAppear:animated];
     
     signatureView= [[PJRSignatureView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 450)];
-    [self.view addSubview:signatureView];
-    
+    [self.view addSubview:signatureView];    
 }
 
-#pragma mark - Buton Action Events
+#pragma mark -
+#pragma mark === Buton Action Events ===
+#pragma mark -
 
 - (IBAction)getImageBtnPressed:(id)sender
 {
@@ -68,6 +69,7 @@
     imageController.image = [signatureView getSignatureImage];
     [self.navigationController pushViewController:imageController animated:YES];
 }
+
 - (IBAction)clearImageBtnPressed:(id)sender
 {
     [signatureView clearSignature];

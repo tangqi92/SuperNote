@@ -10,8 +10,8 @@
 
 @interface AppContext : NSObject
 
-+ (instancetype)appContext;
-
 @property (nonatomic, assign) BOOL hasUploadAddressBook;
+
++ (instancetype)appContext;
 
 @end

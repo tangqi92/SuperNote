@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface NoteListController : UITableViewController<UISearchResultsUpdating>
-
 {
     UIBarButtonItem *cancelButton;
     UIBarButtonItem *addButton;

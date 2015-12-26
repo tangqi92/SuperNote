@@ -38,11 +38,14 @@
         return self.docPath;
     }
     
+    // 声明一个指向 NSError 对象的指针，但是不创建相应的对象
+    // 实际上，只有当发生错误时，才会由 writeToFile 创建相应的 NSError 对象
     NSError *error;
     BOOL success = [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
                                              withIntermediateDirectories:YES
                                                               attributes:nil
                                                                    error:&error];
+    // 检查返回的布尔值，如果写入文件失败，就查询 NSError 对象并输出错误描述
     if (!success) {
         NSLog(@"Error creating data path: %@", [error localizedDescription]);
     }

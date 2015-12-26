@@ -15,7 +15,6 @@ static const CGFloat kCellHorizontalMargin = 0;
 static const CGFloat kCellPadding = 15;
 static const CGFloat kVerticalPadding = 0;
 static const CGFloat kLabelHeight = 15;
-
 static const CGFloat kMaxTitleHeight = 180;
 
 @interface NoteListCell ()
@@ -28,6 +27,27 @@ static const CGFloat kMaxTitleHeight = 180;
 @end
 
 @implementation NoteListCell
+
++ (CGFloat)heightWithNote:(VNNote *)note
+{
+    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    NSString *string = note.title;
+    if (!note.title || note.title.length <= 0 || [note.title isEqualToString:NSLocalizedString(@"NoTitleNote", @"")]) {
+        string = note.content;
+    }
+    CGFloat titleHeight = [[self class] heightWithString:string width:screenWidth - kCellHorizontalMargin * 2 - kCellPadding * 2];
+    return  kVerticalPadding + kCellPadding + titleHeight + kLabelHeight + kCellPadding + kVerticalPadding;
+}
+
++ (CGFloat)heightWithString:(NSString *)string width:(CGFloat)width
+{
+    NSDictionary *attributes = @{ NSFontAttributeName: [UIFont boldSystemFontOfSize:17] };
+    CGSize size = [string boundingRectWithSize:CGSizeMake(width, kMaxTitleHeight)
+                                       options:NSStringDrawingUsesLineFragmentOrigin
+                                    attributes:attributes
+                                       context:nil].size;
+    return ceilf(size.height);
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -84,27 +104,6 @@ static const CGFloat kMaxTitleHeight = 180;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
     [_timeLabel setText:[formatter stringFromDate:note.createdDate]];
-}
-
-+ (CGFloat)heightWithNote:(VNNote *)note
-{
-    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
-    NSString *string = note.title;
-    if (!note.title || note.title.length <= 0 || [note.title isEqualToString:NSLocalizedString(@"NoTitleNote", @"")]) {
-        string = note.content;
-    }
-    CGFloat titleHeight = [[self class] heightWithString:string width:screenWidth - kCellHorizontalMargin * 2 - kCellPadding * 2];
-    return  kVerticalPadding + kCellPadding + titleHeight + kLabelHeight + kCellPadding + kVerticalPadding;
-}
-
-+ (CGFloat)heightWithString:(NSString *)string width:(CGFloat)width
-{
-    NSDictionary *attributes = @{ NSFontAttributeName: [UIFont boldSystemFontOfSize:17] };
-    CGSize size = [string boundingRectWithSize:CGSizeMake(width, kMaxTitleHeight)
-                                       options:NSStringDrawingUsesLineFragmentOrigin
-                                    attributes:attributes
-                                       context:nil].size;
-    return ceilf(size.height);
 }
 
 @end
