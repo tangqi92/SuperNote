@@ -8,13 +8,10 @@
 
 #import "AppDelegate.h"
 #import "NoteListController.h"
-#import "VNConstants.h"
-#import "WXApi.h"
 #import "Colours.h"
 #import "VNNote.h"
 #import "NoteManager.h"
 #import "UIColor+VNHex.h"
-#import "MobClick.h"
 #import "SignViewController.h"
 #import "LoginViewController.h"
 @implementation AppDelegate
@@ -36,9 +33,6 @@
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    [WXApi registerApp:kWeixinAppID];
-    
-    [MobClick startWithAppkey:@"53c7945356240bd36002dabe" reportPolicy:BATCH channelId:nil];
     return YES;
 }
 

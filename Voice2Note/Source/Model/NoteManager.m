@@ -85,7 +85,6 @@
     return [NSMutableArray arrayWithArray:[array sortedArrayUsingDescriptors:@[sortDescriptor]]];
 }
 
-
 - (VNNote *)readNoteWithID:(NSString *)noteID;
 {
     NSString *dataPath = [_docPath stringByAppendingPathComponent:noteID];

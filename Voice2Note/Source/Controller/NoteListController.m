@@ -11,7 +11,6 @@
 #import "VNNote.h"
 #import "VNConstants.h"
 #import "NoteListCell.h"
-#import "MobClick.h"
 #import "SVProgressHUD.h"
 #import "UIColor+VNHex.h"
 #import "SignViewController.h"

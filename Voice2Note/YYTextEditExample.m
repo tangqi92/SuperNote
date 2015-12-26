@@ -39,6 +39,8 @@ static const CGFloat kViewOriginY = 70;
 static const CGFloat kTextFieldHeight = 30;
 static const CGFloat kToolbarHeight = 44;
 static const CGFloat kVoiceButtonWidth = 100;
+static const CGFloat kVerticalMargin = 10;
+
 @import MediaPlayer;
 @interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate,UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CRMediaPickerControllerDelegate>
 
