@@ -43,7 +43,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Signature";
+    self.title = @"涂鸦板";
     // Do any additional setup after loading the view from its nib.
 }
 

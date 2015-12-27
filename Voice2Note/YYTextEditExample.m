@@ -112,7 +112,6 @@ static const CGFloat kVerticalMargin = 10;
         _attrString = [[NSMutableAttributedString alloc] initWithString:@"请输入内容："];
     }
     
-    
     _attrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
     _attrString.yy_lineSpacing = 4;
     _attrString.yy_firstLineHeadIndent = 20;
@@ -160,7 +159,6 @@ static const CGFloat kVerticalMargin = 10;
         _self.textView.verticalForm = switcher.isOn; /// Set vertical form
     }];
     [toolbar addSubview:_verticalSwitch];
-    
     
     [[YYTextKeyboardManager defaultManager] addObserver:self];
     

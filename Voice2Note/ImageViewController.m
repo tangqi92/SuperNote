@@ -41,7 +41,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Signature Image";
+    self.title = @"生成照片";
     [imageView setImage:_image];
     // Do any additional setup after loading the view from its nib.
 }

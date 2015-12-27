@@ -17,10 +17,8 @@
 
 @implementation VNNote
 
-@synthesize noteID = _noteID;
-@synthesize title = _title;
-@synthesize content = _content;
-@synthesize createdDate = _createdDate;
+// 修改默认的实例变量名，但不建议这么做
+//@synthesize noteID = _myNoteID;
 
 - (id)initWithTitle:(NSString *)title
             content:(NSString *)content
@@ -78,14 +76,6 @@
 {
     return [[NoteManager sharedManager] storeNote:self];
 }
-
-//- (NSInteger)index
-//{
-//    if (!_index) {
-//        _index = (int)[self.createdDate timeIntervalSince1970];
-//    }
-//    return _index;
-//}
 
 @end
 

@@ -13,14 +13,14 @@
 
 @property (nonatomic, strong) NSString *docPath;
 
++ (instancetype)sharedManager;
+
 - (NSMutableArray *)readAllNotes;
 
 - (VNNote *)readNoteWithID:(NSString *)noteID;
-- (BOOL)storeNote:(VNNote *)note;
-- (void)deleteNote:(VNNote *)note;
-
 - (VNNote *)todayNote;
 
-+ (instancetype)sharedManager;
+- (BOOL)storeNote:(VNNote *)note;
+- (void)deleteNote:(VNNote *)note;
 
 @end

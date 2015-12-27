@@ -37,7 +37,7 @@
 #define INITIAL_COLOR [UIColor redColor]; // Initial color for line  drawing.
 #define FINAL_COLOR [UIColor redColor];// End color after completd drawing
 
-#define INITIAL_LABEL_TEXT @"Sign Here";
+#define INITIAL_LABEL_TEXT @"Here";
 
 
 @implementation PJRSignatureView

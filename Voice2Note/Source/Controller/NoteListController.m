@@ -19,12 +19,8 @@
 
 @interface NoteListController ()<UIAlertViewDelegate>
 
-{
-    NSMutableString *_resultString;
-    NSInteger _selectedIndex;
-}
-
 @property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, assign) NSInteger selectedIndex;
 
 @end
 
