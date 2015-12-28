@@ -7,15 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		351D37DF1C2440AF0098F423 /* dribbble256_imageio.png in Resources */ = {isa = PBXBuildFile; fileRef = 351D37DE1C2440AF0098F423 /* dribbble256_imageio.png */; };
 		351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37E21C245AD20098F423 /* HSDatePickerViewController.m */; };
 		351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */; };
 		351D37EA1C25569B0098F423 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351D37E91C25569B0098F423 /* MessageUI.framework */; };
-		355D5C451C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C441C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png */; };
-		355D5C491C23106400409FFC /* ic_movie_filter_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C481C23106400409FFC /* ic_movie_filter_white_18pt_2x.png */; };
-		355D5C4B1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C4A1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png */; };
-		355D5C4D1C2310D900409FFC /* ic_brush_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C4C1C2310D900409FFC /* ic_brush_white_18pt_2x.png */; };
-		355D5C4F1C2314E000409FFC /* ic_settings_voice_white_18pt_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C4E1C2314E000409FFC /* ic_settings_voice_white_18pt_2x.png */; };
 		355D5C611C23EFBE00409FFC /* YYTextEditExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C601C23EFBE00409FFC /* YYTextEditExample.m */; };
 		355D5C641C23F53600409FFC /* UIImage+YYWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C631C23F53600409FFC /* UIImage+YYWebImage.m */; };
 		355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C661C23F54A00409FFC /* UIView+YYAdd.m */; };
@@ -37,7 +31,6 @@
 		35FCC8091C2AF66500909737 /* SpinerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC8061C2AF66500909737 /* SpinerLayer.m */; };
 		35FCC80C1C2AF6A400909737 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35FCC80A1C2AF6A400909737 /* Main.storyboard */; };
 		35FCC80F1C2AF6E100909737 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC80E1C2AF6E100909737 /* LoginViewController.m */; };
-		35FCC8111C2AF8F000909737 /* Login.png in Resources */ = {isa = PBXBuildFile; fileRef = 35FCC8101C2AF8F000909737 /* Login.png */; };
 		8321E68A15AE491F981EE0DC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90D3642E47F94B6EAB1CE461 /* libPods.a */; };
 		C711402C1A076A6C00E027E4 /* VNNoteManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C711402B1A076A6C00E027E4 /* VNNoteManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C71140321A076A6C00E027E4 /* VNNoteManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71140271A076A6C00E027E4 /* VNNoteManager.framework */; };
@@ -71,13 +64,10 @@
 		C7821AC61948222B008B952D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7821AC51948222B008B952D /* SystemConfiguration.framework */; };
 		C7821AC819482235008B952D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7821AC719482235008B952D /* AudioToolbox.framework */; };
 		C7821ACE19482610008B952D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C7821ACD19482610008B952D /* Localizable.strings */; };
-		C7821AD219483FD6008B952D /* ic_more_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7821AD019483FD6008B952D /* ic_more_white@2x.png */; };
 		C7821ADD1948489C008B952D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7821ADB1948483F008B952D /* AddressBook.framework */; };
-		C7821ADF19485FC0008B952D /* ic_add_tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7821ADE19485FC0008B952D /* ic_add_tab@2x.png */; };
 		C7821AE819499F47008B952D /* NoteListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7821AE719499F47008B952D /* NoteListCell.m */; };
 		C7821AEB19499FC1008B952D /* UIColor+VNHex.m in Sources */ = {isa = PBXBuildFile; fileRef = C7821AEA19499FC1008B952D /* UIColor+VNHex.m */; };
 		C7821AED1949AB2B008B952D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C7821AEC1949AB2B008B952D /* AppDelegate.m */; };
-		C7821AEF1949B405008B952D /* save@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7821AEE1949B404008B952D /* save@2x.png */; };
 		C7B282821A6E30F30072FAD3 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7B282811A6E30F30072FAD3 /* LaunchScreen.xib */; };
 /* End PBXBuildFile section */
 
@@ -137,16 +127,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		351D37DE1C2440AF0098F423 /* dribbble256_imageio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dribbble256_imageio.png; sourceTree = "<group>"; };
 		351D37E11C245AD20098F423 /* HSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSDatePickerViewController.h; sourceTree = "<group>"; };
 		351D37E21C245AD20098F423 /* HSDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSDatePickerViewController.m; sourceTree = "<group>"; };
 		351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSDatePickerViewController.xib; sourceTree = "<group>"; };
 		351D37E91C25569B0098F423 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		355D5C441C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_access_alarm_white_18pt_2x.png; sourceTree = "<group>"; };
-		355D5C481C23106400409FFC /* ic_movie_filter_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_movie_filter_white_18pt_2x.png; sourceTree = "<group>"; };
-		355D5C4A1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_photo_size_select_actual_white_18pt_2x.png; sourceTree = "<group>"; };
-		355D5C4C1C2310D900409FFC /* ic_brush_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_brush_white_18pt_2x.png; sourceTree = "<group>"; };
-		355D5C4E1C2314E000409FFC /* ic_settings_voice_white_18pt_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_settings_voice_white_18pt_2x.png; sourceTree = "<group>"; };
 		355D5C5F1C23EFBE00409FFC /* YYTextEditExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextEditExample.h; sourceTree = "<group>"; };
 		355D5C601C23EFBE00409FFC /* YYTextEditExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextEditExample.m; sourceTree = "<group>"; };
 		355D5C621C23F53600409FFC /* UIImage+YYWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+YYWebImage.h"; sourceTree = "<group>"; };
@@ -186,7 +170,6 @@
 		35FCC80B1C2AF6A400909737 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "../../../HySubmitTransitionObjective-C-master/ExampleObjective-C/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 		35FCC80D1C2AF6E100909737 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		35FCC80E1C2AF6E100909737 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		35FCC8101C2AF8F000909737 /* Login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Login.png; path = "../../HySubmitTransitionObjective-C-master/ExampleObjective-C/Images.xcassets/Login.imageset/Login.png"; sourceTree = "<group>"; };
 		90D3642E47F94B6EAB1CE461 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF272645A13CF49090BEC7E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C711400A1A075E9100E027E4 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -214,7 +197,7 @@
 		C7821A8E19480417008B952D /* Voice2Note-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Voice2Note-Info.plist"; sourceTree = "<group>"; };
 		C7821A9019480417008B952D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C7821A9219480417008B952D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		C7821A9419480417008B952D /* Voice2Note-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Voice2Note-Prefix.pch"; sourceTree = "<group>"; };
+		C7821A9419480417008B952D /* Voice2Note.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Voice2Note.pch; sourceTree = "<group>"; };
 		C7821A9519480417008B952D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C7821A9819480417008B952D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C7821A9E19480417008B952D /* Voice2NoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Voice2NoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,15 +212,12 @@
 		C7821AC51948222B008B952D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C7821AC719482235008B952D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C7821ACD19482610008B952D /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Resource/Localizable.strings; sourceTree = "<group>"; };
-		C7821AD019483FD6008B952D /* ic_more_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ic_more_white@2x.png"; path = "Resource/ic_more_white@2x.png"; sourceTree = "<group>"; };
 		C7821ADB1948483F008B952D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		C7821ADE19485FC0008B952D /* ic_add_tab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ic_add_tab@2x.png"; path = "Resource/ic_add_tab@2x.png"; sourceTree = "<group>"; };
 		C7821AE619499F47008B952D /* NoteListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoteListCell.h; path = Source/Controller/NoteListCell.h; sourceTree = "<group>"; };
 		C7821AE719499F47008B952D /* NoteListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoteListCell.m; path = Source/Controller/NoteListCell.m; sourceTree = "<group>"; };
 		C7821AE919499FC1008B952D /* UIColor+VNHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+VNHex.h"; path = "Source/Common/UIColor+VNHex.h"; sourceTree = "<group>"; };
 		C7821AEA19499FC1008B952D /* UIColor+VNHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+VNHex.m"; path = "Source/Common/UIColor+VNHex.m"; sourceTree = "<group>"; };
 		C7821AEC1949AB2B008B952D /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		C7821AEE1949B404008B952D /* save@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "save@2x.png"; path = "Resource/save@2x.png"; sourceTree = "<group>"; };
 		C7B282811A6E30F30072FAD3 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LaunchScreen.xib; path = Source/LaunchScreen.xib; sourceTree = "<group>"; };
 		D981B20068169477BE575983 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -342,7 +322,8 @@
 				C711402B1A076A6C00E027E4 /* VNNoteManager.h */,
 				C71140291A076A6C00E027E4 /* Supporting Files */,
 			);
-			path = VNNoteManager;
+			name = VNNoteManager;
+			path = ../VNNoteManager;
 			sourceTree = "<group>";
 		};
 		C71140291A076A6C00E027E4 /* Supporting Files */ = {
@@ -375,8 +356,6 @@
 			children = (
 				C7470A90196164CB00FD154B /* AppContext.h */,
 				C7470A91196164CB00FD154B /* AppContext.m */,
-				C7821A9519480417008B952D /* AppDelegate.h */,
-				C7821AEC1949AB2B008B952D /* AppDelegate.m */,
 				C7B282811A6E30F30072FAD3 /* LaunchScreen.xib */,
 			);
 			name = App;
@@ -387,7 +366,6 @@
 			children = (
 				C7821A8C19480417008B952D /* Voice2Note */,
 				C7821AA519480417008B952D /* Voice2NoteTests */,
-				C71140281A076A6C00E027E4 /* VNNoteManager */,
 				C71140371A076A6C00E027E4 /* VNNoteManagerTests */,
 				C7821A8519480417008B952D /* Frameworks */,
 				C7821A8419480417008B952D /* Products */,
@@ -429,8 +407,14 @@
 		C7821A8C19480417008B952D /* Voice2Note */ = {
 			isa = PBXGroup;
 			children = (
-				C7821AB619480425008B952D /* Resource */,
-				C7821AB51948041E008B952D /* Source */,
+				C71140281A076A6C00E027E4 /* VNNoteManager */,
+				C7821AC919482557008B952D /* Common */,
+				C7470A93196164D400FD154B /* App */,
+				C7821AB719480434008B952D /* Controller */,
+				355D5C871C2414D700409FFC /* View */,
+				C7821AEC1949AB2B008B952D /* AppDelegate.m */,
+				C7821A9519480417008B952D /* AppDelegate.h */,
+				C7821ACD19482610008B952D /* Localizable.strings */,
 				C7821A9819480417008B952D /* Images.xcassets */,
 				C7821A8D19480417008B952D /* Supporting Files */,
 			);
@@ -461,7 +445,7 @@
 				C7821A8E19480417008B952D /* Voice2Note-Info.plist */,
 				C7821A8F19480417008B952D /* InfoPlist.strings */,
 				C7821A9219480417008B952D /* main.m */,
-				C7821A9419480417008B952D /* Voice2Note-Prefix.pch */,
+				C7821A9419480417008B952D /* Voice2Note.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -482,35 +466,6 @@
 				C7821AA819480417008B952D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		C7821AB51948041E008B952D /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				355D5C871C2414D700409FFC /* View */,
-				C7470A93196164D400FD154B /* App */,
-				C7821AC919482557008B952D /* Common */,
-				C7821AB719480434008B952D /* Controller */,
-			);
-			name = Source;
-			sourceTree = "<group>";
-		};
-		C7821AB619480425008B952D /* Resource */ = {
-			isa = PBXGroup;
-			children = (
-				351D37DE1C2440AF0098F423 /* dribbble256_imageio.png */,
-				355D5C4E1C2314E000409FFC /* ic_settings_voice_white_18pt_2x.png */,
-				C7821AEE1949B404008B952D /* save@2x.png */,
-				C7821ADE19485FC0008B952D /* ic_add_tab@2x.png */,
-				355D5C441C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png */,
-				355D5C4A1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png */,
-				355D5C481C23106400409FFC /* ic_movie_filter_white_18pt_2x.png */,
-				355D5C4C1C2310D900409FFC /* ic_brush_white_18pt_2x.png */,
-				C7821AD019483FD6008B952D /* ic_more_white@2x.png */,
-				C7821ACD19482610008B952D /* Localizable.strings */,
-				35FCC8101C2AF8F000909737 /* Login.png */,
-			);
-			name = Resource;
 			sourceTree = "<group>";
 		};
 		C7821AB719480434008B952D /* Controller */ = {
@@ -701,23 +656,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				355D5C451C230E9D00409FFC /* ic_access_alarm_white_18pt_2x.png in Resources */,
-				355D5C491C23106400409FFC /* ic_movie_filter_white_18pt_2x.png in Resources */,
 				C7821A9119480417008B952D /* InfoPlist.strings in Resources */,
 				C7821ACE19482610008B952D /* Localizable.strings in Resources */,
-				C7821AEF1949B405008B952D /* save@2x.png in Resources */,
 				351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */,
 				35FCC80C1C2AF6A400909737 /* Main.storyboard in Resources */,
 				C7B282821A6E30F30072FAD3 /* LaunchScreen.xib in Resources */,
-				355D5C4B1C23109300409FFC /* ic_photo_size_select_actual_white_18pt_2x.png in Resources */,
-				351D37DF1C2440AF0098F423 /* dribbble256_imageio.png in Resources */,
 				355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */,
-				35FCC8111C2AF8F000909737 /* Login.png in Resources */,
-				355D5C4F1C2314E000409FFC /* ic_settings_voice_white_18pt_2x.png in Resources */,
 				355D5C8D1C24156100409FFC /* ImageViewController.xib in Resources */,
-				C7821AD219483FD6008B952D /* ic_more_white@2x.png in Resources */,
-				355D5C4D1C2310D900409FFC /* ic_brush_white_18pt_2x.png in Resources */,
-				C7821ADF19485FC0008B952D /* ic_add_tab@2x.png in Resources */,
 				C7821A9919480417008B952D /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1079,7 +1024,7 @@
 					"$(PROJECT_DIR)/Framework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Voice2Note/Voice2Note-Prefix.pch";
+				GCC_PREFIX_HEADER = Voice2Note/Voice2Note.pch;
 				INFOPLIST_FILE = "Voice2Note/Voice2Note-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1110,7 +1055,7 @@
 					"$(PROJECT_DIR)/Framework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Voice2Note/Voice2Note-Prefix.pch";
+				GCC_PREFIX_HEADER = Voice2Note/Voice2Note.pch;
 				INFOPLIST_FILE = "Voice2Note/Voice2Note-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1137,7 +1082,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Voice2Note/Voice2Note-Prefix.pch";
+				GCC_PREFIX_HEADER = Voice2Note/Voice2Note.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1159,7 +1104,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Voice2Note/Voice2Note-Prefix.pch";
+				GCC_PREFIX_HEADER = Voice2Note/Voice2Note.pch;
 				INFOPLIST_FILE = "Voice2NoteTests/Voice2NoteTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
