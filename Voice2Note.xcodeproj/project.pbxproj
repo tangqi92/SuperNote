@@ -7,9 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3503419C1C4103B400844C2A /* HyLoglnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3503419B1C4103B400844C2A /* HyLoglnButton.m */; };
+		3503419F1C4103D400844C2A /* HyTransitions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3503419E1C4103D400844C2A /* HyTransitions.m */; };
+		350341A21C4103FF00844C2A /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 350341A11C4103FF00844C2A /* CRMediaPickerController.m */; };
 		351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37E21C245AD20098F423 /* HSDatePickerViewController.m */; };
 		351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */; };
 		351D37EA1C25569B0098F423 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351D37E91C25569B0098F423 /* MessageUI.framework */; };
+		35558DE91C41044C00226FD2 /* SpinerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 35558DE81C41044C00226FD2 /* SpinerLayer.m */; };
+		35558DEC1C41068800226FD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35558DEA1C41068800226FD2 /* Main.storyboard */; };
 		355D5C611C23EFBE00409FFC /* YYTextEditExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C601C23EFBE00409FFC /* YYTextEditExample.m */; };
 		355D5C641C23F53600409FFC /* UIImage+YYWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C631C23F53600409FFC /* UIImage+YYWebImage.m */; };
 		355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C661C23F54A00409FFC /* UIView+YYAdd.m */; };
@@ -25,11 +30,6 @@
 		355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C8C1C24156100409FFC /* SignViewController.xib */; };
 		355D5C931C2415BC00409FFC /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C901C2415BC00409FFC /* ImageViewController.m */; };
 		355D5C941C2415BC00409FFC /* SignViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C921C2415BC00409FFC /* SignViewController.m */; };
-		357C61651C2ECA3400CF4997 /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 357C61641C2ECA3400CF4997 /* CRMediaPickerController.m */; };
-		35FCC8071C2AF66500909737 /* HyLoglnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC8021C2AF66500909737 /* HyLoglnButton.m */; };
-		35FCC8081C2AF66500909737 /* HyTransitions.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC8041C2AF66500909737 /* HyTransitions.m */; };
-		35FCC8091C2AF66500909737 /* SpinerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC8061C2AF66500909737 /* SpinerLayer.m */; };
-		35FCC80C1C2AF6A400909737 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35FCC80A1C2AF6A400909737 /* Main.storyboard */; };
 		35FCC80F1C2AF6E100909737 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC80E1C2AF6E100909737 /* LoginViewController.m */; };
 		8321E68A15AE491F981EE0DC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90D3642E47F94B6EAB1CE461 /* libPods.a */; };
 		C711402C1A076A6C00E027E4 /* VNNoteManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C711402B1A076A6C00E027E4 /* VNNoteManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -127,10 +127,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3503419A1C4103B400844C2A /* HyLoglnButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HyLoglnButton.h; path = "../../../../Downloads/HySubmitTransitionObjective-C-master/HyLoglnButton.h"; sourceTree = "<group>"; };
+		3503419B1C4103B400844C2A /* HyLoglnButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HyLoglnButton.m; path = "../../../../Downloads/HySubmitTransitionObjective-C-master/HyLoglnButton.m"; sourceTree = "<group>"; };
+		3503419D1C4103D400844C2A /* HyTransitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HyTransitions.h; path = "../../../../Downloads/HySubmitTransitionObjective-C-master/HyTransitions.h"; sourceTree = "<group>"; };
+		3503419E1C4103D400844C2A /* HyTransitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HyTransitions.m; path = "../../../../Downloads/HySubmitTransitionObjective-C-master/HyTransitions.m"; sourceTree = "<group>"; };
+		350341A01C4103FF00844C2A /* CRMediaPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CRMediaPickerController.h; path = "../../../../Downloads/CRMediaPickerController-master/CRMediaPickerController/CRMediaPickerController.h"; sourceTree = "<group>"; };
+		350341A11C4103FF00844C2A /* CRMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CRMediaPickerController.m; path = "../../../../Downloads/CRMediaPickerController-master 2/CRMediaPickerController/CRMediaPickerController.m"; sourceTree = "<group>"; };
 		351D37E11C245AD20098F423 /* HSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSDatePickerViewController.h; sourceTree = "<group>"; };
 		351D37E21C245AD20098F423 /* HSDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSDatePickerViewController.m; sourceTree = "<group>"; };
 		351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSDatePickerViewController.xib; sourceTree = "<group>"; };
 		351D37E91C25569B0098F423 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		35558DE71C41044C00226FD2 /* SpinerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpinerLayer.h; path = "../../../../Downloads/HySubmitTransitionObjective-C-master 2/SpinerLayer.h"; sourceTree = "<group>"; };
+		35558DE81C41044C00226FD2 /* SpinerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpinerLayer.m; path = "../../../../Downloads/HySubmitTransitionObjective-C-master/SpinerLayer.m"; sourceTree = "<group>"; };
+		35558DEB1C41068800226FD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "../../../../Downloads/HySubmitTransitionObjective-C-master 3/ExampleObjective-C/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 		355D5C5F1C23EFBE00409FFC /* YYTextEditExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextEditExample.h; sourceTree = "<group>"; };
 		355D5C601C23EFBE00409FFC /* YYTextEditExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextEditExample.m; sourceTree = "<group>"; };
 		355D5C621C23F53600409FFC /* UIImage+YYWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+YYWebImage.h"; sourceTree = "<group>"; };
@@ -159,15 +168,6 @@
 		355D5C901C2415BC00409FFC /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		355D5C911C2415BC00409FFC /* SignViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignViewController.h; sourceTree = "<group>"; };
 		355D5C921C2415BC00409FFC /* SignViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignViewController.m; sourceTree = "<group>"; };
-		357C61631C2ECA3400CF4997 /* CRMediaPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CRMediaPickerController.h; path = "../../CRMediaPickerController-master 2/CRMediaPickerController/CRMediaPickerController.h"; sourceTree = "<group>"; };
-		357C61641C2ECA3400CF4997 /* CRMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CRMediaPickerController.m; path = "../../CRMediaPickerController-master 2/CRMediaPickerController/CRMediaPickerController.m"; sourceTree = "<group>"; };
-		35FCC8011C2AF66500909737 /* HyLoglnButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HyLoglnButton.h; path = "../../HySubmitTransitionObjective-C-master/HyLoglnButton.h"; sourceTree = "<group>"; };
-		35FCC8021C2AF66500909737 /* HyLoglnButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HyLoglnButton.m; path = "../../HySubmitTransitionObjective-C-master/HyLoglnButton.m"; sourceTree = "<group>"; };
-		35FCC8031C2AF66500909737 /* HyTransitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HyTransitions.h; path = "../../HySubmitTransitionObjective-C-master/HyTransitions.h"; sourceTree = "<group>"; };
-		35FCC8041C2AF66500909737 /* HyTransitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HyTransitions.m; path = "../../HySubmitTransitionObjective-C-master/HyTransitions.m"; sourceTree = "<group>"; };
-		35FCC8051C2AF66500909737 /* SpinerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpinerLayer.h; path = "../../HySubmitTransitionObjective-C-master/SpinerLayer.h"; sourceTree = "<group>"; };
-		35FCC8061C2AF66500909737 /* SpinerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpinerLayer.m; path = "../../HySubmitTransitionObjective-C-master/SpinerLayer.m"; sourceTree = "<group>"; };
-		35FCC80B1C2AF6A400909737 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "../../../HySubmitTransitionObjective-C-master/ExampleObjective-C/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 		35FCC80D1C2AF6E100909737 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		35FCC80E1C2AF6E100909737 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		90D3642E47F94B6EAB1CE461 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -287,14 +287,14 @@
 				355D5C8C1C24156100409FFC /* SignViewController.xib */,
 				355D5C881C2414E600409FFC /* PJRSignatureView.h */,
 				355D5C891C2414E600409FFC /* PJRSignatureView.m */,
-				35FCC8011C2AF66500909737 /* HyLoglnButton.h */,
-				35FCC8021C2AF66500909737 /* HyLoglnButton.m */,
-				35FCC8031C2AF66500909737 /* HyTransitions.h */,
-				35FCC8041C2AF66500909737 /* HyTransitions.m */,
-				35FCC8051C2AF66500909737 /* SpinerLayer.h */,
-				35FCC8061C2AF66500909737 /* SpinerLayer.m */,
-				357C61631C2ECA3400CF4997 /* CRMediaPickerController.h */,
-				357C61641C2ECA3400CF4997 /* CRMediaPickerController.m */,
+				3503419A1C4103B400844C2A /* HyLoglnButton.h */,
+				3503419B1C4103B400844C2A /* HyLoglnButton.m */,
+				3503419D1C4103D400844C2A /* HyTransitions.h */,
+				3503419E1C4103D400844C2A /* HyTransitions.m */,
+				35558DE71C41044C00226FD2 /* SpinerLayer.h */,
+				35558DE81C41044C00226FD2 /* SpinerLayer.m */,
+				350341A01C4103FF00844C2A /* CRMediaPickerController.h */,
+				350341A11C4103FF00844C2A /* CRMediaPickerController.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -482,7 +482,7 @@
 				C7821AE719499F47008B952D /* NoteListCell.m */,
 				355D5C5F1C23EFBE00409FFC /* YYTextEditExample.h */,
 				355D5C601C23EFBE00409FFC /* YYTextEditExample.m */,
-				35FCC80A1C2AF6A400909737 /* Main.storyboard */,
+				35558DEA1C41068800226FD2 /* Main.storyboard */,
 				35FCC80D1C2AF6E100909737 /* LoginViewController.h */,
 				35FCC80E1C2AF6E100909737 /* LoginViewController.m */,
 			);
@@ -600,7 +600,7 @@
 		C7821A7B19480417008B952D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = jinxing;
 				TargetAttributes = {
 					C71140261A076A6C00E027E4 = {
@@ -659,7 +659,7 @@
 				C7821A9119480417008B952D /* InfoPlist.strings in Resources */,
 				C7821ACE19482610008B952D /* Localizable.strings in Resources */,
 				351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */,
-				35FCC80C1C2AF6A400909737 /* Main.storyboard in Resources */,
+				35558DEC1C41068800226FD2 /* Main.storyboard in Resources */,
 				C7B282821A6E30F30072FAD3 /* LaunchScreen.xib in Resources */,
 				355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */,
 				355D5C8D1C24156100409FFC /* ImageViewController.xib in Resources */,
@@ -750,25 +750,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				355D5C6A1C23F56000409FFC /* NSBundle+YYAdd.m in Sources */,
+				3503419F1C4103D400844C2A /* HyTransitions.m in Sources */,
+				3503419C1C4103B400844C2A /* HyLoglnButton.m in Sources */,
 				355D5C701C23F58C00409FFC /* UIControl+YYAdd.m in Sources */,
-				35FCC8071C2AF66500909737 /* HyLoglnButton.m in Sources */,
 				355D5C761C23F5A100409FFC /* NSData+YYAdd.m in Sources */,
+				350341A21C4103FF00844C2A /* CRMediaPickerController.m in Sources */,
+				35558DE91C41044C00226FD2 /* SpinerLayer.m in Sources */,
 				C7821AE819499F47008B952D /* NoteListCell.m in Sources */,
 				355D5C611C23EFBE00409FFC /* YYTextEditExample.m in Sources */,
 				C7821ABD194804A4008B952D /* NoteListController.m in Sources */,
 				355D5C801C23F64B00409FFC /* YYTextExampleHelper.m in Sources */,
 				35FCC80F1C2AF6E100909737 /* LoginViewController.m in Sources */,
 				C7821AED1949AB2B008B952D /* AppDelegate.m in Sources */,
-				35FCC8081C2AF66500909737 /* HyTransitions.m in Sources */,
 				355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */,
 				355D5C941C2415BC00409FFC /* SignViewController.m in Sources */,
 				351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */,
 				355D5C931C2415BC00409FFC /* ImageViewController.m in Sources */,
-				357C61651C2ECA3400CF4997 /* CRMediaPickerController.m in Sources */,
 				C7821A9319480417008B952D /* main.m in Sources */,
 				355D5C8A1C2414E600409FFC /* PJRSignatureView.m in Sources */,
 				C7821AEB19499FC1008B952D /* UIColor+VNHex.m in Sources */,
-				35FCC8091C2AF66500909737 /* SpinerLayer.m in Sources */,
 				355D5C731C23F59700409FFC /* CALayer+YYAdd.m in Sources */,
 				355D5C641C23F53600409FFC /* UIImage+YYWebImage.m in Sources */,
 				C7470A92196164CB00FD154B /* AppContext.m in Sources */,
@@ -811,13 +811,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		35FCC80A1C2AF6A400909737 /* Main.storyboard */ = {
+		35558DEA1C41068800226FD2 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				35FCC80B1C2AF6A400909737 /* Base */,
+				35558DEB1C41068800226FD2 /* Base */,
 			);
 			name = Main.storyboard;
-			path = HSDatePickerViewController;
 			sourceTree = "<group>";
 		};
 		C7821A8F19480417008B952D /* InfoPlist.strings */ = {
@@ -862,6 +861,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jinxing.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
@@ -888,6 +888,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jinxing.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
@@ -913,6 +914,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jinxing.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Voice2Note.app/Voice2Note";
 			};
@@ -931,6 +933,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jinxing.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Voice2Note.app/Voice2Note";
 			};
@@ -955,6 +958,7 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1014,7 +1018,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D981B20068169477BE575983 /* Pods.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1045,7 +1048,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9DF272645A13CF49090BEC7E /* Pods.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1088,6 +1090,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Voice2NoteTests/Voice2NoteTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jinxing.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -1106,6 +1109,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Voice2Note/Voice2Note.pch;
 				INFOPLIST_FILE = "Voice2NoteTests/Voice2NoteTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jinxing.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
