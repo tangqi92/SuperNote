@@ -1,5 +1,5 @@
 //
-//  NoteListController.h
+//  NoteListViewController.h
 //  Voice2Note
 //
 //  Created by liaojinxing on 14-6-11.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NoteListController : UITableViewController<UISearchResultsUpdating>
+@interface NoteListViewController : UITableViewController<UISearchResultsUpdating>
 {
     UIBarButtonItem *cancelButton;
     UIBarButtonItem *addButton;

@@ -7,14 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3503419C1C4103B400844C2A /* HyLoglnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3503419B1C4103B400844C2A /* HyLoglnButton.m */; };
-		3503419F1C4103D400844C2A /* HyTransitions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3503419E1C4103D400844C2A /* HyTransitions.m */; };
 		350341A21C4103FF00844C2A /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 350341A11C4103FF00844C2A /* CRMediaPickerController.m */; };
 		351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37E21C245AD20098F423 /* HSDatePickerViewController.m */; };
 		351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */; };
 		351D37EA1C25569B0098F423 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351D37E91C25569B0098F423 /* MessageUI.framework */; };
-		35558DE91C41044C00226FD2 /* SpinerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 35558DE81C41044C00226FD2 /* SpinerLayer.m */; };
-		35558DEC1C41068800226FD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35558DEA1C41068800226FD2 /* Main.storyboard */; };
 		355D5C611C23EFBE00409FFC /* YYTextEditExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C601C23EFBE00409FFC /* YYTextEditExample.m */; };
 		355D5C641C23F53600409FFC /* UIImage+YYWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C631C23F53600409FFC /* UIImage+YYWebImage.m */; };
 		355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C661C23F54A00409FFC /* UIView+YYAdd.m */; };
@@ -30,7 +26,6 @@
 		355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C8C1C24156100409FFC /* SignViewController.xib */; };
 		355D5C931C2415BC00409FFC /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C901C2415BC00409FFC /* ImageViewController.m */; };
 		355D5C941C2415BC00409FFC /* SignViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C921C2415BC00409FFC /* SignViewController.m */; };
-		35FCC80F1C2AF6E100909737 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FCC80E1C2AF6E100909737 /* LoginViewController.m */; };
 		8321E68A15AE491F981EE0DC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90D3642E47F94B6EAB1CE461 /* libPods.a */; };
 		C711402C1A076A6C00E027E4 /* VNNoteManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C711402B1A076A6C00E027E4 /* VNNoteManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C71140321A076A6C00E027E4 /* VNNoteManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71140271A076A6C00E027E4 /* VNNoteManager.framework */; };
@@ -58,7 +53,7 @@
 		C7821AA219480417008B952D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7821A8A19480417008B952D /* UIKit.framework */; };
 		C7821AAA19480417008B952D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C7821AA819480417008B952D /* InfoPlist.strings */; };
 		C7821AAC19480417008B952D /* Voice2NoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C7821AAB19480417008B952D /* Voice2NoteTests.m */; };
-		C7821ABD194804A4008B952D /* NoteListController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7821ABC194804A4008B952D /* NoteListController.m */; };
+		C7821ABD194804A4008B952D /* NoteListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7821ABC194804A4008B952D /* NoteListViewController.m */; };
 		C7821AC219482208008B952D /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7821AC119482208008B952D /* iflyMSC.framework */; };
 		C7821AC419482220008B952D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7821AC319482220008B952D /* AVFoundation.framework */; };
 		C7821AC61948222B008B952D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7821AC51948222B008B952D /* SystemConfiguration.framework */; };
@@ -127,19 +122,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3503419A1C4103B400844C2A /* HyLoglnButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HyLoglnButton.h; path = "../../../../Downloads/HySubmitTransitionObjective-C-master/HyLoglnButton.h"; sourceTree = "<group>"; };
-		3503419B1C4103B400844C2A /* HyLoglnButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HyLoglnButton.m; path = "../../../../Downloads/HySubmitTransitionObjective-C-master/HyLoglnButton.m"; sourceTree = "<group>"; };
-		3503419D1C4103D400844C2A /* HyTransitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HyTransitions.h; path = "../../../../Downloads/HySubmitTransitionObjective-C-master/HyTransitions.h"; sourceTree = "<group>"; };
-		3503419E1C4103D400844C2A /* HyTransitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HyTransitions.m; path = "../../../../Downloads/HySubmitTransitionObjective-C-master/HyTransitions.m"; sourceTree = "<group>"; };
 		350341A01C4103FF00844C2A /* CRMediaPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CRMediaPickerController.h; path = "../../../../Downloads/CRMediaPickerController-master/CRMediaPickerController/CRMediaPickerController.h"; sourceTree = "<group>"; };
 		350341A11C4103FF00844C2A /* CRMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CRMediaPickerController.m; path = "../../../../Downloads/CRMediaPickerController-master 2/CRMediaPickerController/CRMediaPickerController.m"; sourceTree = "<group>"; };
 		351D37E11C245AD20098F423 /* HSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSDatePickerViewController.h; sourceTree = "<group>"; };
 		351D37E21C245AD20098F423 /* HSDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSDatePickerViewController.m; sourceTree = "<group>"; };
 		351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSDatePickerViewController.xib; sourceTree = "<group>"; };
 		351D37E91C25569B0098F423 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		35558DE71C41044C00226FD2 /* SpinerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpinerLayer.h; path = "../../../../Downloads/HySubmitTransitionObjective-C-master 2/SpinerLayer.h"; sourceTree = "<group>"; };
-		35558DE81C41044C00226FD2 /* SpinerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpinerLayer.m; path = "../../../../Downloads/HySubmitTransitionObjective-C-master/SpinerLayer.m"; sourceTree = "<group>"; };
-		35558DEB1C41068800226FD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "../../../../Downloads/HySubmitTransitionObjective-C-master 3/ExampleObjective-C/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 		355D5C5F1C23EFBE00409FFC /* YYTextEditExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextEditExample.h; sourceTree = "<group>"; };
 		355D5C601C23EFBE00409FFC /* YYTextEditExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextEditExample.m; sourceTree = "<group>"; };
 		355D5C621C23F53600409FFC /* UIImage+YYWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+YYWebImage.h"; sourceTree = "<group>"; };
@@ -168,8 +156,6 @@
 		355D5C901C2415BC00409FFC /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		355D5C911C2415BC00409FFC /* SignViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignViewController.h; sourceTree = "<group>"; };
 		355D5C921C2415BC00409FFC /* SignViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignViewController.m; sourceTree = "<group>"; };
-		35FCC80D1C2AF6E100909737 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		35FCC80E1C2AF6E100909737 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		90D3642E47F94B6EAB1CE461 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF272645A13CF49090BEC7E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C711400A1A075E9100E027E4 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -205,8 +191,8 @@
 		C7821AA719480417008B952D /* Voice2NoteTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Voice2NoteTests-Info.plist"; sourceTree = "<group>"; };
 		C7821AA919480417008B952D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C7821AAB19480417008B952D /* Voice2NoteTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Voice2NoteTests.m; sourceTree = "<group>"; };
-		C7821ABB194804A4008B952D /* NoteListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoteListController.h; path = Source/Controller/NoteListController.h; sourceTree = "<group>"; };
-		C7821ABC194804A4008B952D /* NoteListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoteListController.m; path = Source/Controller/NoteListController.m; sourceTree = "<group>"; };
+		C7821ABB194804A4008B952D /* NoteListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoteListViewController.h; path = Source/Controller/NoteListViewController.h; sourceTree = "<group>"; };
+		C7821ABC194804A4008B952D /* NoteListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoteListViewController.m; path = Source/Controller/NoteListViewController.m; sourceTree = "<group>"; };
 		C7821AC119482208008B952D /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iflyMSC.framework; path = Framework/iflyMSC.framework; sourceTree = "<group>"; };
 		C7821AC319482220008B952D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C7821AC51948222B008B952D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -273,6 +259,15 @@
 		351764A81C76EABD00F31FF8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				351764A91C76F9B200F31FF8 /* YYText */,
+				351D37E01C245AD20098F423 /* HSDatePickerViewController */,
+			);
+			name = Vendor;
+			sourceTree = "<group>";
+		};
+		351764A91C76F9B200F31FF8 /* YYText */ = {
+			isa = PBXGroup;
+			children = (
 				355D5C781C23F5AC00409FFC /* UIGestureRecognizer+YYAdd.m */,
 				355D5C741C23F5A100409FFC /* NSData+YYAdd.h */,
 				355D5C751C23F5A100409FFC /* NSData+YYAdd.m */,
@@ -292,7 +287,7 @@
 				355D5C661C23F54A00409FFC /* UIView+YYAdd.m */,
 				355D5C771C23F5AC00409FFC /* UIGestureRecognizer+YYAdd.h */,
 			);
-			name = Vendor;
+			name = YYText;
 			sourceTree = "<group>";
 		};
 		351D37E01C245AD20098F423 /* HSDatePickerViewController */ = {
@@ -312,12 +307,6 @@
 				355D5C8C1C24156100409FFC /* SignViewController.xib */,
 				355D5C881C2414E600409FFC /* PJRSignatureView.h */,
 				355D5C891C2414E600409FFC /* PJRSignatureView.m */,
-				3503419A1C4103B400844C2A /* HyLoglnButton.h */,
-				3503419B1C4103B400844C2A /* HyLoglnButton.m */,
-				3503419D1C4103D400844C2A /* HyTransitions.h */,
-				3503419E1C4103D400844C2A /* HyTransitions.m */,
-				35558DE71C41044C00226FD2 /* SpinerLayer.h */,
-				35558DE81C41044C00226FD2 /* SpinerLayer.m */,
 				350341A01C4103FF00844C2A /* CRMediaPickerController.h */,
 				350341A11C4103FF00844C2A /* CRMediaPickerController.m */,
 			);
@@ -479,20 +468,16 @@
 		C7821AB719480434008B952D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				351D37E01C245AD20098F423 /* HSDatePickerViewController */,
 				355D5C8F1C2415BC00409FFC /* ImageViewController.h */,
 				355D5C901C2415BC00409FFC /* ImageViewController.m */,
 				355D5C911C2415BC00409FFC /* SignViewController.h */,
 				355D5C921C2415BC00409FFC /* SignViewController.m */,
-				C7821ABB194804A4008B952D /* NoteListController.h */,
-				C7821ABC194804A4008B952D /* NoteListController.m */,
+				C7821ABB194804A4008B952D /* NoteListViewController.h */,
+				C7821ABC194804A4008B952D /* NoteListViewController.m */,
 				C7821AE619499F47008B952D /* NoteListCell.h */,
 				C7821AE719499F47008B952D /* NoteListCell.m */,
 				355D5C5F1C23EFBE00409FFC /* YYTextEditExample.h */,
 				355D5C601C23EFBE00409FFC /* YYTextEditExample.m */,
-				35558DEA1C41068800226FD2 /* Main.storyboard */,
-				35FCC80D1C2AF6E100909737 /* LoginViewController.h */,
-				35FCC80E1C2AF6E100909737 /* LoginViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -667,7 +652,6 @@
 				C7821A9119480417008B952D /* InfoPlist.strings in Resources */,
 				C7821ACE19482610008B952D /* Localizable.strings in Resources */,
 				351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */,
-				35558DEC1C41068800226FD2 /* Main.storyboard in Resources */,
 				C7B282821A6E30F30072FAD3 /* LaunchScreen.xib in Resources */,
 				355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */,
 				355D5C8D1C24156100409FFC /* ImageViewController.xib in Resources */,
@@ -758,17 +742,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				355D5C6A1C23F56000409FFC /* NSBundle+YYAdd.m in Sources */,
-				3503419F1C4103D400844C2A /* HyTransitions.m in Sources */,
-				3503419C1C4103B400844C2A /* HyLoglnButton.m in Sources */,
 				355D5C701C23F58C00409FFC /* UIControl+YYAdd.m in Sources */,
 				355D5C761C23F5A100409FFC /* NSData+YYAdd.m in Sources */,
 				350341A21C4103FF00844C2A /* CRMediaPickerController.m in Sources */,
-				35558DE91C41044C00226FD2 /* SpinerLayer.m in Sources */,
 				C7821AE819499F47008B952D /* NoteListCell.m in Sources */,
 				355D5C611C23EFBE00409FFC /* YYTextEditExample.m in Sources */,
-				C7821ABD194804A4008B952D /* NoteListController.m in Sources */,
+				C7821ABD194804A4008B952D /* NoteListViewController.m in Sources */,
 				355D5C801C23F64B00409FFC /* YYTextExampleHelper.m in Sources */,
-				35FCC80F1C2AF6E100909737 /* LoginViewController.m in Sources */,
 				C7821AED1949AB2B008B952D /* AppDelegate.m in Sources */,
 				355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */,
 				355D5C941C2415BC00409FFC /* SignViewController.m in Sources */,
@@ -819,14 +799,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		35558DEA1C41068800226FD2 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				35558DEB1C41068800226FD2 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		C7821A8F19480417008B952D /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

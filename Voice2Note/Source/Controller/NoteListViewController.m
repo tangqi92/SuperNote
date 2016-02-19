@@ -1,12 +1,12 @@
 //
-//  NoteListController.m
+//  NoteListViewController.m
 //  Voice2Note
 //
 //  Created by liaojinxing on 14-6-11.
 //  Copyright (c) 2014年 jinxing. All rights reserved.
 //
 
-#import "NoteListController.h"
+#import "NoteListViewController.h"
 #import "NoteManager.h"
 #import "VNNote.h"
 #import "VNConstants.h"
@@ -17,14 +17,14 @@
 #import "YYTextEditExample.h"
 
 
-@interface NoteListController ()<UIAlertViewDelegate>
+@interface NoteListViewController ()<UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) NSInteger selectedIndex;
 
 @end
 
-@implementation NoteListController
+@implementation NoteListViewController
 
 - (void)viewDidLoad
 {
