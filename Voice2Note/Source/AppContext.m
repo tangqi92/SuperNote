@@ -8,12 +8,11 @@
 
 #import "AppContext.h"
 
-static NSString* kHasUploadAddressBookKey = @"kHasUploadAddressBookKey";
+static NSString *kHasUploadAddressBookKey = @"kHasUploadAddressBookKey";
 
 @implementation AppContext
 
-+ (instancetype)appContext
-{
++ (instancetype)appContext {
     static id instance = nil;
     static dispatch_once_t onceToken = 0L;
     dispatch_once(&onceToken, ^{
@@ -22,13 +21,11 @@ static NSString* kHasUploadAddressBookKey = @"kHasUploadAddressBookKey";
     return instance;
 }
 
-- (BOOL)hasUploadAddressBook
-{
+- (BOOL)hasUploadAddressBook {
     return [[[NSUserDefaults standardUserDefaults] objectForKey:kHasUploadAddressBookKey] boolValue];
 }
 
-- (void)setHasUploadAddressBook:(BOOL)hasUploadAddressBook
-{
+- (void)setHasUploadAddressBook:(BOOL)hasUploadAddressBook {
     [[NSUserDefaults standardUserDefaults] setBool:hasUploadAddressBook forKey:kHasUploadAddressBookKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

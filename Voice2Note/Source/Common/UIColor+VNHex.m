@@ -6,37 +6,33 @@
 //  Copyright (c) 2014年 jinxing. All rights reserved.
 //
 
-#import "UIColor+VNHex.h"
 #import "Colours.h"
+#import "UIColor+VNHex.h"
 
 @implementation UIColor (VNHex)
 
-+ (UIColor *) colorWithHex:(NSInteger)rgbHexValue {
++ (UIColor *)colorWithHex:(NSInteger)rgbHexValue {
     return [UIColor colorWithHex:rgbHexValue alpha:1.0];
 }
 
 + (UIColor *)colorWithHex:(NSInteger)rgbHexValue
                     alpha:(CGFloat)alpha {
-    return [UIColor colorWithRed:((float)((rgbHexValue & 0xFF0000) >> 16))/255.0
-                           green:((float)((rgbHexValue & 0xFF00) >> 8))/255.0
-                            blue:((float)(rgbHexValue & 0xFF))/255.0
+    return [UIColor colorWithRed:((float) ((rgbHexValue & 0xFF0000) >> 16)) / 255.0
+                           green:((float) ((rgbHexValue & 0xFF00) >> 8)) / 255.0
+                            blue:((float) (rgbHexValue & 0xFF)) / 255.0
                            alpha:alpha];
 }
 
-+ (UIColor *)systemColor
-{
++ (UIColor *)systemColor {
     return [UIColor emeraldColor];
 }
 
-+ (UIColor *)systemDarkColor
-{
++ (UIColor *)systemDarkColor {
     return [UIColor hollyGreenColor];
 }
 
-+ (UIColor *)grayBackgroudColor
-{
++ (UIColor *)grayBackgroudColor {
     return [UIColor colorWithHex:0xF9FFFF];
 }
-
 
 @end

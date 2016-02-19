@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NoteListViewController : UITableViewController<UISearchResultsUpdating>
-{
+@interface NoteListViewController : UITableViewController <UISearchResultsUpdating> {
     UIBarButtonItem *cancelButton;
     UIBarButtonItem *addButton;
     UIBarButtonItem *editButton;

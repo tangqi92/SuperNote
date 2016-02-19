@@ -6,15 +6,14 @@
 //  Copyright (c) 2014年 jinxing. All rights reserved.
 //
 
+#import "NSDate+Conversion.h"
 #import "NoteManager.h"
 #import "VNConstants.h"
 #import "VNNote.h"
-#import "NSDate+Conversion.h"
 
 @implementation NoteManager
 
-+ (instancetype)sharedManager
-{
++ (instancetype)sharedManager {
     static id instance = nil;
     static dispatch_once_t onceToken = 0L;
     dispatch_once(&onceToken, ^{
@@ -23,21 +22,20 @@
     return instance;
 }
 
- /**
+/**
  *  创建存储路径
  *
  *  @return <#return value description#>
  */
-- (NSString *)createDataPathIfNeeded
-{
+- (NSString *)createDataPathIfNeeded {
     NSString *documentsDirectory = [self documentDirectoryPath];
     self.docPath = documentsDirectory;
-    
+
     // defaultManager 创建单例对象，判断指定路径文件是否存在
     if ([[NSFileManager defaultManager] fileExistsAtPath:documentsDirectory]) {
         return self.docPath;
     }
-    
+
     // 声明一个指向 NSError 对象的指针，但是不创建相应的对象
     // 实际上，只有当发生错误时，才会由 writeToFile 创建相应的 NSError 对象
     NSError *error;
@@ -52,8 +50,7 @@
     return self.docPath;
 }
 
-- (NSString *)documentDirectoryPath
-{
+- (NSString *)documentDirectoryPath {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     // 在 Documents 目录下 kAppEngName 文件夹
@@ -61,13 +58,12 @@
     return documentsDirectory;
 }
 
-- (NSMutableArray *)readAllNotes
-{
+- (NSMutableArray *)readAllNotes {
     NSMutableArray *array = [NSMutableArray array];
     NSError *error;
     NSString *documentsDirectory = [self createDataPathIfNeeded];
     NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:&error];
-    
+
     if (files == nil) {
         NSLog(@"Error reading contents of documents directory: %@", [error localizedDescription]);
         return nil;
@@ -82,7 +78,7 @@
     NSSortDescriptor *sortDescriptor;
     sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdDate"
                                                  ascending:NO];
-    return [NSMutableArray arrayWithArray:[array sortedArrayUsingDescriptors:@[sortDescriptor]]];
+    return [NSMutableArray arrayWithArray:[array sortedArrayUsingDescriptors:@[ sortDescriptor ]]];
 }
 
 - (VNNote *)readNoteWithID:(NSString *)noteID;
@@ -96,8 +92,7 @@
     return note;
 }
 
-- (BOOL)storeNote:(VNNote *)note
-{
+- (BOOL)storeNote:(VNNote *)note {
     [self createDataPathIfNeeded];
     NSString *dataPath = [_docPath stringByAppendingPathComponent:note.noteID];
     // 通过归档，将复杂对象转换为NSData；通过反归档，将NSData转换为复杂对象
@@ -105,14 +100,12 @@
     return [savedData writeToFile:dataPath atomically:YES];
 }
 
-- (void)deleteNote:(VNNote *)note
-{
+- (void)deleteNote:(VNNote *)note {
     NSString *filePath = [_docPath stringByAppendingPathComponent:note.noteID];
     [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
 }
 
-- (VNNote *)todayNote
-{
+- (VNNote *)todayNote {
     NSMutableArray *notes = [self readAllNotes];
     for (VNNote *note in notes) {
         if ([NSDate isSameDay:note.createdDate andDate:[NSDate date]]) {

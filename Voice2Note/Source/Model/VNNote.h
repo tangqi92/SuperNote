@@ -10,8 +10,8 @@
 
 #define VNNOTE_DEFAULT_TITLE @"无标题笔记"
 
-// 遵循NSCoding协议 
-@interface VNNote : NSObject<NSCoding>
+// 遵循NSCoding协议
+@interface VNNote : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString *noteID;
 @property (nonatomic, strong) NSString *title;

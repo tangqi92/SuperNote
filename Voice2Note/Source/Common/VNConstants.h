@@ -6,11 +6,10 @@
 //  Copyright (c) 2014年 jinxing. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import <Foundation/Foundation.h>
 
 extern NSString *const kIFlyAppID;
 extern NSString *const kAppName;
 extern NSString *const kAppEngName;
 extern NSString *const kNotificationCreateFile;
-

@@ -44,16 +44,16 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
 
 #pragma mark - Controller lifecycle
 
--(instancetype)init {
-    if ( self = [super init] ) {
+- (instancetype)init {
+    if (self = [super init]) {
         self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-        
+
         //Set minRowIndex and maxRowIndex to -1, so in property getter we will know that to set it to proper values
         self.minRowIndex = self.maxRowIndex = -1;
-        
+
         self.dismissOnCancelTouch = YES;
         self.minuteStep = StepFiveMinutes;
-        
+
         //Min and max data test
         //self.minDate = [NSDate dateWithTimeIntervalSinceNow:60*60*24*-60 + 3*60*60];
         //self.maxDate = [NSDate dateWithTimeIntervalSinceNow:60*60*24*60 - 3*60*60];
@@ -61,8 +61,7 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
     return self;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     NSBundle *podbundle = [NSBundle bundleForClass:[self class]];
     self = [super initWithNibName:nibNameOrNil bundle:podbundle];
     if (self) {
@@ -72,38 +71,38 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     //Set deafult values for pickers
     for (NSUInteger i = 0; i < 3; i++) {
         [self.pickerView selectRow:[self defaultRowValueForComponent:i] inComponent:i animated:NO];
     }
     //Before call of this all parameters must be setted
     [self pickerView:self.pickerView didSelectRow:[self defaultRowValueForComponent:DayPicker] inComponent:DayPicker];
-    
+
     self.pickerBackgroundView.layer.cornerRadius = 10.0;
     self.pickerBackgroundView.layer.borderColor = self.mainColor.CGColor;
     self.pickerBackgroundView.layer.borderWidth = 1.0;
-    
+
     self.separator1View.backgroundColor = self.separator2View.backgroundColor = self.separator3View.backgroundColor = self.mainColor;
-    
+
     self.monthAndYearLabel.textColor = self.mainColor;
-    
+
     [self.monthNextButton setTitleColor:self.mainColor forState:UIControlStateNormal];
     [self.monthNextButton setTitleColor:[self.mainColor colorWithAlphaComponent:0.7] forState:UIControlStateHighlighted];
     [self.monthNextButton setTitleColor:[self.mainColor colorWithAlphaComponent:0.3] forState:UIControlStateDisabled];
-    
+
     [self.monthPreviousButton setTitleColor:self.mainColor forState:UIControlStateNormal];
     [self.monthPreviousButton setTitleColor:[self.mainColor colorWithAlphaComponent:0.7] forState:UIControlStateHighlighted];
     [self.monthPreviousButton setTitleColor:[self.mainColor colorWithAlphaComponent:0.3] forState:UIControlStateDisabled];
-    
+
     [self.confirmButton setTitle:self.confirmButtonTitle forState:UIControlStateNormal];
     [self.confirmButton setTitleColor:self.mainColor forState:UIControlStateNormal];
     [self.confirmButton setTitleColor:[self.mainColor colorWithAlphaComponent:0.7] forState:UIControlStateHighlighted];
-    
+
     [self.backButton setTitle:self.backButtonTitle forState:UIControlStateNormal];
     [self.backButton setTitleColor:self.mainColor forState:UIControlStateNormal];
     [self.backButton setTitleColor:[self.mainColor colorWithAlphaComponent:0.7] forState:UIControlStateHighlighted];
-    
+
     //Add gesture recognizer to superview...
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTapGesture:)];
     [self.pickerBackgroundView.superview addGestureRecognizer:gestureRecognizer];
@@ -114,13 +113,12 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
     //Set hours and minutes to selected values
     NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:self.date];
     [self setPickerView:self.pickerView rowInComponent:HourPicker toIntagerValue:[components hour] decrementing:NO animated:NO];
-    [self setPickerView:self.pickerView rowInComponent:MinutePicker toIntagerValue:[components minute]  decrementing:NO animated:NO];
-    
+    [self setPickerView:self.pickerView rowInComponent:MinutePicker toIntagerValue:[components minute] decrementing:NO animated:NO];
 }
 
--(void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+
     //This option only works when "View controller-based status bar appearance" in .plist is set to NO
     self.previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
@@ -210,8 +208,7 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
     if (_maxRowIndex == -1) {
         if ([self.maxDate compare:[self dateForRow:[self pickerView:self.pickerView numberOfRowsInComponent:DayPicker] - kBufforRows]] == NSOrderedAscending) {
             _maxRowIndex = [self defaultRowValueForComponent:DayPicker] + [self daysBetweenDate:self.date andDate:self.maxDate];
-        }
-        else {
+        } else {
             _maxRowIndex = [self pickerView:self.pickerView numberOfRowsInComponent:DayPicker] - kBufforRows;
         }
     }
@@ -222,8 +219,7 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
     if (_minRowIndex == -1) {
         if ([self.minDate compare:[self dateForRow:kBufforRows]] == NSOrderedDescending) {
             _minRowIndex = [self defaultRowValueForComponent:DayPicker] + [self daysBetweenDate:self.date andDate:self.minDate];
-        }
-        else {
+        } else {
             _minRowIndex = kBufforRows;
         }
     }
@@ -254,7 +250,7 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
             numberOfRows = 60 / self.minuteStep;
             break;
     }
-    
+
     return numberOfRows;
 }
 
@@ -277,15 +273,14 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
             width = 40;
             break;
     }
-    
+
     return width;
 }
-
 
 - (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component {
     NSString *title = @"";
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-    
+
     switch (component) {
         case DayPicker:
             title = [self stringDateForRow:row];
@@ -302,17 +297,16 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
 
             break;
     }
-    
-    
-     return [[NSAttributedString alloc] initWithString:title attributes:
-             @{NSForegroundColorAttributeName: self.mainColor,
-                NSParagraphStyleAttributeName: paragraphStyle}];
+
+    return [[NSAttributedString alloc] initWithString:title attributes:
+                                                                @{NSForegroundColorAttributeName : self.mainColor,
+                                                                  NSParagraphStyleAttributeName : paragraphStyle}];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     if (component == DayPicker) {
         self.monthAndYearLabel.text = [self.monthAndYearLabelDateFormater stringFromDate:[self dateForRow:row]];
-        
+
         //If picker values are to close to bufforValue scroll it back
         if (row < self.minRowIndex) {
             [self.pickerView selectRow:self.minRowIndex inComponent:component animated:YES];
@@ -322,7 +316,7 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
             [self.pickerView selectRow:self.maxRowIndex inComponent:component animated:YES];
             [self pickerView:self.pickerView didSelectRow:self.maxRowIndex inComponent:component];
         }
-        
+
         //Disable month change buttons
         self.monthNextButton.enabled = YES;
         self.monthPreviousButton.enabled = YES;
@@ -333,18 +327,18 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
             self.monthNextButton.enabled = NO;
         }
     }
-    
+
     NSInteger firstComponentRowValue = [pickerView selectedRowInComponent:DayPicker];
     //If picker values are to close to bufforValue scroll it back
     if (firstComponentRowValue <= self.minRowIndex) {
         NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:self.minDate];
         [self setPickerView:self.pickerView rowInComponent:HourPicker toIntagerValue:[components hour] decrementing:NO animated:YES];
-        [self setPickerView:self.pickerView rowInComponent:MinutePicker toIntagerValue:[components minute]  decrementing:NO animated:YES];
+        [self setPickerView:self.pickerView rowInComponent:MinutePicker toIntagerValue:[components minute] decrementing:NO animated:YES];
     }
     if (firstComponentRowValue >= self.maxRowIndex) {
         NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:self.maxDate];
         [self setPickerView:self.pickerView rowInComponent:HourPicker toIntagerValue:[components hour] decrementing:YES animated:YES];
-        [self setPickerView:self.pickerView rowInComponent:MinutePicker toIntagerValue:[components minute]  decrementing:YES animated:YES];
+        [self setPickerView:self.pickerView rowInComponent:MinutePicker toIntagerValue:[components minute] decrementing:YES animated:YES];
     }
 }
 
@@ -383,27 +377,28 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
 }
 
 #pragma mark - NSDate operations
--(BOOL)isDate:(NSDate*)date1 sameDayAsDate:(NSDate*)date2 {
-    NSCalendar* calendar = [NSCalendar currentCalendar];
-    
-    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
-    NSDateComponents* comp1 = [calendar components:unitFlags fromDate:date1];
-    NSDateComponents* comp2 = [calendar components:unitFlags fromDate:date2];
-    
-    return [comp1 day]   == [comp2 day] &&
-    [comp1 month] == [comp2 month] &&
-    [comp1 year]  == [comp2 year];
+- (BOOL)isDate:(NSDate *)date1 sameDayAsDate:(NSDate *)date2 {
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
+    NSDateComponents *comp1 = [calendar components:unitFlags fromDate:date1];
+    NSDateComponents *comp2 = [calendar components:unitFlags fromDate:date2];
+
+    return [comp1 day] == [comp2 day] &&
+           [comp1 month] == [comp2 month] &&
+           [comp1 year] == [comp2 year];
 }
 
 - (NSInteger)daysInMonth:(NSDate *)date {
     return [[NSCalendar currentCalendar] rangeOfUnit:NSCalendarUnitDay
-                                             inUnit:NSCalendarUnitMonth
-                                            forDate:date].length;
+                                              inUnit:NSCalendarUnitMonth
+                                             forDate:date]
+        .length;
 }
 
 - (NSDate *)dateForRow:(NSInteger)row {
     row = row - [self defaultRowValueForComponent:DayPicker];
-    NSDate * date = [self.date dateByAddingTimeInterval:60 * 60 * 24 * row];
+    NSDate *date = [self.date dateByAddingTimeInterval:60 * 60 * 24 * row];
     return [[NSCalendar currentCalendar] dateBySettingHour:0 minute:0 second:0 ofDate:date options:0];
 }
 
@@ -415,23 +410,25 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
     return [self.dateFormatter stringFromDate:date];
 }
 
-
 //http://stackoverflow.com/questions/4739483/number-of-days-between-two-nsdates
-- (NSInteger)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
-{
+- (NSInteger)daysBetweenDate:(NSDate *)fromDateTime andDate:(NSDate *)toDateTime {
     NSDate *fromDate;
     NSDate *toDate;
-    
+
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    
+
     [calendar rangeOfUnit:NSCalendarUnitDay startDate:&fromDate
-                 interval:NULL forDate:fromDateTime];
+                 interval:NULL
+                  forDate:fromDateTime];
     [calendar rangeOfUnit:NSCalendarUnitDay startDate:&toDate
-                 interval:NULL forDate:toDateTime];
-    
+                 interval:NULL
+                  forDate:toDateTime];
+
     NSDateComponents *difference = [calendar components:NSCalendarUnitDay
-                                               fromDate:fromDate toDate:toDate options:0];
-    
+                                               fromDate:fromDate
+                                                 toDate:toDate
+                                                options:0];
+
     return [difference day];
 }
 
@@ -462,7 +459,7 @@ static NSInteger kBufforRows = 30; //Number of rows that are prevent by scroll p
     if ([self.delegate respondsToSelector:@selector(hsDatePickerPickedDate:)]) {
         [self.delegate hsDatePickerPickedDate:[self dateWithSelectedTime]];
     }
-    
+
     if ([self.delegate respondsToSelector:@selector(hsDatePickerWillDismissWithQuitMethod:)]) {
         [self.delegate hsDatePickerWillDismissWithQuitMethod:QuitWithResult];
     }

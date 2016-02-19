@@ -10,9 +10,9 @@
 
 @interface UIColor (VNHex)
 
-+ (UIColor *) colorWithHex:(NSInteger)rgbHexValue;
++ (UIColor *)colorWithHex:(NSInteger)rgbHexValue;
 
-+ (UIColor *) colorWithHex:(NSInteger)rgbHexValue alpha:(CGFloat)alpha;
++ (UIColor *)colorWithHex:(NSInteger)rgbHexValue alpha:(CGFloat)alpha;
 
 + (UIColor *)systemColor;
 

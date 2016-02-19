@@ -16,8 +16,5 @@ FOUNDATION_EXPORT const unsigned char VNNoteManagerVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <VNNoteManager/PublicHeader.h>
 
-#import <VNNoteManager/VNNote.h>
 #import <VNNoteManager/NoteManager.h>
-
-
-
+#import <VNNoteManager/VNNote.h>

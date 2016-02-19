@@ -259,6 +259,8 @@
 		351764A81C76EABD00F31FF8 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				351764AB1C77042B00F31FF8 /* SignViewController */,
+				351764AA1C7703E100F31FF8 /* CRMediaPickerController */,
 				351764A91C76F9B200F31FF8 /* YYText */,
 				351D37E01C245AD20098F423 /* HSDatePickerViewController */,
 			);
@@ -290,6 +292,33 @@
 			name = YYText;
 			sourceTree = "<group>";
 		};
+		351764AA1C7703E100F31FF8 /* CRMediaPickerController */ = {
+			isa = PBXGroup;
+			children = (
+				350341A01C4103FF00844C2A /* CRMediaPickerController.h */,
+				350341A11C4103FF00844C2A /* CRMediaPickerController.m */,
+			);
+			name = CRMediaPickerController;
+			sourceTree = "<group>";
+		};
+		351764AB1C77042B00F31FF8 /* SignViewController */ = {
+			isa = PBXGroup;
+			children = (
+				355D5C8B1C24156100409FFC /* ImageViewController.xib */,
+				355D5C8C1C24156100409FFC /* SignViewController.xib */,
+				355D5C881C2414E600409FFC /* PJRSignatureView.h */,
+				355D5C891C2414E600409FFC /* PJRSignatureView.m */,
+			);
+			name = SignViewController;
+			sourceTree = "<group>";
+		};
+		351764AC1C77049C00F31FF8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		351D37E01C245AD20098F423 /* HSDatePickerViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -300,17 +329,13 @@
 			path = HSDatePickerViewController;
 			sourceTree = "<group>";
 		};
-		355D5C871C2414D700409FFC /* View */ = {
+		35F914FD1C770FAF001BC957 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				355D5C8B1C24156100409FFC /* ImageViewController.xib */,
-				355D5C8C1C24156100409FFC /* SignViewController.xib */,
-				355D5C881C2414E600409FFC /* PJRSignatureView.h */,
-				355D5C891C2414E600409FFC /* PJRSignatureView.m */,
-				350341A01C4103FF00844C2A /* CRMediaPickerController.h */,
-				350341A11C4103FF00844C2A /* CRMediaPickerController.m */,
+				C7470A90196164CB00FD154B /* AppContext.h */,
+				C7470A91196164CB00FD154B /* AppContext.m */,
 			);
-			name = View;
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 		622340AC1527F4BB73687B50 /* Pods */ = {
@@ -365,16 +390,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C7470A93196164D400FD154B /* App */ = {
-			isa = PBXGroup;
-			children = (
-				C7470A90196164CB00FD154B /* AppContext.h */,
-				C7470A91196164CB00FD154B /* AppContext.m */,
-				C7B282811A6E30F30072FAD3 /* LaunchScreen.xib */,
-			);
-			name = App;
-			sourceTree = "<group>";
-		};
 		C7821A7A19480417008B952D = {
 			isa = PBXGroup;
 			children = (
@@ -421,14 +436,15 @@
 		C7821A8C19480417008B952D /* Voice2Note */ = {
 			isa = PBXGroup;
 			children = (
+				35F914FD1C770FAF001BC957 /* Utilities */,
+				C7821AC919482557008B952D /* Common */,
 				351764A81C76EABD00F31FF8 /* Vendor */,
 				C71140281A076A6C00E027E4 /* VNNoteManager */,
-				C7821AC919482557008B952D /* Common */,
-				C7470A93196164D400FD154B /* App */,
-				C7821AB719480434008B952D /* Controller */,
-				355D5C871C2414D700409FFC /* View */,
+				351764AC1C77049C00F31FF8 /* Views */,
+				C7821AB719480434008B952D /* ViewControllers */,
 				C7821AEC1949AB2B008B952D /* AppDelegate.m */,
 				C7821A9519480417008B952D /* AppDelegate.h */,
+				C7B282811A6E30F30072FAD3 /* LaunchScreen.xib */,
 				C7821ACD19482610008B952D /* Localizable.strings */,
 				C7821A9819480417008B952D /* Images.xcassets */,
 				C7821A8D19480417008B952D /* Supporting Files */,
@@ -465,7 +481,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C7821AB719480434008B952D /* Controller */ = {
+		C7821AB719480434008B952D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				355D5C8F1C2415BC00409FFC /* ImageViewController.h */,
@@ -479,7 +495,7 @@
 				355D5C5F1C23EFBE00409FFC /* YYTextEditExample.h */,
 				355D5C601C23EFBE00409FFC /* YYTextEditExample.m */,
 			);
-			name = Controller;
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 		C7821AC919482557008B952D /* Common */ = {

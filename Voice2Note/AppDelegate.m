@@ -7,41 +7,41 @@
 //
 
 #import "AppDelegate.h"
+#import "NoteListViewController.h"
 #import "NoteManager.h"
 #import "UIColor+VNHex.h"
 #import "VNNote.h"
-#import "NoteListViewController.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application
-didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
     // 初始化笔记
     [self addInitFileIfNeeded];
-    
+
     /* customize navigation style */
     [[UINavigationBar appearance] setBarTintColor:[UIColor systemColor]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    
+
     NSDictionary *navbarTitleTextAttributes = [NSDictionary
-                                               dictionaryWithObjectsAndKeys:[UIColor whiteColor],
-                                               NSForegroundColorAttributeName, nil];
+        dictionaryWithObjectsAndKeys:[UIColor whiteColor],
+                                     NSForegroundColorAttributeName, nil];
     [[UINavigationBar appearance]
-     setTitleTextAttributes:navbarTitleTextAttributes];
-    
+        setTitleTextAttributes:navbarTitleTextAttributes];
+
     [[UIApplication sharedApplication]
-     setStatusBarStyle:UIStatusBarStyleLightContent];
-    
+        setStatusBarStyle:UIStatusBarStyleLightContent];
+
     NoteListViewController *noteListViewController = [[NoteListViewController alloc] init];
     UINavigationController *rootViewController = [[UINavigationController alloc] initWithRootViewController:noteListViewController];
-    
+
     self.window.rootViewController = rootViewController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    
+
     return YES;
 }
 
@@ -82,10 +82,10 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if (![userDefaults objectForKey:@"hasInitFile"]) {
         VNNote *note =
-        [[VNNote alloc] initWithTitle:nil
-                              content:NSLocalizedString(@"AboutText", @"")
-                          createdDate:[NSDate date]
-                           updateDate:[NSDate date]];
+            [[VNNote alloc] initWithTitle:nil
+                                  content:NSLocalizedString(@"AboutText", @"")
+                              createdDate:[NSDate date]
+                               updateDate:[NSDate date]];
         [[NoteManager sharedManager] storeNote:note];
         [userDefaults setBool:YES forKey:@"hasInitFile"];
         // 立即同步

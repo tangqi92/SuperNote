@@ -6,14 +6,14 @@
 //  Copyright (c) 2014年 jinxing. All rights reserved.
 //
 
-#import "VNNote.h"
 #import "NoteManager.h"
+#import "VNNote.h"
 
-#define kNoteIDKey      @"NoteID"
-#define kTitleKey       @"Title"
-#define kContentKey     @"Content"
-#define kCreatedDate    @"CreatedDate"
-#define kUpdatedDate    @"UpdatedDate"
+#define kNoteIDKey @"NoteID"
+#define kTitleKey @"Title"
+#define kContentKey @"Content"
+#define kCreatedDate @"CreatedDate"
+#define kUpdatedDate @"UpdatedDate"
 
 @implementation VNNote
 
@@ -23,8 +23,7 @@
 - (id)initWithTitle:(NSString *)title
             content:(NSString *)content
         createdDate:(NSDate *)createdDate
-         updateDate:(NSDate *)updatedDate
-{
+         updateDate:(NSDate *)updatedDate {
     self = [super init];
     if (self) {
         _noteID = [NSNumber numberWithDouble:[createdDate timeIntervalSince1970]].stringValue;
@@ -72,10 +71,8 @@
                     updateDate:updateDate];
 }
 
-- (BOOL)Persistence
-{
+- (BOOL)Persistence {
     return [[NoteManager sharedManager] storeNote:self];
 }
 
 @end
-

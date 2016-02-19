@@ -12,5 +12,3 @@ NSString *const kIFlyAppID = @"5396d66c";
 NSString *const kAppName = @"超级记事本";
 NSString *const kAppEngName = @"Voice2Note";
 NSString *const kNotificationCreateFile = @"kNotificationCreateFile";
-
-

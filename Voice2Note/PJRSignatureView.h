@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 paritosh.raval. All rights reserved.
 //
 
-
 /*
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,15 +32,12 @@
  */
 #import <UIKit/UIKit.h>
 
-@interface PJRSignatureView : UIView
-{
+@interface PJRSignatureView : UIView {
     UILabel *lblSignature;
     CAShapeLayer *shapeLayer;
 }
 
 - (UIImage *)getSignatureImage;
 - (void)clearSignature;
-
-
 
 @end

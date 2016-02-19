@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 typedef enum : NSUInteger {
-    QuitWithResult, //When confirm button is pressed
+    QuitWithResult,     //When confirm button is pressed
     QuitWithBackButton, //When back button is pressed
-    QuitWithCancel, //when View outside date picker is pressed
+    QuitWithCancel,     //when View outside date picker is pressed
 } HSDatePickerQuitMethod;
 
 typedef enum : NSUInteger {

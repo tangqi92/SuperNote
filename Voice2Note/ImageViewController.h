@@ -33,11 +33,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ImageViewController : UIViewController
-{
+@interface ImageViewController : UIViewController {
     IBOutlet UIImageView *imageView;
 }
 
-@property (nonatomic,strong) UIImage *image;
+@property (nonatomic, strong) UIImage *image;
 
 @end

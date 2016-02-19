@@ -6,18 +6,17 @@
 //  Copyright (c) 2014年 jinxing. All rights reserved.
 //
 
+#import "NoteListCell.h"
 #import "NoteListViewController.h"
 #import "NoteManager.h"
-#import "VNNote.h"
-#import "VNConstants.h"
-#import "NoteListCell.h"
 #import "SVProgressHUD.h"
-#import "UIColor+VNHex.h"
 #import "SignViewController.h"
+#import "UIColor+VNHex.h"
+#import "VNConstants.h"
+#import "VNNote.h"
 #import "YYTextEditExample.h"
 
-
-@interface NoteListViewController ()<UIAlertViewDelegate>
+@interface NoteListViewController () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) NSInteger selectedIndex;
@@ -26,8 +25,7 @@
 
 @implementation NoteListViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     //是否可以多选
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
@@ -37,41 +35,38 @@
     editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit)];
     deleteButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(delete)];
     [deleteButton setTintColor:[UIColor redColor]];
-    
+
     [self updateButtonsToMatchTableState];
     self.view.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    
+
     _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     _searchController.searchResultsUpdater = self;
-    _searchController.dimsBackgroundDuringPresentation = YES; //在搜索状态下，设置背景框的颜色为灰色
+    _searchController.dimsBackgroundDuringPresentation = YES;     //在搜索状态下，设置背景框的颜色为灰色
     _searchController.hidesNavigationBarDuringPresentation = YES; //点击搜索框的时候，是否隐藏导航栏
     // Configure the search bar with scope buttons and add it to the table view header
-    _searchController.searchBar.scopeButtonTitles = @[NSLocalizedString(@"ScopeButtonContent",@"Content"),
-                                                      NSLocalizedString(@"ScopeButtonDate",@"Date")];
+    _searchController.searchBar.scopeButtonTitles = @[ NSLocalizedString(@"ScopeButtonContent", @"Content"),
+                                                       NSLocalizedString(@"ScopeButtonDate", @"Date") ];
     [_searchController.searchBar sizeToFit];
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadData)
                                                  name:kNotificationCreateFile
                                                object:nil];
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)reloadData
-{
+- (void)reloadData {
     _dataSource = [[NoteManager sharedManager] readAllNotes];
     [self.tableView reloadData];
 }
 
-- (NSMutableArray *)dataSource
-{
+- (NSMutableArray *)dataSource {
     if (!_dataSource) {
         _dataSource = [[NoteManager sharedManager] readAllNotes];
     }
@@ -82,26 +77,22 @@
 #pragma mark === Toolbar Action ===
 #pragma mark -
 
-- (void)createNote
-{
+- (void)createNote {
     YYTextEditExample *note = [[YYTextEditExample alloc] init];
     [self.navigationController pushViewController:note animated:YES];
 }
 
-- (void)edit
-{
+- (void)edit {
     [self.tableView setEditing:YES animated:YES];
     [self updateButtonsToMatchTableState];
 }
 
-- (void)cancel
-{
+- (void)cancel {
     [self.tableView setEditing:NO animated:YES];
     [self updateButtonsToMatchTableState];
 }
 
-- (void)delete
-{
+- (void) delete {
     NSString *actionTitle;
     if (([[self.tableView indexPathsForSelectedRows] count] == 1)) {
         actionTitle = @"你确定要删除这一项吗?";
@@ -110,37 +101,37 @@
     }
     NSString *cancelTitle = @"取消";
     NSString *okTitle = @"好的";
-    
+
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:actionTitle message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-    }]];
-    
-    [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-        
-        NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
-        BOOL deleteSpecificRows = selectedRows.count > 0 ;
-        if (deleteSpecificRows) {
-            NSMutableIndexSet *indicesOfItemsToDelete = [NSMutableIndexSet new];
-            for (NSIndexPath *selectionIndex in selectedRows) {
-                [indicesOfItemsToDelete addIndex:selectionIndex.row];
-            }
-            
-            [self.dataSource removeObjectsAtIndexes:indicesOfItemsToDelete];
-            
-            [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationAutomatic];
-            
-        } else {
-            [self.dataSource removeAllObjects];
-            //根据模型 更新view
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
-        //退出编辑模式
-        [self.tableView setEditing:NO animated:YES];
-        [self updateButtonsToMatchTableState];
-    }]];
-    
+
+    [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action){
+
+                     }]];
+
+    [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDestructive handler:^(UIAlertAction *_Nonnull action) {
+
+               NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
+               BOOL deleteSpecificRows = selectedRows.count > 0;
+               if (deleteSpecificRows) {
+                   NSMutableIndexSet *indicesOfItemsToDelete = [NSMutableIndexSet new];
+                   for (NSIndexPath *selectionIndex in selectedRows) {
+                       [indicesOfItemsToDelete addIndex:selectionIndex.row];
+                   }
+
+                   [self.dataSource removeObjectsAtIndexes:indicesOfItemsToDelete];
+
+                   [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationAutomatic];
+
+               } else {
+                   [self.dataSource removeAllObjects];
+                   //根据模型 更新view
+                   [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+               }
+               //退出编辑模式
+               [self.tableView setEditing:NO animated:YES];
+               [self updateButtonsToMatchTableState];
+           }]];
+
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -148,33 +139,28 @@
 #pragma mark === DataSource & Delegate ===
 #pragma mark -
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
     return [NoteListCell heightWithNote:note];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.dataSource.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NoteListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell"];
     if (!cell) {
         cell = [[NoteListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ListCell"];
     }
     // 搜素状态
     if (self.searchController.active) {
-        
-    }
-    else{
+
+    } else {
         VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
         note.index = indexPath.row;
         [cell updateWithNote:note];
@@ -182,13 +168,12 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.tableView.editing) {
         [self updateDeleteButtonTitle];
     } else {
         _selectedIndex = indexPath.row;
-        NSLog(@"----------selectedIndex%d",_selectedIndex);
+        NSLog(@"----------selectedIndex%d", _selectedIndex);
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *pwd = [defaults objectForKey:[NSString stringWithFormat:@"%d", _selectedIndex]];
         if (pwd) {
@@ -201,24 +186,22 @@
             [alter setAlertViewStyle:UIAlertViewStyleSecureTextInput];
             // 以解决 Multiple UIAlertView 的代理事件
             [alter show];
-            
+
         } else {
             [tableView deselectRowAtIndexPath:indexPath animated:NO];
             VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
-            
+
             YYTextEditExample *yy = [[YYTextEditExample alloc] initWithNote:note];
             [self.navigationController pushViewController:yy animated:YES];
         }
     }
 }
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self updateDeleteButtonTitle];
 }
 
--(void)updateSearchResultsForSearchController:(UISearchController *)searchController
-{
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     // TODO: 搜索逻辑
 }
 
@@ -226,34 +209,29 @@
 #pragma mark === EditMode ===
 #pragma mark -
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
 }
 
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
         [[NoteManager sharedManager] deleteNote:note];
-        
+
         [self.dataSource removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 
-
 #pragma mark -
 #pragma mark === Updating button state ===
 #pragma mark -
 
-- (void)updateButtonsToMatchTableState
-{
+- (void)updateButtonsToMatchTableState {
     // 处于编辑状态
     if (self.tableView.editing) {
         //显示取消按钮
@@ -274,20 +252,16 @@
     }
 }
 
-- (void)updateDeleteButtonTitle
-{
+- (void)updateDeleteButtonTitle {
     // 根据选中情况 更新删除标题
     NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
-    
+
     BOOL allItemsAreSelected = selectedRows.count == self.dataSource.count;
     BOOL noItemsAreSelected = selectedRows.count == 0;
-    
-    if (allItemsAreSelected || noItemsAreSelected)
-    {
+
+    if (allItemsAreSelected || noItemsAreSelected) {
         deleteButton.title = @"Delete All";
-    }
-    else
-    {
+    } else {
         deleteButton.title = [NSString stringWithFormat:@"Delete (%d)", selectedRows.count];
     }
 }
@@ -296,8 +270,7 @@
 #pragma mark === UIAlertViewDelegate ===
 #pragma mark -
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *userDefaults_pwd = [userDefaults objectForKey:[NSString stringWithFormat:@"%d", _selectedIndex]];
     NSString *text_pwd = [[alertView textFieldAtIndex:0] text];

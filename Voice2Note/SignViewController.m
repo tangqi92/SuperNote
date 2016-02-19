@@ -31,9 +31,9 @@
  *
  */
 
-#import "SignViewController.h"
 #import "ImageViewController.h"
 #import "PJRSignatureView.h"
+#import "SignViewController.h"
 
 @interface SignViewController ()
 
@@ -52,27 +52,24 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    signatureView= [[PJRSignatureView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 450)];
-    [self.view addSubview:signatureView];    
+
+    signatureView = [[PJRSignatureView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 450)];
+    [self.view addSubview:signatureView];
 }
 
 #pragma mark -
 #pragma mark === Buton Action Events ===
 #pragma mark -
 
-- (IBAction)getImageBtnPressed:(id)sender
-{
+- (IBAction)getImageBtnPressed:(id)sender {
     ImageViewController *imageController = [[ImageViewController alloc] initWithNibName:@"ImageViewController" bundle:nil];
     imageController.image = [signatureView getSignatureImage];
     [self.navigationController pushViewController:imageController animated:YES];
 }
 
-- (IBAction)clearImageBtnPressed:(id)sender
-{
+- (IBAction)clearImageBtnPressed:(id)sender {
     [signatureView clearSignature];
 }
 

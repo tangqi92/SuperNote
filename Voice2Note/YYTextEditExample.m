@@ -6,34 +6,34 @@
 //  Copyright (c) 2015 ibireme. All rights reserved.
 //
 
-#import "YYTextEditExample.h"
-#import "YYText.h"
-#import "YYImage.h"
-#import "UIImage+YYWebImage.h"
-#import "UIView+YYAdd.h"
-#import "NSBundle+YYAdd.h"
-#import "NSString+YYAdd.h"
-#import "UIControl+YYAdd.h"
+#import "AppContext.h"
+#import "AppContext.h"
 #import "CALayer+YYAdd.h"
+#import "CRMediaPickerController.h"
+#import "HSDatePickerViewController.h"
+#import "NSBundle+YYAdd.h"
 #import "NSData+YYAdd.h"
-#import "UIGestureRecognizer+YYAdd.h"
-#import "YYTextExampleHelper.h"
-#import "VNConstants.h"
+#import "NSString+YYAdd.h"
+#import "SVProgressHUD.h"
 #import "SignViewController.h"
 #import "UIColor+VNHex.h"
+#import "UIControl+YYAdd.h"
+#import "UIGestureRecognizer+YYAdd.h"
+#import "UIImage+YYWebImage.h"
+#import "UIView+YYAdd.h"
+#import "VNConstants.h"
 #import "VNNote.h"
+#import "VNNote.h"
+#import "YYImage.h"
+#import "YYText.h"
+#import "YYTextEditExample.h"
+#import "YYTextExampleHelper.h"
+#import "iflyMSC/IFlyContact.h"
+#import "iflyMSC/IFlyDataUploader.h"
+#import "iflyMSC/IFlyRecognizerView.h"
 #import "iflyMSC/IFlyRecognizerView.h"
 #import "iflyMSC/IFlySpeechConstant.h"
 #import "iflyMSC/IFlySpeechUtility.h"
-#import "iflyMSC/IFlyRecognizerView.h"
-#import "iflyMSC/IFlyDataUploader.h"
-#import "iflyMSC/IFlyContact.h"
-#import "AppContext.h"
-#import "SVProgressHUD.h"
-#import "AppContext.h"
-#import "HSDatePickerViewController.h"
-#import "CRMediaPickerController.h"
-#import "VNNote.h"
 
 static const CGFloat kViewOriginY = 70;
 static const CGFloat kTextFieldHeight = 30;
@@ -42,8 +42,7 @@ static const CGFloat kVoiceButtonWidth = 100;
 static const CGFloat kVerticalMargin = 10;
 
 @import MediaPlayer;
-@interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate,UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CRMediaPickerControllerDelegate>
-
+@interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CRMediaPickerControllerDelegate>
 
 @property (nonatomic, assign) YYTextView *textView;
 @property (nonatomic, retain) NSMutableAttributedString *attrString;
@@ -64,28 +63,25 @@ static const CGFloat kVerticalMargin = 10;
 @property (nonatomic, assign) BOOL cameraOverlay;
 @property (nonatomic, assign) NSInteger deviceCameraSelected;
 
-
 @end
 
 @implementation YYTextEditExample
 
-- (instancetype)initWithNote:(VNNote *)note
-{
+- (instancetype)initWithNote:(VNNote *)note {
     self = [super init];
     if (self) {
         _note = note;
         _selectedMediaType = CRMediaPickerControllerMediaTypeImage | CRMediaPickerControllerMediaTypeVideo; // Both
         _selectedSourceType = CRMediaPickerControllerSourceTypePhotoLibrary |
-        CRMediaPickerControllerSourceTypeCamera |
-        CRMediaPickerControllerSourceTypeSavedPhotosAlbum |
-        CRMediaPickerControllerSourceTypeLastPhotoTaken; // Prompt
+                              CRMediaPickerControllerSourceTypeCamera |
+                              CRMediaPickerControllerSourceTypeSavedPhotosAlbum |
+                              CRMediaPickerControllerSourceTypeLastPhotoTaken; // Prompt
     }
     // 返回初始化后的对象的新地址
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     if ([self respondsToSelector:@selector(setAutomaticallyAdjustsScrollViewInsets:)]) {
@@ -95,7 +91,7 @@ static const CGFloat kVerticalMargin = 10;
     [self initComps];
     [self setupSpeechRecognizer];
     __weak typeof(self) _self = self;
-    
+
     UIView *toolbar;
     if ([UIVisualEffectView class]) {
         toolbar = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
@@ -105,13 +101,13 @@ static const CGFloat kVerticalMargin = 10;
     toolbar.size = CGSizeMake(kScreenWidth, 40);
     toolbar.top = kiOS7Later ? 64 : 0;
     [self.view addSubview:toolbar];
-    
+
     if (_note) {
         _attrString = [[NSMutableAttributedString alloc] initWithString:_note.content];
-    } else{
+    } else {
         _attrString = [[NSMutableAttributedString alloc] initWithString:@"请输入内容："];
     }
-    
+
     _attrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
     _attrString.yy_lineSpacing = 4;
     _attrString.yy_firstLineHeadIndent = 20;
@@ -136,8 +132,7 @@ static const CGFloat kVerticalMargin = 10;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [textView becomeFirstResponder];
     });
-    
-    
+
     /*------------------------------ Toolbar ---------------------------------*/
     UILabel *label;
     label = [UILabel new];
@@ -147,7 +142,7 @@ static const CGFloat kVerticalMargin = 10;
     label.size = CGSizeMake([label.text widthForFont:label.font] + 2, toolbar.height);
     label.left = 10;
     [toolbar addSubview:label];
-    
+
     _verticalSwitch = [UISwitch new];
     [_verticalSwitch sizeToFit];
     _verticalSwitch.centerY = toolbar.height / 2;
@@ -159,79 +154,72 @@ static const CGFloat kVerticalMargin = 10;
         _self.textView.verticalForm = switcher.isOn; /// Set vertical form
     }];
     [toolbar addSubview:_verticalSwitch];
-    
+
     [[YYTextKeyboardManager defaultManager] addObserver:self];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [[YYTextKeyboardManager defaultManager] removeObserver:self];
-    
+
     _mediaPickerController = nil;
     [self.moviePlayer stop];
     [self.moviePlayer.view removeFromSuperview];
     self.moviePlayer = nil;
 }
 
-- (void)setExclusionPathEnabled:(BOOL)enabled
-{
+- (void)setExclusionPathEnabled:(BOOL)enabled {
     if (enabled) {
         [self.textView addSubview:self.imageView];
         UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.imageView.frame
                                                         cornerRadius:self.imageView.layer.cornerRadius];
-        self.textView.exclusionPaths = @[path]; /// Set exclusion paths
+        self.textView.exclusionPaths = @[ path ]; /// Set exclusion paths
     } else {
         [self.imageView removeFromSuperview];
         self.textView.exclusionPaths = nil;
     }
 }
 
-
-- (void)initComps
-{
+- (void)initComps {
     UIBarButtonItem *photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_photo_size_select_actual_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addPhoto)];
     photoBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
+
     UIBarButtonItem *mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_movie_filter_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addMedia)];
     mediaBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
+
     UIBarButtonItem *alarmBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_access_alarm_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addAlarm)];
     alarmBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
+
     UIBarButtonItem *voiceBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings_voice_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(useVoiceInput)];
     voiceBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
+
     UIBarButtonItem *brushBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_brush_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addBrush)];
     brushBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
+
     UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(hideKeyboard)];
     doneBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
-    
+
     _comps = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kToolbarHeight)];
     _comps.tintColor = [UIColor systemColor];
-    _comps.items = [NSArray arrayWithObjects:photoBarButton,mediaBarButton, alarmBarButton, brushBarButton, voiceBarButton, doneBarButton, nil];
-    
+    _comps.items = [NSArray arrayWithObjects:photoBarButton, mediaBarButton, alarmBarButton, brushBarButton, voiceBarButton, doneBarButton, nil];
 }
 
-- (void)setupSpeechRecognizer
-{
+- (void)setupSpeechRecognizer {
     NSString *initString = [NSString stringWithFormat:@"%@=%@", [IFlySpeechConstant APPID], kIFlyAppID];
-    
+
     [IFlySpeechUtility createUtility:initString];
     _iflyRecognizerView = [[IFlyRecognizerView alloc] initWithCenter:self.view.center];
     _iflyRecognizerView.delegate = self;
-    
+
     [_iflyRecognizerView setParameter:@"iat" forKey:[IFlySpeechConstant IFLY_DOMAIN]];
     [_iflyRecognizerView setParameter:@"asr.pcm" forKey:[IFlySpeechConstant ASR_AUDIO_PATH]];
     [_iflyRecognizerView setParameter:@"plain" forKey:[IFlySpeechConstant RESULT_TYPE]];
@@ -246,8 +234,7 @@ static const CGFloat kVerticalMargin = 10;
     imageView.layer.cornerRadius = imageView.height / 2;
     imageView.center = CGPointMake(kScreenWidth / 2, kScreenWidth / 2);
     self.imageView = imageView;
-    
-    
+
     __weak typeof(self) _self = self;
     UIPanGestureRecognizer *g = [[UIPanGestureRecognizer alloc] initWithActionBlock:^(UIPanGestureRecognizer *g) {
         __strong typeof(_self) self = _self;
@@ -256,7 +243,7 @@ static const CGFloat kVerticalMargin = 10;
         self.imageView.center = p;
         UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.imageView.frame
                                                         cornerRadius:self.imageView.layer.cornerRadius];
-        self.textView.exclusionPaths = @[path];
+        self.textView.exclusionPaths = @[ path ];
     }];
     [imageView addGestureRecognizer:g];
 }
@@ -278,7 +265,7 @@ static const CGFloat kVerticalMargin = 10;
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:self
                                                                 action:@selector(saveNote)];
-    
+
     UIBarButtonItem *moreItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_more_white"]
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:self
@@ -294,8 +281,7 @@ static const CGFloat kVerticalMargin = 10;
 #pragma mark === UIAlertViewDelegate ===
 #pragma mark -
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == 1) {
         UITextField *text_field = [alertView textFieldAtIndex:0];
         if (buttonIndex == 1) {
@@ -306,18 +292,20 @@ static const CGFloat kVerticalMargin = 10;
             [userDefaults setObject:text_field.text forKey:[NSString stringWithFormat:@"%d", _note.index]];
             // 如果没有调用synchronize方法，系统会根据I/O情况不定时刻地保存到文件中!
             [userDefaults synchronize];
-            
         }
-    } else if(alertView.tag == 2) {
+    } else if (alertView.tag == 2) {
         if (buttonIndex == 1) {
             IFlyDataUploader *_uploader = [[IFlyDataUploader alloc] init];
-            IFlyContact *iFlyContact = [[IFlyContact alloc] init]; NSString *contactList = [iFlyContact contact];
+            IFlyContact *iFlyContact = [[IFlyContact alloc] init];
+            NSString *contactList = [iFlyContact contact];
             [_uploader setParameter:@"uup" forKey:@"subject"];
             [_uploader setParameter:@"contact" forKey:@"dtt"];
             //启动上传
             [_uploader uploadDataWithCompletionHandler:^(NSString *grammerID, IFlySpeechError *error) {
                 [SVProgressHUD showSuccessWithStatus:@"上传成功"];
-            } name:@"contact" data:contactList];
+            }
+                                                  name:@"contact"
+                                                  data:contactList];
         }
     }
 }
@@ -326,8 +314,7 @@ static const CGFloat kVerticalMargin = 10;
 #pragma mark === IFlyRecognizerViewDelegate ===
 #pragma mark -
 
-- (void)onResult:(NSArray *)resultArray isLast:(BOOL)isLast
-{
+- (void)onResult:(NSArray *)resultArray isLast:(BOOL)isLast {
     NSMutableString *result = [[NSMutableString alloc] init];
     NSDictionary *dic = [resultArray objectAtIndex:0];
     for (NSString *key in dic) {
@@ -336,19 +323,16 @@ static const CGFloat kVerticalMargin = 10;
     _textView.text = [NSString stringWithFormat:@"%@%@", _textView.text, result];
 }
 
-- (void)onError:(IFlySpeechError *)error
-{
+- (void)onError:(IFlySpeechError *)error {
     NSLog(@"errorCode:%@", [error errorDesc]);
 }
 
-- (void)startListenning
-{
+- (void)startListenning {
     [_iflyRecognizerView start];
     NSLog(@"start listenning...");
 }
 
-- (void)useVoiceInput
-{
+- (void)useVoiceInput {
     if (![AppContext appContext].hasUploadAddressBook) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                             message:NSLocalizedString(@"UploadABForBetter", @"")
@@ -360,23 +344,20 @@ static const CGFloat kVerticalMargin = 10;
         [[AppContext appContext] setHasUploadAddressBook:YES];
         return;
     }
-    
+
     [self hideKeyboard];
     [self startListenning];
-    
 }
 
 #pragma mark -
 #pragma mark === UIBarButtonItemAction ===
 #pragma mark -
 
-- (void)addPhoto
-{
+- (void)addPhoto {
     [self setExclusionPathEnabled:YES];
 }
 
-- (void)addMedia
-{
+- (void)addMedia {
     [self hideKeyboard];
     self.mediaPickerController = [[CRMediaPickerController alloc] init];
     self.mediaPickerController.delegate = self;
@@ -384,12 +365,11 @@ static const CGFloat kVerticalMargin = 10;
     self.mediaPickerController.sourceType = self.selectedSourceType;
     self.mediaPickerController.allowsEditing = self.allowsEditing;
     self.mediaPickerController.cameraDevice = (UIImagePickerControllerCameraDevice) self.deviceCameraSelected;
-    
+
     [self.mediaPickerController show];
 }
 
-- (void)addAlarm
-{
+- (void)addAlarm {
     HSDatePickerViewController *hsdpvc = [HSDatePickerViewController new];
     hsdpvc.delegate = self;
     if (self.selectedDate) {
@@ -398,11 +378,10 @@ static const CGFloat kVerticalMargin = 10;
     [self presentViewController:hsdpvc animated:YES completion:nil];
 }
 
-- (void)addBrush
-{
+- (void)addBrush {
     SignViewController *test = [[SignViewController alloc] initWithNibName:@"SignViewController" bundle:nil];
     [self hideKeyboard];
-    
+
     [self.navigationController pushViewController:test animated:YES];
 }
 
@@ -410,8 +389,7 @@ static const CGFloat kVerticalMargin = 10;
 #pragma mark === saveNote ===
 #pragma mark -
 
-- (void)saveNote
-{
+- (void)saveNote {
     [self hideKeyboard];
     if ((_textView.text == nil || _textView.text.length == 0)) {
         return;
@@ -436,30 +414,26 @@ static const CGFloat kVerticalMargin = 10;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
-
 #pragma mark -
 #pragma mark === More Action ===
 #pragma mark -
 
-- (void)moreActionButtonPressed
-{
+- (void)moreActionButtonPressed {
     [self hideKeyboard];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"ActionSheetCancel", @"")
                                                destructiveButtonTitle:nil
                                                     otherButtonTitles:NSLocalizedString(@"ActionSheetCopy", @""),
-                                  NSLocalizedString(@"ActionSheetLock", @""),
-                                  NSLocalizedString(@"ActionSheetMail", @""), nil];
+                                                                      NSLocalizedString(@"ActionSheetLock", @""),
+                                                                      NSLocalizedString(@"ActionSheetMail", @""), nil];
     actionSheet.tag = 256;
     [actionSheet showInView:self.view];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    
-   if(actionSheet.tag == 256){
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+    if (actionSheet.tag == 256) {
         if (buttonIndex == 0) {
             // 复制至剪切板
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -469,14 +443,13 @@ static const CGFloat kVerticalMargin = 10;
             [self lockTextAction];
         } else if (buttonIndex == 2) {
             if ([MFMailComposeViewController canSendMail]) { // 用户已设置邮件账户
-                [self sendEmailAction]; // 调用发送邮件的代码
+                [self sendEmailAction];                      // 调用发送邮件的代码
             }
         }
     }
 }
 
-- (void)lockTextAction
-{
+- (void)lockTextAction {
     // 锁定文本，弹出输入密码
     UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请输入锁定密码"
                                                     message:nil
@@ -487,14 +460,12 @@ static const CGFloat kVerticalMargin = 10;
     // 以解决 Multiple UIAlertView 的代理事件
     alter.tag = 1;
     [alter show];
-    
 }
 
 /**
  *  模拟器存在 BUG
  */
-- (void)sendEmailAction
-{
+- (void)sendEmailAction {
     MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
     [composer setMailComposeDelegate:self];
     if ([MFMailComposeViewController canSendMail]) {
@@ -507,8 +478,7 @@ static const CGFloat kVerticalMargin = 10;
     }
 }
 
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
     if (result == MFMailComposeResultFailed) {
         [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SendEmailFail", @"")];
     } else if (result == MFMailComposeResultSent) {
@@ -532,12 +502,12 @@ static const CGFloat kVerticalMargin = 10;
 
 //optional
 - (void)hsDatePickerDidDismissWithQuitMethod:(HSDatePickerQuitMethod)method {
-    NSLog(@"Picker did dismiss with %lu", (unsigned long)method);
+    NSLog(@"Picker did dismiss with %lu", (unsigned long) method);
 }
 
 //optional
 - (void)hsDatePickerWillDismissWithQuitMethod:(HSDatePickerQuitMethod)method {
-    NSLog(@"Picker will dismiss with %lu", (unsigned long)method);
+    NSLog(@"Picker will dismiss with %lu", (unsigned long) method);
 }
 
 #pragma mark -
@@ -555,45 +525,42 @@ static const CGFloat kVerticalMargin = 10;
             clipped = YES;
         }
     }
-    
+
     if (!clipped) {
         _textView.frame = self.view.bounds;
     }
 }
 
-- (void)keyboardWillShow:(NSNotification *)notification
-{
+- (void)keyboardWillShow:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
     [UIView animateWithDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]
                           delay:0.f
                         options:[userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]
-                     animations:^
-     {
-         CGRect keyboardFrame = [[userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-         CGFloat keyboardHeight = keyboardFrame.size.height;
-         
-         CGRect frame = _textView.frame;
-         frame.size.height = self.view.frame.size.height - keyboardHeight,
-         _textView.frame = frame;
-     }               completion:NULL];
+                     animations:^{
+                         CGRect keyboardFrame = [[userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+                         CGFloat keyboardHeight = keyboardFrame.size.height;
+
+                         CGRect frame = _textView.frame;
+                         frame.size.height = self.view.frame.size.height - keyboardHeight,
+                         _textView.frame = frame;
+                     }
+                     completion:NULL];
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification
-{
+- (void)keyboardWillHide:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
     [UIView animateWithDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]
                           delay:0.f
                         options:[userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]
-                     animations:^
-     {
-         CGRect frame = _textView.frame;
-         frame.size.height = self.view.frame.size.height - kViewOriginY - kTextFieldHeight - kVoiceButtonWidth - kVerticalMargin * 3;
-         _textView.frame = frame;
-     }               completion:NULL];
+                     animations:^{
+                         CGRect frame = _textView.frame;
+                         frame.size.height = self.view.frame.size.height - kViewOriginY - kTextFieldHeight - kVoiceButtonWidth - kVerticalMargin * 3;
+                         _textView.frame = frame;
+                     }
+                     completion:NULL];
 }
 
-- (void)hideKeyboard
-{
+- (void)hideKeyboard {
     if ([_textView isFirstResponder]) {
         _isEditingTitle = NO;
         [_textView resignFirstResponder];
@@ -602,20 +569,19 @@ static const CGFloat kVerticalMargin = 10;
 
 #pragma mark - CPDMediaPickerControllerDelegate
 
-- (void)CRMediaPickerController:(CRMediaPickerController *)mediaPickerController didFinishPickingAsset:(ALAsset *)asset error:(NSError *)error
-{
+- (void)CRMediaPickerController:(CRMediaPickerController *)mediaPickerController didFinishPickingAsset:(ALAsset *)asset error:(NSError *)error {
     if (!error) {
-        
+
         if (asset) {
-            
+
             if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-                
+
                 ALAssetRepresentation *representation = asset.defaultRepresentation;
                 UIImage *image = [UIImage imageWithCGImage:representation.fullScreenImage];
                 self.imageView.image = image;
-                
+
             } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-                
+
                 self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:asset.defaultRepresentation.url];
                 self.moviePlayer.movieSourceType = MPMediaTypeMovie;
                 self.moviePlayer.controlStyle = MPMovieControlStyleDefault;
@@ -623,26 +589,24 @@ static const CGFloat kVerticalMargin = 10;
                 self.moviePlayer.repeatMode = MPMovieRepeatModeNone;
                 self.moviePlayer.allowsAirPlay = NO;
                 self.moviePlayer.shouldAutoplay = NO;
-                
-//                self.moviePlayer.view.frame = self.videoView.bounds;
-//                self.moviePlayer.view.autoresizingMask = (UIViewAutoresizing)(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-//                [self.videoView addSubview:self.moviePlayer.view];
+
+                //                self.moviePlayer.view.frame = self.videoView.bounds;
+                //                self.moviePlayer.view.autoresizingMask = (UIViewAutoresizing)(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+                //                [self.videoView addSubview:self.moviePlayer.view];
                 // TODO: 获取视频后操作
                 [self.moviePlayer prepareToPlay];
-                
             }
-            
+
         } else {
             NSLog(@"No media selected");
         }
-        
+
     } else {
         NSLog(@"%@", error.localizedDescription);
     }
 }
 
-- (void)CRMediaPickerControllerDidCancel:(CRMediaPickerController *)mediaPickerController
-{
+- (void)CRMediaPickerControllerDidCancel:(CRMediaPickerController *)mediaPickerController {
     NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
