@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 @class VNNote;
 
-@interface YYTextEditExample : UIViewController
+@interface NoteEditViewController : UIViewController
 
 // 返回类型和调用方法的对象类型相同
 - (instancetype)initWithNote:(VNNote *)note;

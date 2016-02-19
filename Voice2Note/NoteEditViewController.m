@@ -14,6 +14,7 @@
 #import "NSBundle+YYAdd.h"
 #import "NSData+YYAdd.h"
 #import "NSString+YYAdd.h"
+#import "NoteEditViewController.h"
 #import "SVProgressHUD.h"
 #import "SignViewController.h"
 #import "UIColor+VNHex.h"
@@ -26,7 +27,6 @@
 #import "VNNote.h"
 #import "YYImage.h"
 #import "YYText.h"
-#import "YYTextEditExample.h"
 #import "YYTextExampleHelper.h"
 #import "iflyMSC/IFlyContact.h"
 #import "iflyMSC/IFlyDataUploader.h"
@@ -42,7 +42,7 @@ static const CGFloat kVoiceButtonWidth = 100;
 static const CGFloat kVerticalMargin = 10;
 
 @import MediaPlayer;
-@interface YYTextEditExample () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CRMediaPickerControllerDelegate>
+@interface NoteEditViewController () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CRMediaPickerControllerDelegate>
 
 @property (nonatomic, assign) YYTextView *textView;
 @property (nonatomic, retain) NSMutableAttributedString *attrString;
@@ -65,7 +65,7 @@ static const CGFloat kVerticalMargin = 10;
 
 @end
 
-@implementation YYTextEditExample
+@implementation NoteEditViewController
 
 - (instancetype)initWithNote:(VNNote *)note {
     self = [super init];

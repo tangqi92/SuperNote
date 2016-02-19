@@ -11,7 +11,7 @@
 		351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37E21C245AD20098F423 /* HSDatePickerViewController.m */; };
 		351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */; };
 		351D37EA1C25569B0098F423 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351D37E91C25569B0098F423 /* MessageUI.framework */; };
-		355D5C611C23EFBE00409FFC /* YYTextEditExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C601C23EFBE00409FFC /* YYTextEditExample.m */; };
+		355D5C611C23EFBE00409FFC /* NoteEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C601C23EFBE00409FFC /* NoteEditViewController.m */; };
 		355D5C641C23F53600409FFC /* UIImage+YYWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C631C23F53600409FFC /* UIImage+YYWebImage.m */; };
 		355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C661C23F54A00409FFC /* UIView+YYAdd.m */; };
 		355D5C6A1C23F56000409FFC /* NSBundle+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C691C23F56000409FFC /* NSBundle+YYAdd.m */; };
@@ -128,8 +128,8 @@
 		351D37E21C245AD20098F423 /* HSDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSDatePickerViewController.m; sourceTree = "<group>"; };
 		351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSDatePickerViewController.xib; sourceTree = "<group>"; };
 		351D37E91C25569B0098F423 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		355D5C5F1C23EFBE00409FFC /* YYTextEditExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextEditExample.h; sourceTree = "<group>"; };
-		355D5C601C23EFBE00409FFC /* YYTextEditExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextEditExample.m; sourceTree = "<group>"; };
+		355D5C5F1C23EFBE00409FFC /* NoteEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteEditViewController.h; sourceTree = "<group>"; };
+		355D5C601C23EFBE00409FFC /* NoteEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteEditViewController.m; sourceTree = "<group>"; };
 		355D5C621C23F53600409FFC /* UIImage+YYWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+YYWebImage.h"; sourceTree = "<group>"; };
 		355D5C631C23F53600409FFC /* UIImage+YYWebImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+YYWebImage.m"; sourceTree = "<group>"; };
 		355D5C651C23F54A00409FFC /* UIView+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YYAdd.h"; sourceTree = "<group>"; };
@@ -315,6 +315,8 @@
 		351764AC1C77049C00F31FF8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C7821AE619499F47008B952D /* NoteListCell.h */,
+				C7821AE719499F47008B952D /* NoteListCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -334,8 +336,19 @@
 			children = (
 				C7470A90196164CB00FD154B /* AppContext.h */,
 				C7470A91196164CB00FD154B /* AppContext.m */,
+				C71140521A076EDB00E027E4 /* VNConstants.h */,
+				C71140531A076EDB00E027E4 /* VNConstants.m */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		35F914FF1C7746BE001BC957 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				C71140471A076AB500E027E4 /* VNNote.h */,
+				C71140481A076AB500E027E4 /* VNNote.m */,
+			);
+			name = Modules;
 			sourceTree = "<group>";
 		};
 		622340AC1527F4BB73687B50 /* Pods */ = {
@@ -350,12 +363,6 @@
 		C71140281A076A6C00E027E4 /* VNNoteManager */ = {
 			isa = PBXGroup;
 			children = (
-				C71140501A076EDB00E027E4 /* NSDate+Conversion.h */,
-				C71140511A076EDB00E027E4 /* NSDate+Conversion.m */,
-				C71140521A076EDB00E027E4 /* VNConstants.h */,
-				C71140531A076EDB00E027E4 /* VNConstants.m */,
-				C71140471A076AB500E027E4 /* VNNote.h */,
-				C71140481A076AB500E027E4 /* VNNote.m */,
 				C71140491A076AB500E027E4 /* NoteManager.h */,
 				C711404A1A076AB500E027E4 /* NoteManager.m */,
 				C711402B1A076A6C00E027E4 /* VNNoteManager.h */,
@@ -436,6 +443,7 @@
 		C7821A8C19480417008B952D /* Voice2Note */ = {
 			isa = PBXGroup;
 			children = (
+				35F914FF1C7746BE001BC957 /* Modules */,
 				35F914FD1C770FAF001BC957 /* Utilities */,
 				C7821AC919482557008B952D /* Common */,
 				351764A81C76EABD00F31FF8 /* Vendor */,
@@ -490,10 +498,8 @@
 				355D5C921C2415BC00409FFC /* SignViewController.m */,
 				C7821ABB194804A4008B952D /* NoteListViewController.h */,
 				C7821ABC194804A4008B952D /* NoteListViewController.m */,
-				C7821AE619499F47008B952D /* NoteListCell.h */,
-				C7821AE719499F47008B952D /* NoteListCell.m */,
-				355D5C5F1C23EFBE00409FFC /* YYTextEditExample.h */,
-				355D5C601C23EFBE00409FFC /* YYTextEditExample.m */,
+				355D5C5F1C23EFBE00409FFC /* NoteEditViewController.h */,
+				355D5C601C23EFBE00409FFC /* NoteEditViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -503,6 +509,8 @@
 			children = (
 				C7821AE919499FC1008B952D /* UIColor+VNHex.h */,
 				C7821AEA19499FC1008B952D /* UIColor+VNHex.m */,
+				C71140501A076EDB00E027E4 /* NSDate+Conversion.h */,
+				C71140511A076EDB00E027E4 /* NSDate+Conversion.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -762,7 +770,7 @@
 				355D5C761C23F5A100409FFC /* NSData+YYAdd.m in Sources */,
 				350341A21C4103FF00844C2A /* CRMediaPickerController.m in Sources */,
 				C7821AE819499F47008B952D /* NoteListCell.m in Sources */,
-				355D5C611C23EFBE00409FFC /* YYTextEditExample.m in Sources */,
+				355D5C611C23EFBE00409FFC /* NoteEditViewController.m in Sources */,
 				C7821ABD194804A4008B952D /* NoteListViewController.m in Sources */,
 				355D5C801C23F64B00409FFC /* YYTextExampleHelper.m in Sources */,
 				C7821AED1949AB2B008B952D /* AppDelegate.m in Sources */,

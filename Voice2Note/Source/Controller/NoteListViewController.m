@@ -6,6 +6,7 @@
 //  Copyright (c) 2014年 jinxing. All rights reserved.
 //
 
+#import "NoteEditViewController.h"
 #import "NoteListCell.h"
 #import "NoteListViewController.h"
 #import "NoteManager.h"
@@ -14,7 +15,6 @@
 #import "UIColor+VNHex.h"
 #import "VNConstants.h"
 #import "VNNote.h"
-#import "YYTextEditExample.h"
 
 @interface NoteListViewController () <UIAlertViewDelegate>
 
@@ -78,7 +78,7 @@
 #pragma mark -
 
 - (void)createNote {
-    YYTextEditExample *note = [[YYTextEditExample alloc] init];
+    NoteEditViewController *note = [[NoteEditViewController alloc] init];
     [self.navigationController pushViewController:note animated:YES];
 }
 
@@ -191,7 +191,7 @@
             [tableView deselectRowAtIndexPath:indexPath animated:NO];
             VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
 
-            YYTextEditExample *yy = [[YYTextEditExample alloc] initWithNote:note];
+            NoteEditViewController *yy = [[NoteEditViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:yy animated:YES];
         }
     }
@@ -278,7 +278,7 @@
         // 判读密码是否相等
         if ([userDefaults_pwd isEqualToString:text_pwd]) {
             VNNote *note = [self.dataSource objectAtIndex:_selectedIndex];
-            YYTextEditExample *yy = [[YYTextEditExample alloc] initWithNote:note];
+            NoteEditViewController *yy = [[NoteEditViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:yy animated:NO];
         } else {
             // 密码错误
