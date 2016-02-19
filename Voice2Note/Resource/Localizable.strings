@@ -6,60 +6,32 @@
   Copyright (c) 2014年 jinxing. All rights reserved.
 */
 
-
-// Home
-
 "AppName" = "超级记事本";
 
-"HomeButtonItemMoreAction" = "更多";
-"HomeButtonItemListAction" = "过往";
-
-"TextPlaceHolder" = "";
-"SpeechNoResult" = "无识别结果";
-
+// ActionSheet
 "ActionSheetCancel" = "取消";
 "ActionSheetSave" = "保存";
 "ActionSheetCopy" = "复制";
-"ActionSheetMail" = "发送邮件";
-"ActionSheetWeixin" = "分享到朋友圈";
 "ActionSheetLock" = "锁定文本";
-
-
-"AddTitleForNote" = "给笔记加个标题？";
-"Sure" = "确定";
+"ActionSheetMail" = "发送邮件";
 
 "CopySuccess" = "已复制到粘贴板";
-"DeleteFileSuccess" = "删除成功";
-
 "SendEmailSuccess" = "邮件发送成功";
 "SendEmailFail" = "邮件发送失败";
 "CanNoteSendMail" = "无法发送邮件，请检查设备设置";
 
 "VoiceInput" = "语音输入";
-"ImageInputTitle" = "图片输入";
-"ImageInputMessage" = "选择一张带有文字的图片，超级记事本将会识别出图片中的文字。请尽量使用清晰度较高，背景单纯的图片";
-"ImageInputCancel" = "知道了";
-"ImageInputSure" = "识别一下";
-
-"SaveSuccess" = "保存成功";
 "SaveFail" = "保存失败";
 
-"InputViewTitle" = "标题";
-"InputViewText" = "正文";
-"InputTextNoData" = "请输入文字";
 "NoTitleNote" = "无标题笔记";
 
-"Recognizing" = "识别中...";
-"RecognizeFail" = "识别文字失败";
-
 // About
-"AboutTitle" = "超级记事本";
 "AboutText" = "超级记事本是一款功能强大的记事本。\n其支持图文混排、视频插入、手绘板及语言输入等实用功能。\n同时支持文字复制与邮件发送与文本锁定功能。";
 
-// Address book
+// Voice
 "GotoUploadAB" = "去上传";
 "UploadABForBetter" = "上传联系人，可以使语音识别人名更加精确。请放心，上传的数据仅用于提高语音识别准确度，不作其它用途";
 
-
+// Search
 "ScopeButtonContent" = "Content";
 "ScopeButtonDate" = "Date";
