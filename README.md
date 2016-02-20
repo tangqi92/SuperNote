@@ -1,50 +1,47 @@
 
-懒人笔记
+超级记事本
 =========
-iTunes地址： https://itunes.apple.com/cn/app/lan-ren-bi-ji-zhi-chi-yu-yin/id899937013?mt=8 
 
-- 懒人笔记是一款为懒人设计的笔记本，你只需要通过语音输入，即可完成笔记的书写。
-- 同时支持发邮件，分享到朋友圈等附加功能。
-- 大部分情况下你无需动笔，只需要靠说，就可以轻松记笔记、发邮件，是提高效率的好工具。
+>**超级记事本** - 一款功能强大的笔记应用。
 
-<img src="ScreenShot/home1_40.png" alt="首页" width="150px" hspace="10"/>
-<img src="ScreenShot/home2_40.png" alt="笔记" width="150px" hspace="10"/>
-<img src="ScreenShot/voice_40.png" alt="语音" width="150px" hspace="10"/>
-<img src="ScreenShot/share_40.png" alt="分享" width="150px" hspace="10"/>
+## Update Log - 更新日志
 
-Installation
------------
+### 2.1.0
+
+- 修复 - 无法正确删除笔记
+- 更新 - README
+
+
+## Screenshots - 预览
+
+<img src="ScreenShot/ss01.png"  width="270" height="486" />  <img src="ScreenShot/ss02.png" width="270" height="486" />
+
+<img src="ScreenShot/ss03.png"  width="270" height="486" />  <img src="ScreenShot/ss04.png" width="270" height="486" />
+
+<img src="ScreenShot/ss05.png"  width="270" height="486" />  <img src="ScreenShot/ss06.png" width="270" height="486" />
+
+<img src="ScreenShot/ss07.png"  width="270" height="486" />  <img src="ScreenShot/ss08.png" width="270" height="486" />
+
+
+
+## Installation - 安装
+
 依赖于 CocoaPods，执行以下命令，下载相关依赖：
 
     /:> pod install
+    
+    
+## Thanks - 感谢
 
-Other useful library
--------------
-个人其他开源项目:
+- 灵感来源: [懒人笔记](https://github.com/liaojinxing/Voice2Note)
 
-- 自动轮播banner:[LJAutoScrollView]
+## Contact - 联系我
 
-- Swift实现的v2ex客户端:[V2EXClient]
+- Weibo：[汤奇V](http://weibo.com/qiktang)
+- Blog: [http://itangqi.me](http://itangqi.me)
+- Gmail：[imtangqi#gmail.com](mailto:imtangqi@gmail.com "欢迎与我联系")
 
-- Swift语法分享PPT:[SwiftSharing]
+## License - 许可协议
 
-- iOS \& web混合开发框架:[HybridBridge]
-
-- 五星打分组件:[StarRatingView]
-
-- 正则定义样式的UILabel:[RichStyleLabel]
-
-- 常用图片处理category:[EasyImage]
-
-- iOS AutoLayout科普及demo:[AutoLayout]
-
-[LJAutoScrollView]:https://github.com/liaojinxing/LJAutoScrollView
-[V2EXClient]:https://github.com/liaojinxing/V2EXClient
-[SwiftSharing]:https://github.com/liaojinxing/SwiftSharing
-[StarRatingView]:https://github.com/liaojinxing/StarRatingView
-[HybridBridge]:https://github.com/liaojinxing/HybridBridge
-[RichStyleLabel]:https://github.com/liaojinxing/RichStyleLabel
-[EasyImage]:https://github.com/liaojinxing/EasyImage
-[AutoLayout]:https://github.com/liaojinxing/Autolayout
-[Voice2Note]:https://github.com/liaojinxing/Voice2Note
+MIT
 
