@@ -8,13 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NoteListViewController : UITableViewController <UISearchResultsUpdating> {
-    UIBarButtonItem *cancelButton;
-    UIBarButtonItem *addButton;
-    UIBarButtonItem *editButton;
-    UIBarButtonItem *deleteButton;
-}
-
-@property (nonatomic, strong) UISearchController *searchController;
+@interface NoteListViewController : UITableViewController
 
 @end

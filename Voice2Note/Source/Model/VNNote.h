@@ -13,12 +13,13 @@
 // 遵循NSCoding协议
 @interface VNNote : NSObject <NSCoding>
 
-@property (nonatomic, strong) NSString *noteID;
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *content;
+// 如果使用的是 strong, 那么这个属性就有可能指向一个可变对象，如果这个可变对象在外部被修改了，那么会影响该属性
+@property (nonatomic, copy) NSString *noteID;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *content;
 @property (nonatomic, strong) NSDate *createdDate;
 @property (nonatomic, strong) NSDate *updatedDate;
-@property (nonatomic, assign) int index;
+@property (nonatomic, assign) NSUInteger index;
 
 - (id)initWithTitle:(NSString *)title
             content:(NSString *)content

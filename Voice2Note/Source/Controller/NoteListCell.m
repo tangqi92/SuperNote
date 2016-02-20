@@ -31,7 +31,7 @@ static const CGFloat kMaxTitleHeight = 180;
 + (CGFloat)heightWithNote:(VNNote *)note {
     CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
     NSString *string = note.title;
-    if (!note.title || note.title.length <= 0 || [note.title isEqualToString:NSLocalizedString(@"NoTitleNote", @"")]) {
+    if (!string || string.length <= 0 || [string isEqualToString:NSLocalizedString(@"NoTitleNote", @"")]) {
         string = note.content;
     }
     CGFloat titleHeight = [[self class] heightWithString:string width:screenWidth - kCellHorizontalMargin * 2 - kCellPadding * 2];

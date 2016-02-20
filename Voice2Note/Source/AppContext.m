@@ -21,6 +21,9 @@ static NSString *kHasUploadAddressBookKey = @"kHasUploadAddressBookKey";
     return instance;
 }
 
+/**
+ *  没实际作用(>_<)
+ */
 - (BOOL)hasUploadAddressBook {
     return [[[NSUserDefaults standardUserDefaults] objectForKey:kHasUploadAddressBookKey] boolValue];
 }

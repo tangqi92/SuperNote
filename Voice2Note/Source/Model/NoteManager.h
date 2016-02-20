@@ -7,8 +7,8 @@
 //
 
 @import Foundation;
-
 @class VNNote;
+
 @interface NoteManager : NSObject
 
 @property (nonatomic, strong) NSString *docPath;

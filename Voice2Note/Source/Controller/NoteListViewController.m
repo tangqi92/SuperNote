@@ -16,10 +16,17 @@
 #import "VNConstants.h"
 #import "VNNote.h"
 
-@interface NoteListViewController () <UIAlertViewDelegate>
+@interface NoteListViewController () <UIAlertViewDelegate, UISearchResultsUpdating> {
+    UIBarButtonItem *cancelButton;
+    UIBarButtonItem *addButton;
+    UIBarButtonItem *editButton;
+    UIBarButtonItem *deleteButton;
+}
+
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) NSInteger selectedIndex;
+@property (nonatomic, strong) UISearchController *searchController;
 
 @end
 
@@ -29,18 +36,18 @@
     [super viewDidLoad];
     //是否可以多选
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.navigationItem.title = kAppName;
+    self.view.backgroundColor = [UIColor whiteColor];
+
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
-    addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNote)];
+    addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNote)];
     editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit)];
     deleteButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(delete)];
     [deleteButton setTintColor:[UIColor redColor]];
 
     [self updateButtonsToMatchTableState];
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-
-    _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+       _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     _searchController.searchResultsUpdater = self;
     _searchController.dimsBackgroundDuringPresentation = YES;     //在搜索状态下，设置背景框的颜色为灰色
     _searchController.hidesNavigationBarDuringPresentation = YES; //点击搜索框的时候，是否隐藏导航栏
@@ -77,7 +84,7 @@
 #pragma mark === Toolbar Action ===
 #pragma mark -
 
-- (void)createNote {
+- (void)addNote {
     NoteEditViewController *note = [[NoteEditViewController alloc] init];
     [self.navigationController pushViewController:note animated:YES];
 }
@@ -262,7 +269,7 @@
     if (allItemsAreSelected || noItemsAreSelected) {
         deleteButton.title = @"Delete All";
     } else {
-        deleteButton.title = [NSString stringWithFormat:@"Delete (%d)", selectedRows.count];
+        deleteButton.title = [NSString stringWithFormat:@"Delete (%lu)", (unsigned long)selectedRows.count];
     }
 }
 
