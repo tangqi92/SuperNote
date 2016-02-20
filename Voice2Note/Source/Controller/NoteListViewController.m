@@ -23,9 +23,8 @@
     UIBarButtonItem *deleteButton;
 }
 
-
-@property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) NSInteger selectedIndex;
+@property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) UISearchController *searchController;
 
 @end
@@ -34,30 +33,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //是否可以多选
-    self.tableView.allowsMultipleSelectionDuringEditing = YES;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+   
     self.navigationItem.title = kAppName;
     self.view.backgroundColor = [UIColor whiteColor];
 
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
     addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNote)];
     editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit)];
-    deleteButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(delete)];
+    deleteButton = [[UIBarButtonItem alloc] initWithTitle:@"删除所有" style:UIBarButtonItemStylePlain target:self action:@selector(delete)];
     [deleteButton setTintColor:[UIColor redColor]];
 
     [self updateButtonsToMatchTableState];
-       _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    _searchController.searchResultsUpdater = self;
-    _searchController.dimsBackgroundDuringPresentation = YES;     //在搜索状态下，设置背景框的颜色为灰色
-    _searchController.hidesNavigationBarDuringPresentation = YES; //点击搜索框的时候，是否隐藏导航栏
-    // Configure the search bar with scope buttons and add it to the table view header
-    _searchController.searchBar.scopeButtonTitles = @[ NSLocalizedString(@"ScopeButtonContent", @"Content"),
-                                                       NSLocalizedString(@"ScopeButtonDate", @"Date") ];
-    [_searchController.searchBar sizeToFit];
+    
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchResultsUpdater = self;
+    // 在搜索状态下，设置背景框的颜色为灰色
+    self.searchController.dimsBackgroundDuringPresentation = YES;
+    // 点击搜索框的时候，是否隐藏导航栏
+    self.searchController.hidesNavigationBarDuringPresentation = YES;
+    // 添加搜索范围分类
+    self.searchController.searchBar.scopeButtonTitles = @[ NSLocalizedString(@"ScopeButtonContent", @"内容"),
+                                                           NSLocalizedString(@"ScopeButtonDate", @"日期") ];
+    [self.searchController.searchBar sizeToFit];
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-
+    //是否可以多选
+    self.tableView.allowsMultipleSelectionDuringEditing = YES;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadData)
                                                  name:kNotificationCreateFile
@@ -69,8 +72,9 @@
 }
 
 - (void)reloadData {
-    _dataSource = [[NoteManager sharedManager] readAllNotes];
+    self.dataSource = [[NoteManager sharedManager] readAllNotes];
     [self.tableView reloadData];
+    [self updateButtonsToMatchTableState];
 }
 
 - (NSMutableArray *)dataSource {
@@ -107,7 +111,7 @@
         actionTitle = @"你确定要删除这些项目吗?";
     }
     NSString *cancelTitle = @"取消";
-    NSString *okTitle = @"好的";
+    NSString *okTitle = @"确定";
 
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:actionTitle message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
@@ -123,6 +127,8 @@
                    NSMutableIndexSet *indicesOfItemsToDelete = [NSMutableIndexSet new];
                    for (NSIndexPath *selectionIndex in selectedRows) {
                        [indicesOfItemsToDelete addIndex:selectionIndex.row];
+                       VNNote *note = [self.dataSource objectAtIndex:selectionIndex.row];
+                       [[NoteManager sharedManager] deleteNote:note];
                    }
 
                    [self.dataSource removeObjectsAtIndexes:indicesOfItemsToDelete];
@@ -180,16 +186,15 @@
         [self updateDeleteButtonTitle];
     } else {
         _selectedIndex = indexPath.row;
-        NSLog(@"----------selectedIndex%d", _selectedIndex);
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *pwd = [defaults objectForKey:[NSString stringWithFormat:@"%d", _selectedIndex]];
+        NSString *pwd = [defaults objectForKey:[NSString stringWithFormat:@"%ld", (long)self.selectedIndex]];
         if (pwd) {
             // 锁定文本，弹出输入密码
             UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请输入解锁密码"
                                                             message:nil
                                                            delegate:self
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:@"OK", nil];
+                                                  cancelButtonTitle:@"取消"
+                                                  otherButtonTitles:@"确定", nil];
             [alter setAlertViewStyle:UIAlertViewStyleSecureTextInput];
             // 以解决 Multiple UIAlertView 的代理事件
             [alter show];
@@ -222,16 +227,6 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
-        [[NoteManager sharedManager] deleteNote:note];
-
-        [self.dataSource removeObjectAtIndex:indexPath.row];
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
 }
 
 #pragma mark -
@@ -267,9 +262,9 @@
     BOOL noItemsAreSelected = selectedRows.count == 0;
 
     if (allItemsAreSelected || noItemsAreSelected) {
-        deleteButton.title = @"Delete All";
+        deleteButton.title = @"删除所有";
     } else {
-        deleteButton.title = [NSString stringWithFormat:@"Delete (%lu)", (unsigned long)selectedRows.count];
+        deleteButton.title = [NSString stringWithFormat:@"删除 (%lu)", (unsigned long) selectedRows.count];
     }
 }
 
@@ -279,7 +274,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *userDefaults_pwd = [userDefaults objectForKey:[NSString stringWithFormat:@"%d", _selectedIndex]];
+    NSString *userDefaults_pwd = [userDefaults objectForKey:[NSString stringWithFormat:@"%ld", (long)self.selectedIndex]];
     NSString *text_pwd = [[alertView textFieldAtIndex:0] text];
     if (buttonIndex == 1) {
         // 判读密码是否相等
@@ -292,7 +287,7 @@
             UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"密码错误"
                                                             message:nil
                                                            delegate:self
-                                                  cancelButtonTitle:@"OK"
+                                                  cancelButtonTitle:@"确定"
                                                   otherButtonTitles:nil, nil];
             [alter show];
         }

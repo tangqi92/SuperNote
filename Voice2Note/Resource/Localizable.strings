@@ -33,5 +33,5 @@
 "UploadABForBetter" = "上传联系人，可以使语音识别人名更加精确。请放心，上传的数据仅用于提高语音识别准确度，不作其它用途";
 
 // Search
-"ScopeButtonContent" = "Content";
-"ScopeButtonDate" = "Date";
+"ScopeButtonContent" = "内容";
+"ScopeButtonDate" = "日期";

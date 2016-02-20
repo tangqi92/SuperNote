@@ -409,7 +409,7 @@ static const CGFloat kVerticalMargin = 10;
     if (success) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationCreateFile object:nil userInfo:nil];
     } else {
-        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"SaveFail", @"")];
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"保存失败", @"")];
     }
     [self.navigationController popViewControllerAnimated:YES];
 }
