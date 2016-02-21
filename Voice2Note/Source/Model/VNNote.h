@@ -10,7 +10,7 @@
 
 #define VNNOTE_DEFAULT_TITLE @"无标题笔记"
 
-// 遵循NSCoding协议
+// 遵循 NSCoding 协议
 @interface VNNote : NSObject <NSCoding>
 
 // 如果使用的是 strong, 那么这个属性就有可能指向一个可变对象，如果这个可变对象在外部被修改了，那么会影响该属性

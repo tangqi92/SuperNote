@@ -11,8 +11,7 @@
 
 @interface NoteManager : NSObject
 
-@property (nonatomic, strong) NSString *docPath;
-
+// 供外部调用
 + (instancetype)sharedManager;
 
 - (NSMutableArray *)readAllNotes;

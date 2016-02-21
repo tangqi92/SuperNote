@@ -7,7 +7,6 @@
 //
 
 #import "AppContext.h"
-#import "AppContext.h"
 #import "CALayer+YYAdd.h"
 #import "CRMediaPickerController.h"
 #import "HSDatePickerViewController.h"
@@ -23,7 +22,6 @@
 #import "UIImage+YYWebImage.h"
 #import "UIView+YYAdd.h"
 #import "VNConstants.h"
-#import "VNNote.h"
 #import "VNNote.h"
 #import "YYImage.h"
 #import "YYText.h"
@@ -54,7 +52,6 @@ static const CGFloat kVerticalMargin = 10;
 @property (nonatomic, strong) VNNote *note;
 @property (nonatomic, strong) NSDate *selectedDate;
 @property (nonatomic, strong) UIToolbar *comps;
-@property (nonatomic) BOOL isEditingTitle;
 @property (nonatomic, strong) MPMoviePlayerController *moviePlayer;
 @property (nonatomic, strong) CRMediaPickerController *mediaPickerController;
 @property (nonatomic, assign) CRMediaPickerControllerMediaType selectedMediaType;
@@ -62,6 +59,7 @@ static const CGFloat kVerticalMargin = 10;
 @property (nonatomic, assign) BOOL allowsEditing;
 @property (nonatomic, assign) BOOL cameraOverlay;
 @property (nonatomic, assign) NSInteger deviceCameraSelected;
+@property (nonatomic) BOOL isEditingTitle;
 
 @end
 
@@ -71,11 +69,6 @@ static const CGFloat kVerticalMargin = 10;
     self = [super init];
     if (self) {
         _note = note;
-        _selectedMediaType = CRMediaPickerControllerMediaTypeImage | CRMediaPickerControllerMediaTypeVideo; // Both
-        _selectedSourceType = CRMediaPickerControllerSourceTypePhotoLibrary |
-                              CRMediaPickerControllerSourceTypeCamera |
-                              CRMediaPickerControllerSourceTypeSavedPhotosAlbum |
-                              CRMediaPickerControllerSourceTypeLastPhotoTaken; // Prompt
     }
     // 返回初始化后的对象的新地址
     return self;
@@ -84,13 +77,14 @@ static const CGFloat kVerticalMargin = 10;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    // compability with automaticallyAdjustsScrollViewInsets: http://stackoverflow.com/questions/20550019/compability-with-automaticallyadjustsscrollviewinsets
     if ([self respondsToSelector:@selector(setAutomaticallyAdjustsScrollViewInsets:)]) {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
+    [self initMediaPick];
     [self initImageView];
     [self initComps];
     [self setupSpeechRecognizer];
-    __weak typeof(self) _self = self;
 
     UIView *toolbar;
     if ([UIVisualEffectView class]) {
@@ -142,6 +136,7 @@ static const CGFloat kVerticalMargin = 10;
     label.size = CGSizeMake([label.text widthForFont:label.font] + 2, toolbar.height);
     label.left = 10;
     [toolbar addSubview:label];
+    __weak typeof(self) _self = self;
 
     _verticalSwitch = [UISwitch new];
     [_verticalSwitch sizeToFit];
@@ -225,6 +220,14 @@ static const CGFloat kVerticalMargin = 10;
     [_iflyRecognizerView setParameter:@"plain" forKey:[IFlySpeechConstant RESULT_TYPE]];
 }
 
+- (void)initMediaPick {
+    _selectedMediaType = CRMediaPickerControllerMediaTypeImage | CRMediaPickerControllerMediaTypeVideo; // Both
+    _selectedSourceType = CRMediaPickerControllerSourceTypePhotoLibrary |
+                          CRMediaPickerControllerSourceTypeCamera |
+                          CRMediaPickerControllerSourceTypeSavedPhotosAlbum |
+                          CRMediaPickerControllerSourceTypeLastPhotoTaken; // Prompt
+}
+
 - (void)initImageView {
     NSData *data = [NSData dataNamed:@"dribbble256_imageio.png"];
     UIImage *image = [[YYImage alloc] initWithData:data scale:2];
@@ -287,9 +290,9 @@ static const CGFloat kVerticalMargin = 10;
         if (buttonIndex == 1) {
             // 获取输入的密码
             NSLog(@"Password: %@", text_field.text);
-            NSLog(@"_note.index: %d", _note.index);
+            NSLog(@"_note.index: %lu", (unsigned long)_note.index);
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            [userDefaults setObject:text_field.text forKey:[NSString stringWithFormat:@"%d", _note.index]];
+            [userDefaults setObject:text_field.text forKey:[NSString stringWithFormat:@"%lu", (unsigned long)_note.index]];
             // 如果没有调用synchronize方法，系统会根据I/O情况不定时刻地保存到文件中!
             [userDefaults synchronize];
         }

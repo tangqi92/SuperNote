@@ -342,13 +342,13 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
-		35F914FF1C7746BE001BC957 /* Modules */ = {
+		35F914FF1C7746BE001BC957 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				C71140471A076AB500E027E4 /* VNNote.h */,
 				C71140481A076AB500E027E4 /* VNNote.m */,
 			);
-			name = Modules;
+			name = Models;
 			sourceTree = "<group>";
 		};
 		622340AC1527F4BB73687B50 /* Pods */ = {
@@ -443,13 +443,13 @@
 		C7821A8C19480417008B952D /* Voice2Note */ = {
 			isa = PBXGroup;
 			children = (
-				35F914FF1C7746BE001BC957 /* Modules */,
+				35F914FF1C7746BE001BC957 /* Models */,
 				35F914FD1C770FAF001BC957 /* Utilities */,
 				C7821AC919482557008B952D /* Common */,
 				351764A81C76EABD00F31FF8 /* Vendor */,
 				C71140281A076A6C00E027E4 /* VNNoteManager */,
 				351764AC1C77049C00F31FF8 /* Views */,
-				C7821AB719480434008B952D /* ViewControllers */,
+				C7821AB719480434008B952D /* Controllers */,
 				C7821AEC1949AB2B008B952D /* AppDelegate.m */,
 				C7821A9519480417008B952D /* AppDelegate.h */,
 				C7B282811A6E30F30072FAD3 /* LaunchScreen.xib */,
@@ -489,7 +489,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C7821AB719480434008B952D /* ViewControllers */ = {
+		C7821AB719480434008B952D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				355D5C8F1C2415BC00409FFC /* ImageViewController.h */,
@@ -501,7 +501,7 @@
 				355D5C5F1C23EFBE00409FFC /* NoteEditViewController.h */,
 				355D5C601C23EFBE00409FFC /* NoteEditViewController.m */,
 			);
-			name = ViewControllers;
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		C7821AC919482557008B952D /* Common */ = {

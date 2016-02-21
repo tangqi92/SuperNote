@@ -16,16 +16,12 @@
 #import "VNConstants.h"
 #import "VNNote.h"
 
-@interface NoteListViewController () <UIAlertViewDelegate, UISearchResultsUpdating> {
-    UIBarButtonItem *cancelButton;
-    UIBarButtonItem *addButton;
-    UIBarButtonItem *editButton;
-    UIBarButtonItem *deleteButton;
-}
+@interface NoteListViewController () <UIAlertViewDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, assign) NSInteger selectedIndex;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton, *addButton, *editButton, *deleteButton;
 
 @end
 
@@ -37,11 +33,11 @@
     self.navigationItem.title = kAppName;
     self.view.backgroundColor = [UIColor whiteColor];
 
-    cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
-    addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNote)];
-    editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit)];
-    deleteButton = [[UIBarButtonItem alloc] initWithTitle:@"删除所有" style:UIBarButtonItemStylePlain target:self action:@selector(delete)];
-    [deleteButton setTintColor:[UIColor redColor]];
+    self.cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+    self.addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNote)];
+    self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit)];
+    self.deleteButton = [[UIBarButtonItem alloc] initWithTitle:@"删除所有" style:UIBarButtonItemStylePlain target:self action:@selector(delete)];
+    [self.deleteButton setTintColor:[UIColor redColor]];
 
     [self updateButtonsToMatchTableState];
     
@@ -237,20 +233,20 @@
     // 处于编辑状态
     if (self.tableView.editing) {
         //显示取消按钮
-        self.navigationItem.rightBarButtonItem = cancelButton;
+        self.navigationItem.rightBarButtonItem = self.cancelButton;
         [self updateDeleteButtonTitle];
         //显示删除按钮
-        self.navigationItem.leftBarButtonItem = deleteButton;
+        self.navigationItem.leftBarButtonItem = self.deleteButton;
     } else {
         //显示添加按钮
-        self.navigationItem.leftBarButtonItem = addButton;
+        self.navigationItem.leftBarButtonItem = self.addButton;
         if (self.dataSource.count > 0) {
-            editButton.enabled = YES;
+            self.editButton.enabled = YES;
         } else {
-            editButton.enabled = NO;
+            self.editButton.enabled = NO;
         }
         //显示编辑按钮
-        self.navigationItem.rightBarButtonItem = editButton;
+        self.navigationItem.rightBarButtonItem = self.editButton;
     }
 }
 
@@ -262,9 +258,9 @@
     BOOL noItemsAreSelected = selectedRows.count == 0;
 
     if (allItemsAreSelected || noItemsAreSelected) {
-        deleteButton.title = @"删除所有";
+        self.deleteButton.title = @"删除所有";
     } else {
-        deleteButton.title = [NSString stringWithFormat:@"删除 (%lu)", (unsigned long) selectedRows.count];
+        self.deleteButton.title = [NSString stringWithFormat:@"删除 (%lu)", (unsigned long) selectedRows.count];
     }
 }
 

@@ -11,6 +11,12 @@
 #import "VNConstants.h"
 #import "VNNote.h"
 
+@interface NoteManager ()
+
+@property (nonatomic, strong) NSString *docPath;
+
+@end
+
 @implementation NoteManager
 
 + (instancetype)sharedManager {
@@ -24,8 +30,6 @@
 
 /**
  *  创建存储路径
- *
- *  @return <#return value description#>
  */
 - (NSString *)createDataPathIfNeeded {
     NSString *documentsDirectory = [self documentDirectoryPath];
@@ -83,7 +87,7 @@
 
 - (VNNote *)readNoteWithID:(NSString *)noteID;
 {
-    NSString *dataPath = [_docPath stringByAppendingPathComponent:noteID];
+    NSString *dataPath = [self.docPath stringByAppendingPathComponent:noteID];
     NSData *codedData = [[NSData alloc] initWithContentsOfFile:dataPath];
     if (codedData == nil) {
         return nil;
@@ -94,14 +98,14 @@
 
 - (BOOL)storeNote:(VNNote *)note {
     [self createDataPathIfNeeded];
-    NSString *dataPath = [_docPath stringByAppendingPathComponent:note.noteID];
-    // 通过归档，将复杂对象转换为NSData；通过反归档，将NSData转换为复杂对象
+    NSString *dataPath = [self.docPath stringByAppendingPathComponent:note.noteID];
+    // 通过归档，将复杂对象转换为 NSData；通过反归档，将 NSData 转换为复杂对象
     NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:note];
     return [savedData writeToFile:dataPath atomically:YES];
 }
 
 - (void)deleteNote:(VNNote *)note {
-    NSString *filePath = [_docPath stringByAppendingPathComponent:note.noteID];
+    NSString *filePath = [self.docPath stringByAppendingPathComponent:note.noteID];
     [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
 }
 
