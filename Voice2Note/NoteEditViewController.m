@@ -77,7 +77,9 @@ static const CGFloat kVerticalMargin = 10;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     self.view.backgroundColor = [UIColor whiteColor];
+
     // compability with automaticallyAdjustsScrollViewInsets: http://stackoverflow.com/questions/20550019/compability-with-automaticallyadjustsscrollviewinsets
     if ([self respondsToSelector:@selector(setAutomaticallyAdjustsScrollViewInsets:)]) {
         self.automaticallyAdjustsScrollViewInsets = NO;
@@ -85,63 +87,12 @@ static const CGFloat kVerticalMargin = 10;
 
     [self initComps];
     [self initToolbar];
-    [self initMediaPick];
+    [self initVertical];
     [self initImageView];
+    [self initMediaPick];
     [self setupSpeechRecognizer];
-
-    if (self.note) {
-        _attrString = [[NSMutableAttributedString alloc] initWithString:_note.content];
-    } else {
-        _attrString = [[NSMutableAttributedString alloc] initWithString:@"请输入内容："];
-    }
-    _attrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
-    _attrString.yy_lineSpacing = 4;
-    _attrString.yy_firstLineHeadIndent = 20;
-
-    YYTextView *textView = [YYTextView new];
-    textView.attributedText = _attrString;
-    textView.size = self.view.size;
-    textView.autocorrectionType = UITextAutocorrectionTypeNo;
-    textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
-    textView.delegate = self;
-    if (kiOS7Later) {
-        textView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-    } else {
-        textView.height -= 64;
-    }
-    textView.contentInset = UIEdgeInsetsMake(_toolbar.bottom, 0, 0, 0);
-    textView.scrollIndicatorInsets = textView.contentInset;
-    textView.selectedRange = NSMakeRange(_attrString.length, 0);
-    textView.inputAccessoryView = self.comps;
-    [self.view insertSubview:textView belowSubview:_toolbar];
-    self.textView = textView;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [textView becomeFirstResponder];
-    });
-
-    /*------------------------------ Toolbar ---------------------------------*/
-
-    _label = [UILabel new];
-    _label.backgroundColor = [UIColor clearColor];
-    _label.font = [UIFont systemFontOfSize:14];
-    _label.text = @"Vertical:";
-    _label.size = CGSizeMake([_label.text widthForFont:_label.font] + 2, _toolbar.height);
-    _label.left = 10;
-    [_toolbar addSubview:_label];
-    __weak typeof(self) _self = self;
-
-    _verticalSwitch = [UISwitch new];
-    [_verticalSwitch sizeToFit];
-    _verticalSwitch.centerY = _toolbar.height / 2;
-    _verticalSwitch.left = _label.right - 5;
-    _verticalSwitch.layer.transformScale = 0.8;
-    // 选择逻辑
-    [_verticalSwitch addBlockForControlEvents:UIControlEventValueChanged block:^(UISwitch *switcher) {
-        [_self.textView endEditing:YES];
-        _self.textView.verticalForm = switcher.isOn; /// Set vertical form
-    }];
-    [_toolbar addSubview:_verticalSwitch];
+    [self initAttributedString];
+    [self initTextView];
 
     [[YYTextKeyboardManager defaultManager] addObserver:self];
 
@@ -158,12 +109,16 @@ static const CGFloat kVerticalMargin = 10;
 
 - (void)dealloc {
     [[YYTextKeyboardManager defaultManager] removeObserver:self];
-
-    _mediaPickerController = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.mediaPickerController = nil;
     [self.moviePlayer stop];
     [self.moviePlayer.view removeFromSuperview];
     self.moviePlayer = nil;
 }
+
+#pragma mark -
+#pragma mark === Init ===
+#pragma mark -
 
 - (void)initComps {
     _photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_photo_size_select_actual_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addPhoto)];
@@ -264,6 +219,64 @@ static const CGFloat kVerticalMargin = 10;
     }
 }
 
+- (void)initAttributedString {
+    if (self.note) {
+        _attrString = [[NSMutableAttributedString alloc] initWithString:_note.content];
+    } else {
+        _attrString = [[NSMutableAttributedString alloc] initWithString:@"请输入内容："];
+    }
+    _attrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
+    _attrString.yy_lineSpacing = 4;
+    _attrString.yy_firstLineHeadIndent = 20;
+}
+
+- (void)initTextView {
+    YYTextView *textView = [YYTextView new];
+    textView.attributedText = _attrString;
+    textView.size = self.view.size;
+    textView.autocorrectionType = UITextAutocorrectionTypeNo;
+    textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    textView.delegate = self;
+    if (kiOS7Later) {
+        textView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    } else {
+        textView.height -= 64;
+    }
+    textView.contentInset = UIEdgeInsetsMake(_toolbar.bottom, 0, 0, 0);
+    textView.scrollIndicatorInsets = textView.contentInset;
+    textView.selectedRange = NSMakeRange(_attrString.length, 0);
+    textView.inputAccessoryView = self.comps;
+    [self.view insertSubview:textView belowSubview:_toolbar];
+    self.textView = textView;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [textView becomeFirstResponder];
+    });
+}
+
+- (void)initVertical {
+    _label = [UILabel new];
+    _label.backgroundColor = [UIColor clearColor];
+    _label.font = [UIFont systemFontOfSize:14];
+    _label.text = @"Vertical:";
+    _label.size = CGSizeMake([_label.text widthForFont:_label.font] + 2, _toolbar.height);
+    _label.left = 10;
+    [_toolbar addSubview:_label];
+    __weak typeof(self) _self = self;
+
+    _verticalSwitch = [UISwitch new];
+    [_verticalSwitch sizeToFit];
+    _verticalSwitch.centerY = _toolbar.height / 2;
+    _verticalSwitch.left = _label.right - 5;
+    _verticalSwitch.layer.transformScale = 0.8;
+    // 选择逻辑
+    [_verticalSwitch addBlockForControlEvents:UIControlEventValueChanged block:^(UISwitch *switcher) {
+        [_self.textView endEditing:YES];
+        _self.textView.verticalForm = switcher.isOn; /// Set vertical form
+    }];
+    [_toolbar addSubview:_verticalSwitch];
+}
+
 #pragma mark -
 #pragma mark === YYTextViewDelegate ===
 #pragma mark -
@@ -289,8 +302,11 @@ static const CGFloat kVerticalMargin = 10;
 #pragma mark === UIAlertViewDelegate ===
 #pragma mark -
 
+#define TAG_LOCK 1
+#define TAG_UPLOADER 2
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == 1) {
+    if (alertView.tag == TAG_LOCK) {
         UITextField *text_field = [alertView textFieldAtIndex:0];
         if (buttonIndex == 1) {
             // 获取输入的密码
@@ -301,7 +317,7 @@ static const CGFloat kVerticalMargin = 10;
             // 如果没有调用synchronize方法，系统会根据I/O情况不定时刻地保存到文件中!
             [userDefaults synchronize];
         }
-    } else if (alertView.tag == 2) {
+    } else if (alertView.tag == TAG_UPLOADER) {
         if (buttonIndex == 1) {
             IFlyDataUploader *_uploader = [[IFlyDataUploader alloc] init];
             IFlyContact *iFlyContact = [[IFlyContact alloc] init];
@@ -347,7 +363,7 @@ static const CGFloat kVerticalMargin = 10;
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"ActionSheetCancel", @"")
                                                   otherButtonTitles:NSLocalizedString(@"GotoUploadAB", @""), nil];
-        alertView.tag = 2;
+        alertView.tag = TAG_UPLOADER;
         [alertView show];
         [[AppContext appContext] setHasUploadAddressBook:YES];
         return;
@@ -427,6 +443,8 @@ static const CGFloat kVerticalMargin = 10;
 #pragma mark === More Action ===
 #pragma mark -
 
+#define MORE_ACTION 3
+
 - (void)moreActionButtonPressed {
     [self hideKeyboard];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -436,13 +454,13 @@ static const CGFloat kVerticalMargin = 10;
                                                     otherButtonTitles:NSLocalizedString(@"ActionSheetCopy", @""),
                                                                       NSLocalizedString(@"ActionSheetLock", @""),
                                                                       NSLocalizedString(@"ActionSheetMail", @""), nil];
-    actionSheet.tag = 256;
+    actionSheet.tag = MORE_ACTION;
     [actionSheet showInView:self.view];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 
-    if (actionSheet.tag == 256) {
+    if (actionSheet.tag == MORE_ACTION) {
         if (buttonIndex == 0) {
             // 复制至剪切板
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -467,7 +485,7 @@ static const CGFloat kVerticalMargin = 10;
                                           otherButtonTitles:@"OK", nil];
     [alter setAlertViewStyle:UIAlertViewStyleSecureTextInput];
     // 以解决 Multiple UIAlertView 的代理事件
-    alter.tag = 1;
+    alter.tag = TAG_LOCK;
     [alter show];
 }
 
