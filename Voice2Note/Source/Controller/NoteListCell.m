@@ -19,6 +19,7 @@ static const CGFloat kLabelHeight = 15;
 static const CGFloat kMaxTitleHeight = 180;
 
 @interface NoteListCell () {
+    
     UIView *_backgroundView;
     UILabel *_titleLabel;
     UILabel *_timeLabel;
@@ -62,6 +63,7 @@ static const CGFloat kMaxTitleHeight = 180;
 
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kCellPadding, kCellPadding, _backgroundView.frame.size.width - kCellPadding * 2, 0)];
         [_titleLabel setTextColor:[UIColor charcoalColor]];
+
         [_titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
         [_titleLabel setNumberOfLines:0];
         [_backgroundView addSubview:_titleLabel];

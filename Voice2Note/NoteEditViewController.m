@@ -32,6 +32,7 @@
 #import "iflyMSC/IFlyRecognizerView.h"
 #import "iflyMSC/IFlySpeechConstant.h"
 #import "iflyMSC/IFlySpeechUtility.h"
+@import MediaPlayer;
 
 static const CGFloat kViewOriginY = 70;
 static const CGFloat kTextFieldHeight = 30;
@@ -39,19 +40,19 @@ static const CGFloat kToolbarHeight = 44;
 static const CGFloat kVoiceButtonWidth = 100;
 static const CGFloat kVerticalMargin = 10;
 
-@import MediaPlayer;
-@interface NoteEditViewController () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CRMediaPickerControllerDelegate>
+@interface NoteEditViewController () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, CRMediaPickerControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, assign) YYTextView *textView;
 @property (nonatomic, retain) NSMutableAttributedString *attrString;
 @property (nonatomic, strong) IFlyRecognizerView *iflyRecognizerView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UISwitch *verticalSwitch;
-@property (nonatomic, strong) UISwitch *debugSwitch;
-@property (nonatomic, strong) UISwitch *exclusionSwitch;
 @property (nonatomic, strong) VNNote *note;
 @property (nonatomic, strong) NSDate *selectedDate;
 @property (nonatomic, strong) UIToolbar *comps;
+@property (nonatomic, strong) UIView *toolbar;
+@property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) UIBarButtonItem *photoBarButton, *mediaBarButton, *alarmBarButton, *voiceBarButton, *brushBarButton, *doneBarButton;
 @property (nonatomic, strong) MPMoviePlayerController *moviePlayer;
 @property (nonatomic, strong) CRMediaPickerController *mediaPickerController;
 @property (nonatomic, assign) CRMediaPickerControllerMediaType selectedMediaType;
@@ -81,30 +82,22 @@ static const CGFloat kVerticalMargin = 10;
     if ([self respondsToSelector:@selector(setAutomaticallyAdjustsScrollViewInsets:)]) {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
+
+    [self initComps];
+    [self initToolbar];
     [self initMediaPick];
     [self initImageView];
-    [self initComps];
     [self setupSpeechRecognizer];
 
-    UIView *toolbar;
-    if ([UIVisualEffectView class]) {
-        toolbar = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
-    } else {
-        toolbar = [UIToolbar new];
-    }
-    toolbar.size = CGSizeMake(kScreenWidth, 40);
-    toolbar.top = kiOS7Later ? 64 : 0;
-    [self.view addSubview:toolbar];
-
-    if (_note) {
+    if (self.note) {
         _attrString = [[NSMutableAttributedString alloc] initWithString:_note.content];
     } else {
         _attrString = [[NSMutableAttributedString alloc] initWithString:@"请输入内容："];
     }
-
     _attrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
     _attrString.yy_lineSpacing = 4;
     _attrString.yy_firstLineHeadIndent = 20;
+
     YYTextView *textView = [YYTextView new];
     textView.attributedText = _attrString;
     textView.size = self.view.size;
@@ -117,38 +110,38 @@ static const CGFloat kVerticalMargin = 10;
     } else {
         textView.height -= 64;
     }
-    textView.contentInset = UIEdgeInsetsMake(toolbar.bottom, 0, 0, 0);
+    textView.contentInset = UIEdgeInsetsMake(_toolbar.bottom, 0, 0, 0);
     textView.scrollIndicatorInsets = textView.contentInset;
     textView.selectedRange = NSMakeRange(_attrString.length, 0);
     textView.inputAccessoryView = self.comps;
-    [self.view insertSubview:textView belowSubview:toolbar];
+    [self.view insertSubview:textView belowSubview:_toolbar];
     self.textView = textView;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [textView becomeFirstResponder];
     });
 
     /*------------------------------ Toolbar ---------------------------------*/
-    UILabel *label;
-    label = [UILabel new];
-    label.backgroundColor = [UIColor clearColor];
-    label.font = [UIFont systemFontOfSize:14];
-    label.text = @"Vertical:";
-    label.size = CGSizeMake([label.text widthForFont:label.font] + 2, toolbar.height);
-    label.left = 10;
-    [toolbar addSubview:label];
+
+    _label = [UILabel new];
+    _label.backgroundColor = [UIColor clearColor];
+    _label.font = [UIFont systemFontOfSize:14];
+    _label.text = @"Vertical:";
+    _label.size = CGSizeMake([_label.text widthForFont:_label.font] + 2, _toolbar.height);
+    _label.left = 10;
+    [_toolbar addSubview:_label];
     __weak typeof(self) _self = self;
 
     _verticalSwitch = [UISwitch new];
     [_verticalSwitch sizeToFit];
-    _verticalSwitch.centerY = toolbar.height / 2;
-    _verticalSwitch.left = label.right - 5;
+    _verticalSwitch.centerY = _toolbar.height / 2;
+    _verticalSwitch.left = _label.right - 5;
     _verticalSwitch.layer.transformScale = 0.8;
     // 选择逻辑
     [_verticalSwitch addBlockForControlEvents:UIControlEventValueChanged block:^(UISwitch *switcher) {
         [_self.textView endEditing:YES];
         _self.textView.verticalForm = switcher.isOn; /// Set vertical form
     }];
-    [toolbar addSubview:_verticalSwitch];
+    [_toolbar addSubview:_verticalSwitch];
 
     [[YYTextKeyboardManager defaultManager] addObserver:self];
 
@@ -172,40 +165,40 @@ static const CGFloat kVerticalMargin = 10;
     self.moviePlayer = nil;
 }
 
-- (void)setExclusionPathEnabled:(BOOL)enabled {
-    if (enabled) {
-        [self.textView addSubview:self.imageView];
-        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.imageView.frame
-                                                        cornerRadius:self.imageView.layer.cornerRadius];
-        self.textView.exclusionPaths = @[ path ]; /// Set exclusion paths
-    } else {
-        [self.imageView removeFromSuperview];
-        self.textView.exclusionPaths = nil;
-    }
-}
-
 - (void)initComps {
-    UIBarButtonItem *photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_photo_size_select_actual_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addPhoto)];
-    photoBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    _photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_photo_size_select_actual_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addPhoto)];
+    _photoBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
-    UIBarButtonItem *mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_movie_filter_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addMedia)];
-    mediaBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    _mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_movie_filter_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addMedia)];
+    _mediaBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
-    UIBarButtonItem *alarmBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_access_alarm_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addAlarm)];
-    alarmBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    _alarmBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_access_alarm_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addAlarm)];
+    _alarmBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
-    UIBarButtonItem *voiceBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings_voice_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(useVoiceInput)];
-    voiceBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    _voiceBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings_voice_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(useVoiceInput)];
+    _voiceBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
-    UIBarButtonItem *brushBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_brush_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addBrush)];
-    brushBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    _brushBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_brush_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addBrush)];
+    _brushBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
-    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(hideKeyboard)];
-    doneBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
+    _doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(hideKeyboard)];
+    _doneBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
     _comps = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kToolbarHeight)];
     _comps.tintColor = [UIColor systemColor];
-    _comps.items = [NSArray arrayWithObjects:photoBarButton, mediaBarButton, alarmBarButton, brushBarButton, voiceBarButton, doneBarButton, nil];
+    _comps.items = [NSArray arrayWithObjects:_photoBarButton, _mediaBarButton, _alarmBarButton, _brushBarButton, _voiceBarButton, _doneBarButton, nil];
+}
+
+- (void)initToolbar {
+    // 使用 UIVisualEffctView 来进行 Blur
+    if ([UIVisualEffectView class]) {
+        _toolbar = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
+    } else {
+        _toolbar = [UIToolbar new];
+    }
+    _toolbar.size = CGSizeMake(kScreenWidth, 40);
+    _toolbar.top = kiOS7Later ? 64 : 0;
+    [self.view addSubview:_toolbar];
 }
 
 - (void)setupSpeechRecognizer {
@@ -228,8 +221,20 @@ static const CGFloat kVerticalMargin = 10;
                           CRMediaPickerControllerSourceTypeLastPhotoTaken; // Prompt
 }
 
+- (void)setExclusionPathEnabled:(BOOL)enabled {
+    if (enabled) {
+        [self.textView addSubview:self.imageView];
+        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.imageView.frame
+                                                        cornerRadius:self.imageView.layer.cornerRadius];
+        self.textView.exclusionPaths = @[ path ]; /// Set exclusion paths
+    } else {
+        [self.imageView removeFromSuperview];
+        self.textView.exclusionPaths = nil;
+    }
+}
+
 - (void)initImageView {
-    NSData *data = [NSData dataNamed:@"dribbble256_imageio.png"];
+    NSData *data = [NSData dataNamed:@"default_image.png"];
     UIImage *image = [[YYImage alloc] initWithData:data scale:2];
     UIImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
     imageView.clipsToBounds = YES;
@@ -290,9 +295,9 @@ static const CGFloat kVerticalMargin = 10;
         if (buttonIndex == 1) {
             // 获取输入的密码
             NSLog(@"Password: %@", text_field.text);
-            NSLog(@"_note.index: %lu", (unsigned long)_note.index);
+            NSLog(@"_note.index: %lu", (unsigned long) _note.index);
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            [userDefaults setObject:text_field.text forKey:[NSString stringWithFormat:@"%lu", (unsigned long)_note.index]];
+            [userDefaults setObject:text_field.text forKey:[NSString stringWithFormat:@"%lu", (unsigned long) _note.index]];
             // 如果没有调用synchronize方法，系统会根据I/O情况不定时刻地保存到文件中!
             [userDefaults synchronize];
         }
@@ -356,6 +361,7 @@ static const CGFloat kVerticalMargin = 10;
 #pragma mark === UIBarButtonItemAction ===
 #pragma mark -
 
+// FIXME:
 - (void)addPhoto {
     [self setExclusionPathEnabled:YES];
 }
