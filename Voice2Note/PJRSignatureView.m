@@ -127,6 +127,8 @@
     control = 0;
 }
 
+#pragma mark - 清除涂鸦板
+
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
     [self touchesEnded:touches withEvent:event];
 }

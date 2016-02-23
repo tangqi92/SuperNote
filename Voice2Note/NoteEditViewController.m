@@ -117,7 +117,7 @@ static const CGFloat kVerticalMargin = 10;
 }
 
 #pragma mark -
-#pragma mark === Init ===
+#pragma mark === InitViews ===
 #pragma mark -
 
 - (void)initComps {
@@ -181,7 +181,7 @@ static const CGFloat kVerticalMargin = 10;
         [self.textView addSubview:self.imageView];
         UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.imageView.frame
                                                         cornerRadius:self.imageView.layer.cornerRadius];
-        self.textView.exclusionPaths = @[ path ]; /// Set exclusion paths
+        self.textView.exclusionPaths = @[ path ];   // Set exclusion paths
     } else {
         [self.imageView removeFromSuperview];
         self.textView.exclusionPaths = nil;
