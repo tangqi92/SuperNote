@@ -43,6 +43,7 @@ static const CGFloat kVerticalMargin = 10;
 @interface NoteEditViewController () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, CRMediaPickerControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, assign) YYTextView *textView;
+@property (nonatomic, strong) YYTextView *defaultTextView;
 @property (nonatomic, retain) NSMutableAttributedString *attrString;
 @property (nonatomic, strong) IFlyRecognizerView *iflyRecognizerView;
 @property (nonatomic, strong) UIImageView *imageView;
@@ -221,6 +222,7 @@ static const CGFloat kVerticalMargin = 10;
 }
 
 - (void)initAttributedString {
+    NSLog(@"Jump into initAttributedString");
     if (self.note) {
         _attrString = [[NSMutableAttributedString alloc] initWithString:self.note.content];
     } else {
@@ -232,26 +234,27 @@ static const CGFloat kVerticalMargin = 10;
 }
 
 - (void)initTextView {
-    YYTextView *textView = [YYTextView new];
-    textView.attributedText = self.attrString;
-    textView.size = self.view.size;
-    textView.autocorrectionType = UITextAutocorrectionTypeNo;
-    textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
-    textView.delegate = self;
+    NSLog(@"Jump into initTextView");
+    _defaultTextView = [YYTextView new];
+    _defaultTextView.attributedText = _attrString;
+    _defaultTextView.size = self.view.size;
+    _defaultTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+    _defaultTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _defaultTextView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    _defaultTextView.delegate = self;
     if (kiOS7Later) {
-        textView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+        _defaultTextView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     } else {
-        textView.height -= 64;
+        _defaultTextView.height -= 64;
     }
-    textView.contentInset = UIEdgeInsetsMake(_toolbar.bottom, 0, 0, 0);
-    textView.scrollIndicatorInsets = textView.contentInset;
-    textView.selectedRange = NSMakeRange(_attrString.length, 0);
-    textView.inputAccessoryView = self.comps;
-    [self.view insertSubview:textView belowSubview:_toolbar];
-    self.textView = textView;
+    _defaultTextView.contentInset = UIEdgeInsetsMake(_toolbar.bottom, 0, 0, 0);
+    _defaultTextView.scrollIndicatorInsets = _defaultTextView.contentInset;
+    _defaultTextView.selectedRange = NSMakeRange(_attrString.length, 0);
+    _defaultTextView.inputAccessoryView = self.comps;
+    [self.view insertSubview:_defaultTextView belowSubview:_toolbar];
+    self.textView = _defaultTextView;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [textView becomeFirstResponder];
+        [_defaultTextView becomeFirstResponder];
     });
 }
 
@@ -378,7 +381,7 @@ static const CGFloat kVerticalMargin = 10;
 #pragma mark === UIBarButtonItemAction ===
 #pragma mark -
 
-// Done!!!
+// Done!!! - Image's path
 - (void)addPhoto {
     //    NSLog(@"Executed me?");
     [self setExclusionPathEnabled:YES];
@@ -632,7 +635,20 @@ static const CGFloat kVerticalMargin = 10;
 
                 ALAssetRepresentation *representation = asset.defaultRepresentation;
                 UIImage *image = [UIImage imageWithCGImage:representation.fullScreenImage];
-                self.imageView.image = image;
+
+                
+                image = [UIImage imageWithCGImage:image.CGImage scale:5 orientation:UIImageOrientationUp];
+                
+                NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:image contentMode:UIViewContentModeCenter attachmentSize:image.size alignToFont:self.attrString.yy_font alignment:YYTextVerticalAlignmentCenter];
+                
+                [_attrString appendAttributedString:attachText];
+                [_attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
+                NSLog(@"%@", _attrString);
+                
+                // FIXME: 样式改变了（ ＴДＴ）
+                self.defaultTextView.attributedText = _attrString;
+                self.textView = _defaultTextView;
+                
 
             } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
 
