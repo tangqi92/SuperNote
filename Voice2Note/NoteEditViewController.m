@@ -121,19 +121,19 @@ static const CGFloat kVerticalMargin = 10;
 #pragma mark -
 
 - (void)initComps {
-    _photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_photo_size_select_actual_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addPhoto)];
+    _photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_photo_white"] style:UIBarButtonItemStylePlain target:self action:@selector(addPhoto)];
     _photoBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
-    _mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_movie_filter_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addMedia)];
+    _mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_media_white"] style:UIBarButtonItemStylePlain target:self action:@selector(addMedia)];
     _mediaBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
-    _alarmBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_access_alarm_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addAlarm)];
+    _alarmBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_alarm_white"] style:UIBarButtonItemStylePlain target:self action:@selector(addAlarm)];
     _alarmBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
-    _voiceBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_settings_voice_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(useVoiceInput)];
+    _voiceBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_voice_white"] style:UIBarButtonItemStylePlain target:self action:@selector(useVoiceInput)];
     _voiceBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
-    _brushBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_brush_white_18pt_2x"] style:UIBarButtonItemStylePlain target:self action:@selector(addBrush)];
+    _brushBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_brush_white"] style:UIBarButtonItemStylePlain target:self action:@selector(addBrush)];
     _brushBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
 
     _doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(hideKeyboard)];
@@ -178,10 +178,11 @@ static const CGFloat kVerticalMargin = 10;
 
 - (void)setExclusionPathEnabled:(BOOL)enabled {
     if (enabled) {
+        NSLog(@"Execute setExclusionPathEnabled:YES");
         [self.textView addSubview:self.imageView];
         UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.imageView.frame
                                                         cornerRadius:self.imageView.layer.cornerRadius];
-        self.textView.exclusionPaths = @[ path ];   // Set exclusion paths
+        self.textView.exclusionPaths = @[ path ]; // Set exclusion paths
     } else {
         [self.imageView removeFromSuperview];
         self.textView.exclusionPaths = nil;
@@ -221,7 +222,7 @@ static const CGFloat kVerticalMargin = 10;
 
 - (void)initAttributedString {
     if (self.note) {
-        _attrString = [[NSMutableAttributedString alloc] initWithString:_note.content];
+        _attrString = [[NSMutableAttributedString alloc] initWithString:self.note.content];
     } else {
         _attrString = [[NSMutableAttributedString alloc] initWithString:@"请输入内容："];
     }
@@ -232,7 +233,7 @@ static const CGFloat kVerticalMargin = 10;
 
 - (void)initTextView {
     YYTextView *textView = [YYTextView new];
-    textView.attributedText = _attrString;
+    textView.attributedText = self.attrString;
     textView.size = self.view.size;
     textView.autocorrectionType = UITextAutocorrectionTypeNo;
     textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -287,10 +288,10 @@ static const CGFloat kVerticalMargin = 10;
                                                                 target:self
                                                                 action:@selector(saveNote)];
 
-    UIBarButtonItem *moreItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_more_white"]
+    UIBarButtonItem *moreItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_more_white"]
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:self
-                                                                action:@selector(moreActionButtonPressed)];
+                                                                action:@selector(moreAction)];
     self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:moreItem, saveItem, nil];
 }
 
@@ -377,8 +378,9 @@ static const CGFloat kVerticalMargin = 10;
 #pragma mark === UIBarButtonItemAction ===
 #pragma mark -
 
-// FIXME:
+// Done!!!
 - (void)addPhoto {
+    //    NSLog(@"Executed me?");
     [self setExclusionPathEnabled:YES];
 }
 
@@ -445,7 +447,7 @@ static const CGFloat kVerticalMargin = 10;
 
 #define MORE_ACTION 3
 
-- (void)moreActionButtonPressed {
+- (void)moreAction {
     [self hideKeyboard];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
@@ -490,7 +492,7 @@ static const CGFloat kVerticalMargin = 10;
 }
 
 /**
- *  模拟器存在 BUG
+ *  发送邮件（拟器存在 BUG）
  */
 - (void)sendEmailAction {
     MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
@@ -524,7 +526,7 @@ static const CGFloat kVerticalMargin = 10;
     dateFormater.dateFormat = @"yyyy.MM.dd HH:mm:ss";
     // 获取日期后处理
     NSLog(@"Date picked stringFromDate %@", [dateFormater stringFromDate:date]);
-   
+
     [self setNotification:date];
 }
 
@@ -542,8 +544,8 @@ static const CGFloat kVerticalMargin = 10;
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     if (notification != nil) {
 
-        notification.fireDate = fireDate;                         //触发通知的时间
-        notification.repeatInterval = 0;                          //循环次数，
+        notification.fireDate = fireDate; //触发通知的时间
+        notification.repeatInterval = 0;  //循环次数，
 
         notification.timeZone = [NSTimeZone defaultTimeZone];
         notification.soundName = UILocalNotificationDefaultSoundName;
@@ -561,6 +563,7 @@ static const CGFloat kVerticalMargin = 10;
         [[UIApplication sharedApplication] scheduleLocalNotification:notification];
     }
 }
+
 #pragma mark -
 #pragma mark === Keyboard ===
 #pragma mark -

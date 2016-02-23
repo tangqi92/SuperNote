@@ -11,6 +11,7 @@
 		351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37E21C245AD20098F423 /* HSDatePickerViewController.m */; };
 		351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */; };
 		351D37EA1C25569B0098F423 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351D37E91C25569B0098F423 /* MessageUI.framework */; };
+		354EBC811C7C35F9002997F2 /* default_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 354EBC801C7C35F9002997F2 /* default_image.png */; };
 		355D5C611C23EFBE00409FFC /* NoteEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C601C23EFBE00409FFC /* NoteEditViewController.m */; };
 		355D5C641C23F53600409FFC /* UIImage+YYWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C631C23F53600409FFC /* UIImage+YYWebImage.m */; };
 		355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C661C23F54A00409FFC /* UIView+YYAdd.m */; };
@@ -128,6 +129,7 @@
 		351D37E21C245AD20098F423 /* HSDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSDatePickerViewController.m; sourceTree = "<group>"; };
 		351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSDatePickerViewController.xib; sourceTree = "<group>"; };
 		351D37E91C25569B0098F423 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		354EBC801C7C35F9002997F2 /* default_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_image.png; path = ../../../../Pictures/Private/default_image.png; sourceTree = "<group>"; };
 		355D5C5F1C23EFBE00409FFC /* NoteEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteEditViewController.h; sourceTree = "<group>"; };
 		355D5C601C23EFBE00409FFC /* NoteEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteEditViewController.m; sourceTree = "<group>"; };
 		355D5C621C23F53600409FFC /* UIImage+YYWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+YYWebImage.h"; sourceTree = "<group>"; };
@@ -455,6 +457,7 @@
 				C7B282811A6E30F30072FAD3 /* LaunchScreen.xib */,
 				C7821ACD19482610008B952D /* Localizable.strings */,
 				C7821A9819480417008B952D /* Images.xcassets */,
+				354EBC801C7C35F9002997F2 /* default_image.png */,
 				C7821A8D19480417008B952D /* Supporting Files */,
 			);
 			path = Voice2Note;
@@ -679,6 +682,7 @@
 				C7B282821A6E30F30072FAD3 /* LaunchScreen.xib in Resources */,
 				355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */,
 				355D5C8D1C24156100409FFC /* ImageViewController.xib in Resources */,
+				354EBC811C7C35F9002997F2 /* default_image.png in Resources */,
 				C7821A9919480417008B952D /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

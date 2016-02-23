@@ -29,7 +29,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+
     self.navigationItem.title = kAppName;
     self.view.backgroundColor = [UIColor whiteColor];
 
@@ -40,7 +40,7 @@
     [self.deleteButton setTintColor:[UIColor redColor]];
 
     [self updateButtonsToMatchTableState];
-    
+
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.searchResultsUpdater = self;
     // 在搜索状态下，设置背景框的颜色为灰色
@@ -53,10 +53,10 @@
     [self.searchController.searchBar sizeToFit];
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    //是否可以多选
+    // 是否可以多选
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadData)
                                                  name:kNotificationCreateFile
@@ -133,10 +133,10 @@
 
                } else {
                    [self.dataSource removeAllObjects];
-                   //根据模型 更新view
+                   // 根据模型 更新 view
                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
                }
-               //退出编辑模式
+               // 退出编辑模式
                [self.tableView setEditing:NO animated:YES];
                [self updateButtonsToMatchTableState];
            }]];
@@ -183,7 +183,7 @@
     } else {
         _selectedIndex = indexPath.row;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *pwd = [defaults objectForKey:[NSString stringWithFormat:@"%ld", (long)self.selectedIndex]];
+        NSString *pwd = [defaults objectForKey:[NSString stringWithFormat:@"%ld", (long) self.selectedIndex]];
         if (pwd) {
             // 锁定文本，弹出输入密码
             UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"请输入解锁密码"
@@ -232,26 +232,26 @@
 - (void)updateButtonsToMatchTableState {
     // 处于编辑状态
     if (self.tableView.editing) {
-        //显示取消按钮
+        // 显示取消按钮
         self.navigationItem.rightBarButtonItem = self.cancelButton;
         [self updateDeleteButtonTitle];
-        //显示删除按钮
+        // 显示删除按钮
         self.navigationItem.leftBarButtonItem = self.deleteButton;
     } else {
-        //显示添加按钮
+        // 显示添加按钮
         self.navigationItem.leftBarButtonItem = self.addButton;
         if (self.dataSource.count > 0) {
             self.editButton.enabled = YES;
         } else {
             self.editButton.enabled = NO;
         }
-        //显示编辑按钮
+        // 显示编辑按钮
         self.navigationItem.rightBarButtonItem = self.editButton;
     }
 }
 
 - (void)updateDeleteButtonTitle {
-    // 根据选中情况 更新删除标题
+    // 根据选中情况，更新删除标题
     NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
 
     BOOL allItemsAreSelected = selectedRows.count == self.dataSource.count;
@@ -270,7 +270,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *userDefaults_pwd = [userDefaults objectForKey:[NSString stringWithFormat:@"%ld", (long)self.selectedIndex]];
+    NSString *userDefaults_pwd = [userDefaults objectForKey:[NSString stringWithFormat:@"%ld", (long) self.selectedIndex]];
     NSString *text_pwd = [[alertView textFieldAtIndex:0] text];
     if (buttonIndex == 1) {
         // 判读密码是否相等
