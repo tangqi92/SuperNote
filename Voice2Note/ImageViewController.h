@@ -39,4 +39,6 @@
 
 @property (nonatomic, strong) UIImage *image;
 
+- (IBAction)saveImageToPhotosAlbum:(id)sender;
+
 @end
