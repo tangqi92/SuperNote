@@ -10,8 +10,8 @@
 #import "NoteListViewController.h"
 #import "NoteManager.h"
 #import "UIColor+VNHex.h"
-#import "VNNote.h"
 #import "VNConstants.h"
+#import "VNNote.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application
@@ -105,17 +105,18 @@
     }
 }
 
-//本地通知注册成功后调用的方法
--(void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
-{
+/**
+ *  本地通知注册成功后调用的方法
+ */
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
     NSLog(@"本地通知注册成功");
-    
 }
 
-//本地通知注册失败调用的方法
--(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
-{
-    NSLog(@"error is:%@",error);
+/**
+ *  本地通知注册失败调用的方法
+ */
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"error is:%@", error);
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
@@ -124,17 +125,17 @@
     [alert show];
 
     NSDictionary *dic = [[NSDictionary alloc] init];
-    //这里可以接受到本地通知中心发送的消息
+    // 这里可以接受到本地通知中心发送的消息
     dic = notification.userInfo;
     NSLog(@"user info = %@", [dic objectForKey:@"key"]);
 
-    // 图标上的数字减1
+    // 图标上的数字减 1
     application.applicationIconBadgeNumber -= 1;
-    
-    //移除当前所有的本地通知
+
+    // 移除当前所有的本地通知
     [application cancelAllLocalNotifications];
-    
-    //移除指定的通知
+
+    // 移除指定的通知
     [application cancelLocalNotification:notification];
 }
 

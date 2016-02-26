@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		350341A21C4103FF00844C2A /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 350341A11C4103FF00844C2A /* CRMediaPickerController.m */; };
 		351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37E21C245AD20098F423 /* HSDatePickerViewController.m */; };
 		351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */; };
 		351D37EA1C25569B0098F423 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351D37E91C25569B0098F423 /* MessageUI.framework */; };
@@ -27,6 +26,7 @@
 		355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C8C1C24156100409FFC /* SignViewController.xib */; };
 		355D5C931C2415BC00409FFC /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C901C2415BC00409FFC /* ImageViewController.m */; };
 		355D5C941C2415BC00409FFC /* SignViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C921C2415BC00409FFC /* SignViewController.m */; };
+		355FE2381C8052DD00F01AC2 /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355FE2371C8052DD00F01AC2 /* CRMediaPickerController.m */; };
 		8321E68A15AE491F981EE0DC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90D3642E47F94B6EAB1CE461 /* libPods.a */; };
 		C711402C1A076A6C00E027E4 /* VNNoteManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C711402B1A076A6C00E027E4 /* VNNoteManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C71140321A076A6C00E027E4 /* VNNoteManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71140271A076A6C00E027E4 /* VNNoteManager.framework */; };
@@ -124,7 +124,6 @@
 
 /* Begin PBXFileReference section */
 		350341A01C4103FF00844C2A /* CRMediaPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CRMediaPickerController.h; path = "../../../../Downloads/CRMediaPickerController-master/CRMediaPickerController/CRMediaPickerController.h"; sourceTree = "<group>"; };
-		350341A11C4103FF00844C2A /* CRMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CRMediaPickerController.m; path = "../../../../Downloads/CRMediaPickerController-master 2/CRMediaPickerController/CRMediaPickerController.m"; sourceTree = "<group>"; };
 		351D37E11C245AD20098F423 /* HSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSDatePickerViewController.h; sourceTree = "<group>"; };
 		351D37E21C245AD20098F423 /* HSDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSDatePickerViewController.m; sourceTree = "<group>"; };
 		351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSDatePickerViewController.xib; sourceTree = "<group>"; };
@@ -158,6 +157,7 @@
 		355D5C901C2415BC00409FFC /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		355D5C911C2415BC00409FFC /* SignViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignViewController.h; sourceTree = "<group>"; };
 		355D5C921C2415BC00409FFC /* SignViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignViewController.m; sourceTree = "<group>"; };
+		355FE2371C8052DD00F01AC2 /* CRMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMediaPickerController.m; sourceTree = "<group>"; };
 		90D3642E47F94B6EAB1CE461 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF272645A13CF49090BEC7E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C711400A1A075E9100E027E4 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -298,7 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				350341A01C4103FF00844C2A /* CRMediaPickerController.h */,
-				350341A11C4103FF00844C2A /* CRMediaPickerController.m */,
+				355FE2371C8052DD00F01AC2 /* CRMediaPickerController.m */,
 			);
 			name = CRMediaPickerController;
 			sourceTree = "<group>";
@@ -772,7 +772,6 @@
 				355D5C6A1C23F56000409FFC /* NSBundle+YYAdd.m in Sources */,
 				355D5C701C23F58C00409FFC /* UIControl+YYAdd.m in Sources */,
 				355D5C761C23F5A100409FFC /* NSData+YYAdd.m in Sources */,
-				350341A21C4103FF00844C2A /* CRMediaPickerController.m in Sources */,
 				C7821AE819499F47008B952D /* NoteListCell.m in Sources */,
 				355D5C611C23EFBE00409FFC /* NoteEditViewController.m in Sources */,
 				C7821ABD194804A4008B952D /* NoteListViewController.m in Sources */,
@@ -780,6 +779,7 @@
 				C7821AED1949AB2B008B952D /* AppDelegate.m in Sources */,
 				355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */,
 				355D5C941C2415BC00409FFC /* SignViewController.m in Sources */,
+				355FE2381C8052DD00F01AC2 /* CRMediaPickerController.m in Sources */,
 				351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */,
 				355D5C931C2415BC00409FFC /* ImageViewController.m in Sources */,
 				C7821A9319480417008B952D /* main.m in Sources */,

@@ -85,17 +85,6 @@
     return [NSMutableArray arrayWithArray:[array sortedArrayUsingDescriptors:@[ sortDescriptor ]]];
 }
 
-- (VNNote *)readNoteWithID:(NSString *)noteID;
-{
-    NSString *dataPath = [self.docPath stringByAppendingPathComponent:noteID];
-    NSData *codedData = [[NSData alloc] initWithContentsOfFile:dataPath];
-    if (codedData == nil) {
-        return nil;
-    }
-    VNNote *note = [NSKeyedUnarchiver unarchiveObjectWithData:codedData];
-    return note;
-}
-
 - (BOOL)storeNote:(VNNote *)note {
     [self createDataPathIfNeeded];
     NSString *dataPath = [self.docPath stringByAppendingPathComponent:note.noteID];
@@ -107,6 +96,19 @@
 - (void)deleteNote:(VNNote *)note {
     NSString *filePath = [self.docPath stringByAppendingPathComponent:note.noteID];
     [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+}
+
+#pragma mark - Haven't yet
+
+- (VNNote *)readNoteWithID:(NSString *)noteID;
+{
+    NSString *dataPath = [self.docPath stringByAppendingPathComponent:noteID];
+    NSData *codedData = [[NSData alloc] initWithContentsOfFile:dataPath];
+    if (codedData == nil) {
+        return nil;
+    }
+    VNNote *note = [NSKeyedUnarchiver unarchiveObjectWithData:codedData];
+    return note;
 }
 
 - (VNNote *)todayNote {

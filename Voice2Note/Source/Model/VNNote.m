@@ -20,7 +20,7 @@
 // 修改默认的实例变量名，但不建议这么做
 //@synthesize noteID = _myNoteID;
 
-// 决不应该在 init（ 或 dealloc ）方法中调用存取方法 Effect -> 7
+// 决不应该在 init（ 或 dealloc ）方法中调用存取方法（Effect - 7）
 - (id)initWithTitle:(NSString *)title
             content:(NSString *)content
         createdDate:(NSDate *)createdDate

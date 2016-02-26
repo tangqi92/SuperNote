@@ -22,7 +22,7 @@ static NSString *kHasUploadAddressBookKey = @"kHasUploadAddressBookKey";
 }
 
 /**
- *  也不知道干啥的(>_<)
+ *  也不知道干啥的 (>_<)
  */
 - (BOOL)hasUploadAddressBook {
     return [[[NSUserDefaults standardUserDefaults] objectForKey:kHasUploadAddressBookKey] boolValue];
