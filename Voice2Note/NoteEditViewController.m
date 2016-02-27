@@ -21,6 +21,7 @@
 #import "UIGestureRecognizer+YYAdd.h"
 #import "UIImage+YYWebImage.h"
 #import "UIView+YYAdd.h"
+#import "UMSocial.h"
 #import "VNConstants.h"
 #import "VNNote.h"
 #import "YYImage.h"
@@ -320,7 +321,7 @@ static const NSInteger kUploadTag = 2;
 - (UISwitch *)verticalSwitch {
     if (!_verticalSwitch) {
         __weak typeof(self) _self = self;
-        
+
         _verticalSwitch = [UISwitch new];
         [_verticalSwitch sizeToFit];
         _verticalSwitch.centerY = self.toolbar.height / 2;
@@ -331,7 +332,6 @@ static const NSInteger kUploadTag = 2;
             [_self.textView endEditing:YES];
             _self.textView.verticalForm = switcher.isOn; /// Set vertical form
         }];
-        
     }
     return _verticalSwitch;
 }
@@ -511,9 +511,9 @@ static const NSInteger kUploadTag = 2;
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"ActionSheetCancel", @"")
                                                destructiveButtonTitle:nil
-                                                    otherButtonTitles:NSLocalizedString(@"ActionSheetCopy", @""),
-                                                                      NSLocalizedString(@"ActionSheetLock", @""),
-                                                                      NSLocalizedString(@"ActionSheetMail", @""), nil];
+                                                    otherButtonTitles:NSLocalizedString(@"ActionSheetShare", @""),
+                                                                      NSLocalizedString(@"ActionSheetCopy", @""),
+                                                                      NSLocalizedString(@"ActionSheetLock", @""), nil];
     actionSheet.tag = MORE_ACTION;
     [actionSheet showInView:self.view];
 }
@@ -522,16 +522,14 @@ static const NSInteger kUploadTag = 2;
 
     if (actionSheet.tag == MORE_ACTION) {
         if (buttonIndex == 0) {
+            [self shareToSocial];
+        } else if (buttonIndex == 1) {
             // 复制至剪切板
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
             pasteboard.string = _textView.text;
             [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CopySuccess", @"")];
-        } else if (buttonIndex == 1) {
-            [self lockTextAction];
         } else if (buttonIndex == 2) {
-            if ([MFMailComposeViewController canSendMail]) { // 用户已设置邮件账户
-                [self sendEmailAction];                      // 调用发送邮件的代码
-            }
+            [self lockTextAction];
         }
     }
 }
@@ -550,19 +548,16 @@ static const NSInteger kUploadTag = 2;
 }
 
 /**
- *  发送邮件
+ *  分享
  */
-- (void)sendEmailAction {
-    MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
-    [composer setMailComposeDelegate:self];
-    if ([MFMailComposeViewController canSendMail]) {
-        [composer setSubject:@"来超级记事本的一封信"];
-        [composer setMessageBody:_textView.text isHTML:NO];
-        [composer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-        [self presentViewController:composer animated:YES completion:nil];
-    } else {
-        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CanNoteSendMail", @"")];
-    }
+- (void)shareToSocial {
+
+    [UMSocialSnsService presentSnsIconSheetView:self
+                                         appKey:@"507fcab25270157b37000010"
+                                      shareText:self.note.content
+                                     shareImage:nil
+                                shareToSnsNames:[NSArray arrayWithObjects:UMShareToSina, UMShareToWechatSession, UMShareToQQ, UMShareToEmail, UMShareToSms, nil]
+                                       delegate:nil];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {

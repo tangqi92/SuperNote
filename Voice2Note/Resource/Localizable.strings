@@ -13,7 +13,7 @@
 "ActionSheetSave" = "保存";
 "ActionSheetCopy" = "复制";
 "ActionSheetLock" = "锁定文本";
-"ActionSheetMail" = "发送邮件";
+"ActionSheetShare" = "分享";
 
 "CopySuccess" = "已复制到粘贴板";
 "SendEmailSuccess" = "邮件发送成功";
