@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #define VNNOTE_DEFAULT_TITLE @"无标题笔记"
 
@@ -20,6 +21,8 @@
 @property (nonatomic, strong) NSDate *createdDate;
 @property (nonatomic, strong) NSDate *updatedDate;
 @property (nonatomic, assign) NSUInteger index;
+// Cache
+@property (nonatomic, assign) CGFloat cellHeight;
 
 - (id)initWithTitle:(NSString *)title
             content:(NSString *)content

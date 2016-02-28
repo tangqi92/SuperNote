@@ -16,12 +16,16 @@
 #import "VNConstants.h"
 #import "VNNote.h"
 
+// 注释掉下面的宏定义，就是用“传统”的模板Cell计算高度
+#define IOS_8_NEW_FEATURE_SELF_SIZING
+
 @interface NoteListViewController () <UIAlertViewDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, assign) NSInteger selectedIndex;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) UIBarButtonItem *cancelButton, *addButton, *editButton, *deleteButton;
+@property (nonatomic, strong) NoteListCell *templateCell;
 
 @end
 
@@ -56,6 +60,16 @@
     // 是否可以多选
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+
+#ifdef IOS_8_NEW_FEATURE_SELF_SIZING
+    // iOS 8 的Self-sizing特性
+    if ([UIDevice currentDevice].systemVersion.integerValue > 7) {
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+    }
+#endif
+
+    // 注册Cell
+    [self.tableView registerClass:[NoteListCell class] forCellReuseIdentifier:@"ListCell"];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadData)
@@ -99,7 +113,7 @@
     [self updateButtonsToMatchTableState];
 }
 
-- (void)delete {
+- (void) delete {
     NSString *actionTitle;
     if (([[self.tableView indexPathsForSelectedRows] count] == 1)) {
         actionTitle = @"你确定要删除这一项吗?";
@@ -153,8 +167,29 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+#ifdef IOS_8_NEW_FEATURE_SELF_SIZING
+    // iOS 8 的 Self-sizing 特性
+    return UITableViewAutomaticDimension;
+#else
+    if (!_templateCell) {
+        _templateCell = [tableView dequeueReusableCellWithIdentifier:@"ListCell"];
+        _templateCell.tag = -1000; // For debug dealloc
+    }
     VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
-    return [NoteListCell heightWithNote:note];
+    // 判断高度是否已经计算过
+    if (note.cellHeight <= 0) {
+        // 填充数据
+        [_templateCell updateWithNote:note];
+        // 根据当前数据，计算Cell的高度，注意+1
+        note.cellHeight = [_templateCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 0.5f;
+        NSLog(@"Calculate: %ld, height: %g", (long) indexPath.row, note.cellHeight);
+    } else {
+        NSLog(@"Get cache: %ld, height: %g", (long) indexPath.row, note.cellHeight);
+    }
+
+    return note.cellHeight;
+#endif
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -162,10 +197,10 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NoteListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell"];
-    if (!cell) {
-        cell = [[NoteListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ListCell"];
-    }
+    NoteListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
+    //    if (!cell) {
+    //        cell = [[NoteListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ListCell"];
+    //    }
     // 搜素状态
     if (self.searchController.active) {
 
@@ -211,6 +246,11 @@
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     // TODO: 搜索逻辑
+}
+
+// 估算出来的高度值
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 88.0f;
 }
 
 #pragma mark -

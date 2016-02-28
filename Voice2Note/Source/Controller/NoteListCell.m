@@ -7,77 +7,64 @@
 //
 
 #import "Colours.h"
+#import "Masonry.h"
 #import "NoteListCell.h"
 #import "UIColor+VNHex.h"
 #import "VNConstants.h"
 #import "VNNote.h"
 
-static const CGFloat kCellHorizontalMargin = 0;
-static const CGFloat kCellPadding = 15;
-static const CGFloat kVerticalPadding = 0;
-static const CGFloat kLabelHeight = 15;
-static const CGFloat kMaxTitleHeight = 180;
+@interface NoteListCell ()
 
-@interface NoteListCell () {
-    
-    UIView *_backgroundView;
-    UILabel *_titleLabel;
-    UILabel *_timeLabel;
-}
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *timeLabel;
 
 @end
 
 @implementation NoteListCell
 
-+ (CGFloat)heightWithNote:(VNNote *)note {
-    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
-    NSString *string = note.title;
-    if (!string || string.length <= 0 || [string isEqualToString:NSLocalizedString(@"NoTitleNote", @"")]) {
-        string = note.content;
-    }
-    CGFloat titleHeight = [[self class] heightWithString:string width:screenWidth - kCellHorizontalMargin * 2 - kCellPadding * 2];
-    return kVerticalPadding + kCellPadding + titleHeight + kLabelHeight + kCellPadding + kVerticalPadding;
-}
-
-+ (CGFloat)heightWithString:(NSString *)string width:(CGFloat)width {
-    NSDictionary *attributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17]};
-    CGSize size = [string boundingRectWithSize:CGSizeMake(width, kMaxTitleHeight)
-                                       options:NSStringDrawingUsesLineFragmentOrigin
-                                    attributes:attributes
-                                       context:nil]
-                      .size;
-    return ceilf(size.height);
-}
-
-// 调用UITableView的dequeueReusableCellWithIdentifier方法时会通过这个方法初始化Cell
+// 调用UITableView的dequeueReusableCellWithIdentifier方法时会通过这个方法初始化 Cell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        _backgroundView = [[UIView alloc] initWithFrame:CGRectMake(kCellHorizontalMargin,
-                                                                   kVerticalPadding,
-                                                                   [UIScreen mainScreen].bounds.size.width - kCellHorizontalMargin * 2,
-                                                                   0)];
-        _backgroundView.layer.cornerRadius = 0.0f;
-        _backgroundView.layer.masksToBounds = YES;
-        [_backgroundView setBackgroundColor:[UIColor grayBackgroudColor]];
-        [self.contentView addSubview:_backgroundView];
-
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kCellPadding, kCellPadding, _backgroundView.frame.size.width - kCellPadding * 2, 0)];
-        [_titleLabel setTextColor:[UIColor charcoalColor]];
-
-        [_titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
-        [_titleLabel setNumberOfLines:0];
-        [_backgroundView addSubview:_titleLabel];
-
-        _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kCellPadding, kCellPadding, _backgroundView.frame.size.width - kCellPadding * 2, kLabelHeight)];
-        [_timeLabel setTextColor:[UIColor charcoalColor]];
-        [_timeLabel setFont:[UIFont systemFontOfSize:14]];
-        [_timeLabel setTextAlignment:NSTextAlignmentRight];
-        [_backgroundView addSubview:_timeLabel];
-
-        self.selectionStyle = UITableViewCellSelectionStyleBlue;
+        [self initView];
     }
     return self;
+}
+
+- (void)initView {
+    // ???:
+    self.tag = 1000;
+    // 计算 UILabel 的 preferredMaxLayoutWidth 值，多行时必须设置这个值，否则系统无法决定 Label 的宽度
+    CGFloat preferredMaxWidth = [UIScreen mainScreen].bounds.size.width - 75;
+    _titleLabel = [UILabel new];
+    [_titleLabel setTextColor:[UIColor charcoalColor]];
+    [_titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+    [_titleLabel setNumberOfLines:0];
+    _titleLabel.preferredMaxLayoutWidth = preferredMaxWidth; // 多行时必须设置
+    [self.contentView addSubview:_titleLabel];
+
+    [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.contentView).with.offset(15);
+        make.left.equalTo(self.contentView).with.offset(15);
+        make.right.equalTo(self.contentView).with.offset(-15);
+        make.bottom.equalTo(self.contentView).with.offset(-15);
+    }];
+
+    [_titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+
+    _timeLabel = [UILabel new];
+    [_timeLabel setTextColor:[UIColor charcoalColor]];
+    [_timeLabel setFont:[UIFont systemFontOfSize:14]];
+    [_timeLabel setTextAlignment:NSTextAlignmentRight];
+    [self.contentView addSubview:_timeLabel];
+
+    [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@15);
+        make.right.equalTo(self.contentView).with.offset(-15);
+        make.bottom.equalTo(self.contentView).with.offset(-15);
+    }];
+
+    self.selectionStyle = UITableViewCellSelectionStyleBlue;
 }
 
 - (void)updateWithNote:(VNNote *)note {
@@ -87,20 +74,6 @@ static const CGFloat kMaxTitleHeight = 180;
         string = note.content;
         [_titleLabel setText:note.content];
     }
-    CGFloat titleHeight = [[self class] heightWithString:string
-                                                   width:_backgroundView.frame.size.width - kCellPadding * 2];
-    CGRect titleFrame = _titleLabel.frame;
-    titleFrame.size.height = titleHeight;
-    _titleLabel.frame = titleFrame;
-
-    CGRect timeFrame = _timeLabel.frame;
-    timeFrame.origin.y = kCellPadding + titleHeight;
-    _timeLabel.frame = timeFrame;
-
-    CGRect bgFrame = _backgroundView.frame;
-    bgFrame.size.height = [[self class] heightWithNote:note] - kVerticalPadding * 2;
-    _backgroundView.frame = bgFrame;
-
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
     [_timeLabel setText:[formatter stringFromDate:note.createdDate]];

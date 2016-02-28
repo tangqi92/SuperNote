@@ -11,8 +11,6 @@
 
 @interface NoteListCell : UITableViewCell
 
-+ (CGFloat)heightWithNote:(VNNote *)note;
-
 - (void)updateWithNote:(VNNote *)note;
 
 @end
