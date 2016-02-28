@@ -49,7 +49,8 @@ static const CGFloat kMaxTitleHeight = 180;
     return ceilf(size.height);
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+// 调用UITableView的dequeueReusableCellWithIdentifier方法时会通过这个方法初始化Cell
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         _backgroundView = [[UIView alloc] initWithFrame:CGRectMake(kCellHorizontalMargin,

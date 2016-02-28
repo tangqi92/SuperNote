@@ -99,7 +99,7 @@
     [self updateButtonsToMatchTableState];
 }
 
-- (void) delete {
+- (void)delete {
     NSString *actionTitle;
     if (([[self.tableView indexPathsForSelectedRows] count] == 1)) {
         actionTitle = @"你确定要删除这一项吗?";

@@ -10,17 +10,12 @@
 #import "NoteListViewController.h"
 #import "NoteManager.h"
 #import "UIColor+VNHex.h"
+#import "UMSocial.h"
+#import "UMSocialQQHandler.h"
+#import "UMSocialSinaSSOHandler.h"
+#import "UMSocialWechatHandler.h"
 #import "VNConstants.h"
 #import "VNNote.h"
-#import "UMSocial.h"
-
-#import "UMSocialWechatHandler.h"
-
-#import "UMSocialQQHandler.h"
-//#import "UMSocialSinaHandler.h"
-#import "UMSocialSinaSSOHandler.h"
-//#import "UMSocialTencentWeiboHandler.h"
-
 
 @implementation AppDelegate
 
@@ -30,31 +25,12 @@
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    // 注册本地通知
-    // 判断当前设备的系统版本是否大于8.0 若是则需注册
-    // Since iOS 8 you need to ask user's permission to show notifications from your app, this applies for both remote/push and local notifications.
-    if ([UIDevice currentDevice].systemVersion.floatValue > 8.0) {
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+    [self customNaviBar];
+    [self registerNotification];
+    [self registerUmengSDK];
 
-        [application registerUserNotificationSettings:settings];
-    }
-
-    [self UmengSDKRegistration];
     // 初始化笔记
     [self addInitFileIfNeeded];
-
-    /* customize navigation style */
-    [[UINavigationBar appearance] setBarTintColor:[UIColor systemColor]];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-
-    NSDictionary *navbarTitleTextAttributes = [NSDictionary
-        dictionaryWithObjectsAndKeys:[UIColor whiteColor],
-                                     NSForegroundColorAttributeName, nil];
-    [[UINavigationBar appearance]
-        setTitleTextAttributes:navbarTitleTextAttributes];
-
-    [[UIApplication sharedApplication]
-        setStatusBarStyle:UIStatusBarStyleLightContent];
 
     NoteListViewController *noteListViewController = [[NoteListViewController alloc] init];
     UINavigationController *rootViewController = [[UINavigationController alloc] initWithRootViewController:noteListViewController];
@@ -93,9 +69,8 @@
 /**
  这里处理新浪微博SSO授权之后跳转回来，和微信分享完成之后跳转回来
  */
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-    return  [UMSocialSnsService handleOpenURL:url wxApiDelegate:nil];
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [UMSocialSnsService handleOpenURL:url wxApiDelegate:nil];
 }
 
 /**
@@ -105,7 +80,7 @@
     // Restart any tasks that were paused (or not yet started) while the
     // application was inactive. If the application was previously in the
     // background, optionally refresh the user interface.
-    [UMSocialSnsService  applicationDidBecomeActive];
+    [UMSocialSnsService applicationDidBecomeActive];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -162,33 +137,54 @@
     [application cancelLocalNotification:notification];
 }
 
-- (void)UmengSDKRegistration {
-    //设置友盟社会化组件appkey
+- (void)registerNotification {
+    // 注册本地通知
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+}
+
+- (void)registerUmengSDK {
+    // 设置友盟社会化组件appkey
     [UMSocialData setAppKey:@"56d10e08e0f55a23a30014d5"];
-    
-    //打开调试log的开关
+
+    // 打开调试log的开关
     [UMSocialData openLog:YES];
-    
-    //如果你要支持不同的屏幕方向，需要这样设置，否则在iPhone只支持一个竖屏方向
+
+    // 如果你要支持不同的屏幕方向，需要这样设置，否则在 iPhone 只支持一个竖屏方向
     [UMSocialConfig setSupportedInterfaceOrientations:UIInterfaceOrientationMaskAll];
-    
-    //设置微信AppId，设置分享url，默认使用友盟的网址
+
+    // 设置微信 AppId，设置分享 url，默认使用友盟的网址
     [UMSocialWechatHandler setWXAppId:@"wxdc1e388c3822c80b" appSecret:@"a393c1527aaccb95f3a4c88d6d1455f6" url:@"http://www.umeng.com/social"];
-    
-    // 打开新浪微博的SSO开关
-    // 将在新浪微博注册的应用appkey、redirectURL替换下面参数，并在info.plist的URL Scheme中相应添加wb+appkey，如"wb3921700954"，详情请参考官方文档。
+
+    // 打开新浪微博的 SSO 开关
+    // 将在新浪微博注册的应用appkey、redirectURL替换下面参数，并在 info.plist 的 URL Scheme 中相应添加 wb+appkey，如"wb3921700954"，详情请参考官方文档。
     [UMSocialSinaSSOHandler openNewSinaSSOWithAppKey:@"3921700954"
                                               secret:@"04b48b094faeb16683c32669824ebdad"
                                          RedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
-    
-    
-    //打开腾讯微博SSO开关，设置回调地址，只支持32位
+
+    //打开腾讯微博 SSO 开关，设置回调地址，只支持 32 位
     //    [UMSocialTencentWeiboHandler openSSOWithRedirectUrl:@"http://sns.whalecloud.com/tencent2/callback"];
-    
+
     //    //设置分享到QQ空间的应用Id，和分享url 链接
     [UMSocialQQHandler setQQWithAppId:@"100424468" appKey:@"c7394704798a158208a74ab60104f0ba" url:@"http://www.umeng.com/social"];
     //    //设置支持没有客户端情况下使用SSO授权
     [UMSocialQQHandler setSupportWebView:YES];
+}
+
+- (void)customNaviBar {
+    // Customize navigation style
+    [[UINavigationBar appearance] setBarTintColor:[UIColor systemColor]];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
+    NSDictionary *navbarTitleTextAttributes = [NSDictionary
+        dictionaryWithObjectsAndKeys:[UIColor whiteColor],
+                                     NSForegroundColorAttributeName, nil];
+    [[UINavigationBar appearance]
+        setTitleTextAttributes:navbarTitleTextAttributes];
+
+    [[UIApplication sharedApplication]
+        setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 @end
