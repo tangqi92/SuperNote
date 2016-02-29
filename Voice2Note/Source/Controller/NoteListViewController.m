@@ -16,8 +16,10 @@
 #import "VNConstants.h"
 #import "VNNote.h"
 
+static NSString *kCellReuseIdentifier = @"ListCell";
+
 // 注释掉下面的宏定义，就是用“传统”的模板Cell计算高度
-#define IOS_8_NEW_FEATURE_SELF_SIZING
+//#define IOS_8_NEW_FEATURE_SELF_SIZING
 
 @interface NoteListViewController () <UIAlertViewDelegate, UISearchResultsUpdating>
 
@@ -68,8 +70,8 @@
     }
 #endif
 
-    // 注册Cell
-    [self.tableView registerClass:[NoteListCell class] forCellReuseIdentifier:@"ListCell"];
+    // 注册 Cell - 不使用 nib 的方式，此时会调用 cell 的 - (id)initWithStyle:withReuseableCellIdentifier:
+    [self.tableView registerClass:[NoteListCell class] forCellReuseIdentifier:kCellReuseIdentifier];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadData)
@@ -173,7 +175,7 @@
     return UITableViewAutomaticDimension;
 #else
     if (!_templateCell) {
-        _templateCell = [tableView dequeueReusableCellWithIdentifier:@"ListCell"];
+        _templateCell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifier];
         _templateCell.tag = -1000; // For debug dealloc
     }
     VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
@@ -197,10 +199,12 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NoteListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
-    //    if (!cell) {
-    //        cell = [[NoteListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ListCell"];
-    //    }
+    NoteListCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifier forIndexPath:indexPath];
+        // 此处可省略空值判断
+        if (!cell) {
+            cell = [[NoteListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellReuseIdentifier];
+            NSLog(@"cellForRowAtIndexPath->");
+        }
     // 搜素状态
     if (self.searchController.active) {
 
@@ -208,6 +212,9 @@
         VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
         note.index = indexPath.row;
         [cell updateWithNote:note];
+        // Make sure the constraints have been added to this cell, since it may have just been created from scratch
+        [cell setNeedsUpdateConstraints];
+        [cell updateConstraintsIfNeeded];
     }
     return cell;
 }
@@ -248,8 +255,9 @@
     // TODO: 搜索逻辑
 }
 
-// 估算出来的高度值
+// iOS8 - Self-Sizing Cells - 估算出来的高度值
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"estimatedHeightForRowAtIndexPath->88.0f");
     return 88.0f;
 }
 

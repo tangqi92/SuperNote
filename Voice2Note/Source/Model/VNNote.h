@@ -14,14 +14,14 @@
 // 遵循 NSCoding 协议
 @interface VNNote : NSObject <NSCoding>
 
-// 如果使用的是 strong, 那么这个属性就有可能指向一个可变对象，如果这个可变对象在外部被修改了，那么会影响该属性
+// NSString 如果使用 strong, 那么这个属性就有可能指向一个可变对象，如果这个可变对象在外部被修改了，那么会影响该属性
 @property (nonatomic, copy) NSString *noteID;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, strong) NSDate *createdDate;
 @property (nonatomic, strong) NSDate *updatedDate;
 @property (nonatomic, assign) NSUInteger index;
-// Cache
+// 行高缓存
 @property (nonatomic, assign) CGFloat cellHeight;
 
 - (id)initWithTitle:(NSString *)title

@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, assign) BOOL didSetupConstraints;
 
 @end
 
@@ -27,6 +28,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self initView];
+        [self updateConstraints];
     }
     return self;
 }
@@ -43,28 +45,37 @@
     _titleLabel.preferredMaxLayoutWidth = preferredMaxWidth; // 多行时必须设置
     [self.contentView addSubview:_titleLabel];
 
-    [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).with.offset(15);
-        make.left.equalTo(self.contentView).with.offset(15);
-        make.right.equalTo(self.contentView).with.offset(-15);
-        make.bottom.equalTo(self.contentView).with.offset(-15);
-    }];
-
-    [_titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-
     _timeLabel = [UILabel new];
     [_timeLabel setTextColor:[UIColor charcoalColor]];
     [_timeLabel setFont:[UIFont systemFontOfSize:14]];
     [_timeLabel setTextAlignment:NSTextAlignmentRight];
     [self.contentView addSubview:_timeLabel];
 
-    [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@15);
-        make.right.equalTo(self.contentView).with.offset(-15);
-        make.bottom.equalTo(self.contentView).with.offset(-15);
-    }];
-
     self.selectionStyle = UITableViewCellSelectionStyleBlue;
+}
+
+- (void)updateConstraints {
+    if (!self.didSetupConstraints) {
+        [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.contentView).with.offset(15);
+            make.left.equalTo(self.contentView).with.offset(15);
+            make.right.equalTo(self.contentView).with.offset(-15);
+            make.bottom.equalTo(self.contentView).with.offset(-15);
+        }];
+
+        [_titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+
+        [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@15);
+            make.right.equalTo(self.contentView).with.offset(-15);
+            make.bottom.equalTo(self.titleLabel).with.offset(15);
+        }];
+
+        // 避免重复设置相同的约束
+        self.didSetupConstraints = YES;
+    }
+
+    [super updateConstraints];
 }
 
 - (void)updateWithNote:(VNNote *)note {
