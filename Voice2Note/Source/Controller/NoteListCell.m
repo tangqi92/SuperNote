@@ -38,11 +38,13 @@
     self.tag = 1000;
     // 计算 UILabel 的 preferredMaxLayoutWidth 值，多行时必须设置这个值，否则系统无法决定 Label 的宽度
     CGFloat preferredMaxWidth = [UIScreen mainScreen].bounds.size.width - 75;
+    // 从此以后基本可以抛弃 CGRectMake 了
     _titleLabel = [UILabel new];
     [_titleLabel setTextColor:[UIColor charcoalColor]];
     [_titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
     [_titleLabel setNumberOfLines:0];
     _titleLabel.preferredMaxLayoutWidth = preferredMaxWidth; // 多行时必须设置
+    // 使用 AutoLayout 之前，一定要先将 view 添加到 superview 上，否则会报错
     [self.contentView addSubview:_titleLabel];
 
     _timeLabel = [UILabel new];

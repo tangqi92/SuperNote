@@ -66,6 +66,7 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 #ifdef IOS_8_NEW_FEATURE_SELF_SIZING
     // iOS 8 的Self-sizing特性
     if ([UIDevice currentDevice].systemVersion.integerValue > 7) {
+//        self.tableView.estimatedRowHeight = 128.0f;
         self.tableView.rowHeight = UITableViewAutomaticDimension;
     }
 #endif
@@ -199,6 +200,7 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // dequeueReusableCellWithIdentifier:forIndexPath: 相比不带 “forIndexPath” 的版本会多调用一次高度计算(>_<)
     NoteListCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifier forIndexPath:indexPath];
         // 此处可省略空值判断
         if (!cell) {
@@ -255,11 +257,13 @@ static NSString *kCellReuseIdentifier = @"ListCell";
     // TODO: 搜索逻辑
 }
 
+
 // iOS8 - Self-Sizing Cells - 估算出来的高度值
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"estimatedHeightForRowAtIndexPath->88.0f");
     return 88.0f;
 }
+
 
 #pragma mark -
 #pragma mark === EditMode ===
