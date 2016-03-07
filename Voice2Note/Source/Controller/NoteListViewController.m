@@ -18,7 +18,7 @@
 
 static NSString *kCellReuseIdentifier = @"ListCell";
 
-// 注释掉下面的宏定义，就是用“传统”的模板Cell计算高度
+// 注释掉下面的宏定义，就是用“传统”的模板 Cell 计算高度
 //#define IOS_8_NEW_FEATURE_SELF_SIZING
 
 @interface NoteListViewController () <UIAlertViewDelegate, UISearchResultsUpdating>
@@ -27,7 +27,7 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) UIBarButtonItem *cancelButton, *addButton, *editButton, *deleteButton;
-@property (nonatomic, strong) NoteListCell *templateCell;
+@property (strong, nonatomic) NSMutableDictionary *offscreenCells;
 
 @end
 
@@ -63,16 +63,26 @@ static NSString *kCellReuseIdentifier = @"ListCell";
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 
+    // 注册 Cell - 不使用 nib 的方式，此时会调用 cell 的 - (id)initWithStyle:withReuseableCellIdentifier:
+    [self.tableView registerClass:[NoteListCell class] forCellReuseIdentifier:kCellReuseIdentifier];
+    
+    // iOS 7 
+    self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
+    self.offscreenCells = [NSMutableDictionary dictionary];
+
 #ifdef IOS_8_NEW_FEATURE_SELF_SIZING
-    // iOS 8 的Self-sizing特性
+    // iOS 8 的 Self-sizing 特性
     if ([UIDevice currentDevice].systemVersion.integerValue > 7) {
-//        self.tableView.estimatedRowHeight = 128.0f;
+        // iOS8 系统中 rowHeight 的默认值已经设置成了 UITableViewAutomaticDimension，所以可以省略
         self.tableView.rowHeight = UITableViewAutomaticDimension;
+        self.tableView.estimatedRowHeight = 88.0f;
     }
 #endif
 
-    // 注册 Cell - 不使用 nib 的方式，此时会调用 cell 的 - (id)initWithStyle:withReuseableCellIdentifier:
-    [self.tableView registerClass:[NoteListCell class] forCellReuseIdentifier:kCellReuseIdentifier];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadData)
@@ -170,22 +180,42 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSInteger count = 0;
+    count ++;
+    NSLog(@"%ld", count);
 
 #ifdef IOS_8_NEW_FEATURE_SELF_SIZING
     // iOS 8 的 Self-sizing 特性
     return UITableViewAutomaticDimension;
 #else
+    
+    NSString *reuseIdentifier = kCellReuseIdentifier;
+    
+    // 从 cell 字典中取出重用标示符对应的 cell。如果没有，就创建一个新的然后存储在字典里面。
+    // 警告：不要调用 tableview 的 dequeueReusableCellWithIdentifier: 方法，因为这会导致 cell 被创建了但是又未曾被 tableView:cellForRowAtIndexPath: 方法返回，会造成内存泄露！
+    NoteListCell *_templateCell = [self.offscreenCells objectForKey:reuseIdentifier];
     if (!_templateCell) {
-        _templateCell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifier];
-        _templateCell.tag = -1000; // For debug dealloc
+        _templateCell = [[NoteListCell alloc] init];
+        [self.offscreenCells setObject:_templateCell forKey:reuseIdentifier];
     }
+    
     VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
     // 判断高度是否已经计算过
     if (note.cellHeight <= 0) {
         // 填充数据
         [_templateCell updateWithNote:note];
-        // 根据当前数据，计算Cell的高度，注意+1
-        note.cellHeight = [_templateCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 0.5f;
+
+        // ???: 是否需要调用
+        [_templateCell setNeedsUpdateConstraints];
+        [_templateCell updateConstraintsIfNeeded];
+
+        [_templateCell setNeedsLayout]; // 告诉 _templateCell 页面需要更新，但不立即执行
+        [_templateCell layoutIfNeeded]; // 告诉 _templateCell 页面布局立即更新
+        // layoutSubviews: 系统重写布局的实际方法
+
+        // 根据当前数据，计算 Cell 的高度，注意 +1，并缓存起来供在 cellForRowAtIndexPath:中使用
+        note.cellHeight = [_templateCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0f;
         NSLog(@"Calculate: %ld, height: %g", (long) indexPath.row, note.cellHeight);
     } else {
         NSLog(@"Get cache: %ld, height: %g", (long) indexPath.row, note.cellHeight);
@@ -199,14 +229,18 @@ static NSString *kCellReuseIdentifier = @"ListCell";
     return self.dataSource.count;
 }
 
+/**
+ *  数据绑定
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // dequeueReusableCellWithIdentifier:forIndexPath: 相比不带 “forIndexPath” 的版本会多调用一次高度计算(>_<)
-    NoteListCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifier forIndexPath:indexPath];
-        // 此处可省略空值判断
-        if (!cell) {
-            cell = [[NoteListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellReuseIdentifier];
-            NSLog(@"cellForRowAtIndexPath->");
-        }
+    // 样式与数据分开
+    NoteListCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifier];
+    // 使用 dequeueReusableCellWithIdentifier:forIndexPath: 的话，必须注册 Cell，而且，不需要再判断 Cell 是否为 nil 和创建 Cell
+    if (!cell) {
+        cell = [[NoteListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellReuseIdentifier];
+        NSLog(@"cellForRowAtIndexPath->");
+    }
     // 搜素状态
     if (self.searchController.active) {
 
@@ -215,8 +249,9 @@ static NSString *kCellReuseIdentifier = @"ListCell";
         note.index = indexPath.row;
         [cell updateWithNote:note];
         // Make sure the constraints have been added to this cell, since it may have just been created from scratch
-        [cell setNeedsUpdateConstraints];
-        [cell updateConstraintsIfNeeded];
+        [cell setNeedsUpdateConstraints]; // 告诉 cell 需要更新约束，在下次计算或者更新约束会更新约束
+        [cell updateConstraintsIfNeeded]; // 告诉 cell 立即更新约束
+        // updateConstraints:系统更新约束的实际方法
     }
     return cell;
 }
@@ -256,14 +291,6 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     // TODO: 搜索逻辑
 }
-
-
-// iOS8 - Self-Sizing Cells - 估算出来的高度值
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"estimatedHeightForRowAtIndexPath->88.0f");
-    return 88.0f;
-}
-
 
 #pragma mark -
 #pragma mark === EditMode ===

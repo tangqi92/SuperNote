@@ -42,6 +42,7 @@
     _titleLabel = [UILabel new];
     [_titleLabel setTextColor:[UIColor charcoalColor]];
     [_titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+    // 设为 0 表示显示多行
     [_titleLabel setNumberOfLines:0];
     _titleLabel.preferredMaxLayoutWidth = preferredMaxWidth; // 多行时必须设置
     // 使用 AutoLayout 之前，一定要先将 view 添加到 superview 上，否则会报错
@@ -82,14 +83,14 @@
 
 - (void)updateWithNote:(VNNote *)note {
     NSString *string = note.title;
-    [_titleLabel setText:note.title];
+    self.titleLabel.text = note.title;
     if (!note.title || note.title.length <= 0 || [note.title isEqualToString:NSLocalizedString(@"NoTitleNote", @"")]) {
         string = note.content;
-        [_titleLabel setText:note.content];
+        self.titleLabel.text = note.content;
     }
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-    [_timeLabel setText:[formatter stringFromDate:note.createdDate]];
+    [self.timeLabel setText:[formatter stringFromDate:note.createdDate]];
 }
 
 @end

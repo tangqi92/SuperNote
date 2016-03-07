@@ -46,6 +46,10 @@ static const NSInteger kUploadTag = 2;
 
 @interface NoteEditViewController () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, CRMediaPickerControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 
+/**
+ *  YYTextView - The API and behavior is similar to UITextView, but provides more features.
+ *  第一，它是文本系统用来绘制的视图；第二，它是处理所有的用户交互
+ */
 @property (nonatomic, assign) YYTextView *textView;
 @property (nonatomic, strong) YYTextView *defaultTextView;
 @property (nonatomic, strong) NSMutableAttributedString *attrString;
@@ -221,9 +225,11 @@ static const NSInteger kUploadTag = 2;
     if (enabled) {
         NSLog(@"Execute setExclusionPathEnabled:YES");
         [self.textView addSubview:self.imageView];
+        // 获取 ImageView 的贝赛尔曲线路径
         UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.imageView.frame
                                                         cornerRadius:self.imageView.layer.cornerRadius];
-        self.textView.exclusionPaths = @[ path ]; // Set exclusion paths
+        // 它允许开发者设置一个 NSBezierPath 数组来指定不可填充文本的区域。
+        self.textView.exclusionPaths = @[ path ];
     } else {
         [self.imageView removeFromSuperview];
         self.textView.exclusionPaths = nil;
