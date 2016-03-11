@@ -23,7 +23,7 @@
 
 @implementation NoteListCell
 
-// 调用UITableView的dequeueReusableCellWithIdentifier方法时会通过这个方法初始化 Cell
+// 调用 UITableView 的 dequeueReusableCellWithIdentifier 方法时会通过这个方法初始化 cell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -88,9 +88,18 @@
         string = note.content;
         self.titleLabel.text = note.content;
     }
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-    [self.timeLabel setText:[formatter stringFromDate:note.createdDate]];
+    [self.timeLabel setText:[[self dateFormatter] stringFromDate:note.createdDate]];
+}
+
+// 减少 NSDateFormatter 对象创建时间
+- (NSDateFormatter *)dateFormatter {
+    static NSDateFormatter *dateFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    });
+    return dateFormatter;
 }
 
 @end

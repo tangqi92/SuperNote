@@ -98,8 +98,6 @@
     [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
 }
 
-#pragma mark - Haven't yet
-
 - (VNNote *)readNoteWithID:(NSString *)noteID;
 {
     NSString *dataPath = [self.docPath stringByAppendingPathComponent:noteID];
@@ -110,6 +108,8 @@
     VNNote *note = [NSKeyedUnarchiver unarchiveObjectWithData:codedData];
     return note;
 }
+
+#pragma mark - Haven't yet
 
 - (VNNote *)todayNote {
     NSMutableArray *notes = [self readAllNotes];

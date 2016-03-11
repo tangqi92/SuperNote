@@ -138,10 +138,11 @@
 }
 
 - (void)registerNotification {
-    // 注册本地通知
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
 
-    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    // iOS 8 添加权限访问
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeSound categories:nil]];
+    }
 }
 
 - (void)registerUmengSDK {

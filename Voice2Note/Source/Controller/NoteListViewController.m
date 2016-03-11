@@ -27,7 +27,7 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) UIBarButtonItem *cancelButton, *addButton, *editButton, *deleteButton;
-@property (strong, nonatomic) NSMutableDictionary *offscreenCells;
+@property (nonatomic, strong) NSMutableDictionary *offscreenCells;
 
 @end
 
@@ -39,7 +39,7 @@ static NSString *kCellReuseIdentifier = @"ListCell";
     self.navigationItem.title = kAppName;
     self.view.backgroundColor = [UIColor whiteColor];
 
-    self.cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+    self.cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(edit)];
     self.addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNote)];
     self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit)];
     self.deleteButton = [[UIBarButtonItem alloc] initWithTitle:@"删除所有" style:UIBarButtonItemStylePlain target:self action:@selector(delete)];
@@ -65,8 +65,8 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 
     // 注册 Cell - 不使用 nib 的方式，此时会调用 cell 的 - (id)initWithStyle:withReuseableCellIdentifier:
     [self.tableView registerClass:[NoteListCell class] forCellReuseIdentifier:kCellReuseIdentifier];
-    
-    // iOS 7 
+
+    // iOS 7
     self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
     self.offscreenCells = [NSMutableDictionary dictionary];
 
@@ -78,7 +78,6 @@ static NSString *kCellReuseIdentifier = @"ListCell";
         self.tableView.estimatedRowHeight = 88.0f;
     }
 #endif
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -117,58 +116,57 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 }
 
 - (void)edit {
-    [self.tableView setEditing:YES animated:YES];
-    [self updateButtonsToMatchTableState];
-}
-
-- (void)cancel {
-    [self.tableView setEditing:NO animated:YES];
+    [self.tableView setEditing:!self.tableView.isEditing animated:YES];
     [self updateButtonsToMatchTableState];
 }
 
 - (void) delete {
-    NSString *actionTitle;
-    if (([[self.tableView indexPathsForSelectedRows] count] == 1)) {
-        actionTitle = @"你确定要删除这一项吗?";
-    } else {
-        actionTitle = @"你确定要删除这些项目吗?";
-    }
-    NSString *cancelTitle = @"取消";
-    NSString *okTitle = @"确定";
 
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:actionTitle message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    if ([[self.tableView indexPathsForSelectedRows] count] > 0) {
+        NSString *actionTitle;
 
-    [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action){
+        if (([[self.tableView indexPathsForSelectedRows] count] == 1)) {
+            actionTitle = @"你确定要删除这一项吗?";
+        } else if (([[self.tableView indexPathsForSelectedRows] count] > 1)) {
+            actionTitle = @"你确定要删除这些项目吗?";
+        }
+        NSString *cancelTitle = @"取消";
+        NSString *okTitle = @"确定";
 
-                     }]];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:actionTitle message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
-    [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDestructive handler:^(UIAlertAction *_Nonnull action) {
+        [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action){
 
-               NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
-               BOOL deleteSpecificRows = selectedRows.count > 0;
-               if (deleteSpecificRows) {
-                   NSMutableIndexSet *indicesOfItemsToDelete = [NSMutableIndexSet new];
-                   for (NSIndexPath *selectionIndex in selectedRows) {
-                       [indicesOfItemsToDelete addIndex:selectionIndex.row];
-                       VNNote *note = [self.dataSource objectAtIndex:selectionIndex.row];
-                       [[NoteManager sharedManager] deleteNote:note];
+                         }]];
+
+        [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDestructive handler:^(UIAlertAction *_Nonnull action) {
+
+                   NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
+                   BOOL deleteSpecificRows = selectedRows.count > 0;
+                   if (deleteSpecificRows) {
+                       NSMutableIndexSet *indicesOfItemsToDelete = [NSMutableIndexSet new];
+                       for (NSIndexPath *selectionIndex in selectedRows) {
+                           [indicesOfItemsToDelete addIndex:selectionIndex.row];
+                           VNNote *note = [self.dataSource objectAtIndex:selectionIndex.row];
+                           [[NoteManager sharedManager] deleteNote:note];
+                       }
+
+                       [self.dataSource removeObjectsAtIndexes:indicesOfItemsToDelete];
+
+                       [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationAutomatic];
+
+                   } else {
+                       [self.dataSource removeAllObjects];
+                       // 根据模型 更新 view
+                       [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
                    }
+                   // 退出编辑模式
+                   [self.tableView setEditing:NO animated:YES];
+                   [self updateButtonsToMatchTableState];
+               }]];
 
-                   [self.dataSource removeObjectsAtIndexes:indicesOfItemsToDelete];
-
-                   [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationAutomatic];
-
-               } else {
-                   [self.dataSource removeAllObjects];
-                   // 根据模型 更新 view
-                   [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-               }
-               // 退出编辑模式
-               [self.tableView setEditing:NO animated:YES];
-               [self updateButtonsToMatchTableState];
-           }]];
-
-    [self presentViewController:alert animated:YES completion:nil];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 #pragma mark -
@@ -180,18 +178,18 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     static NSInteger count = 0;
-    count ++;
+    count++;
     NSLog(@"%ld", count);
 
 #ifdef IOS_8_NEW_FEATURE_SELF_SIZING
     // iOS 8 的 Self-sizing 特性
     return UITableViewAutomaticDimension;
 #else
-    
+
     NSString *reuseIdentifier = kCellReuseIdentifier;
-    
+
     // 从 cell 字典中取出重用标示符对应的 cell。如果没有，就创建一个新的然后存储在字典里面。
     // 警告：不要调用 tableview 的 dequeueReusableCellWithIdentifier: 方法，因为这会导致 cell 被创建了但是又未曾被 tableView:cellForRowAtIndexPath: 方法返回，会造成内存泄露！
     NoteListCell *_templateCell = [self.offscreenCells objectForKey:reuseIdentifier];
@@ -199,7 +197,7 @@ static NSString *kCellReuseIdentifier = @"ListCell";
         _templateCell = [[NoteListCell alloc] init];
         [self.offscreenCells setObject:_templateCell forKey:reuseIdentifier];
     }
-    
+
     VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
     // 判断高度是否已经计算过
     if (note.cellHeight <= 0) {
@@ -292,6 +290,24 @@ static NSString *kCellReuseIdentifier = @"ListCell";
     // TODO: 搜索逻辑
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // 左划删除
+    if (editingStyle == UITableViewCellEditingStyleDelete) // 删除模式
+    {
+
+        // 刷新表格
+        //[self.tableView reloadData];
+        // 带有的的动画的删除方式，需要指定参
+        VNNote *note = [self.dataSource objectAtIndex:indexPath.row];
+        [[NoteManager sharedManager] deleteNote:note];
+        [self.dataSource removeObjectAtIndex:indexPath.row]; // 从数组中移除
+        [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationLeft];
+    } else if (editingStyle == UITableViewCellEditingStyleInsert) // 添加模式
+    {
+        NSLog(@"UITableViewCellEditingStyleInsert--");
+    }
+}
+
 #pragma mark -
 #pragma mark === EditMode ===
 #pragma mark -
@@ -301,7 +317,7 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
+    return UITableViewCellEditingStyleDelete;
 }
 
 #pragma mark -
