@@ -6,6 +6,10 @@
 
 #import <Availability.h>
 
+#define kScreenWidth  [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#define kScreenBounds [UIScreen mainScreen].bounds
+
 #ifndef __IPHONE_3_0
 #warning "This project uses features only available in iOS SDK 3.0 and later."
 #endif

@@ -71,7 +71,7 @@
         [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@15);
             make.right.equalTo(self.contentView).with.offset(-15);
-            make.bottom.equalTo(self.titleLabel).with.offset(15);
+            make.bottom.equalTo(self.titleLabel).with.offset(10);
         }];
 
         // 避免重复设置相同的约束

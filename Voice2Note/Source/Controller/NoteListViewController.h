@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NoteListViewController : UITableViewController
+/**
+ *  由 UITableViewController 改为 UIViewController，可定制化更高
+ */
+@interface NoteListViewController : UIViewController
 
 @end

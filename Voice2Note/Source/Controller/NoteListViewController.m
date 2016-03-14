@@ -6,6 +6,7 @@
 //  Copyright (c) 2014年 jinxing. All rights reserved.
 //
 
+#import "Masonry.h"
 #import "NoteEditViewController.h"
 #import "NoteListCell.h"
 #import "NoteListViewController.h"
@@ -21,13 +22,15 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 // 注释掉下面的宏定义，就是用“传统”的模板 Cell 计算高度
 //#define IOS_8_NEW_FEATURE_SELF_SIZING
 
-@interface NoteListViewController () <UIAlertViewDelegate, UISearchResultsUpdating>
+@interface NoteListViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UIAlertViewDelegate, UISearchResultsUpdating>
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, assign) NSInteger selectedIndex;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) UIBarButtonItem *cancelButton, *addButton, *editButton, *deleteButton;
 @property (nonatomic, strong) NSMutableDictionary *offscreenCells;
+@property (nonatomic, strong) UILabel *countLabel;
 
 @end
 
@@ -57,8 +60,31 @@ static NSString *kCellReuseIdentifier = @"ListCell";
     self.searchController.searchBar.scopeButtonTitles = @[ NSLocalizedString(@"ScopeButtonContent", @"内容"),
                                                            NSLocalizedString(@"ScopeButtonDate", @"日期") ];
     [self.searchController.searchBar sizeToFit];
+    UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    tv.delegate = self;
+    tv.dataSource = self;
+    [self addObserver:self forKeyPath:@"dataSource" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+    [self.view addSubview:tv];
+    self.tableView = tv;
+
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+
+    // 在此添加底部视图，显示笔记总数
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight - 43, kScreenWidth, 43)];
+    footerView.backgroundColor = [UIColor whiteColor];
+    self.countLabel = [UILabel new];
+    NSUInteger count = self.dataSource.count;
+    NSString *str = [NSString stringWithFormat:@"共 %ld 条笔记", (long) count];
+    self.countLabel.text = str;
+    self.countLabel.textColor = [UIColor blackColor];
+    self.countLabel.font = [UIFont systemFontOfSize:14];
+    [footerView addSubview:self.countLabel];
+    [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(footerView);
+    }];
+    [self.view addSubview:footerView];
+
     // 是否可以多选
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -91,6 +117,7 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self removeObserver:self forKeyPath:@"dataSource" context:NULL];
 }
 
 - (void)reloadData {
@@ -121,7 +148,6 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 }
 
 - (void) delete {
-
     if ([[self.tableView indexPathsForSelectedRows] count] > 0) {
         NSString *actionTitle;
 
@@ -162,6 +188,7 @@ static NSString *kCellReuseIdentifier = @"ListCell";
                    }
                    // 退出编辑模式
                    [self.tableView setEditing:NO animated:YES];
+                   [self reloadData];
                    [self updateButtonsToMatchTableState];
                }]];
 
@@ -305,6 +332,14 @@ static NSString *kCellReuseIdentifier = @"ListCell";
     } else if (editingStyle == UITableViewCellEditingStyleInsert) // 添加模式
     {
         NSLog(@"UITableViewCellEditingStyleInsert--");
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqual:@"dataSource"]) {
+        NSUInteger count = self.dataSource.count;
+        NSString *str = [NSString stringWithFormat:@"共 %ld 条笔记", (long) count];
+        self.countLabel.text = str;
     }
 }
 
