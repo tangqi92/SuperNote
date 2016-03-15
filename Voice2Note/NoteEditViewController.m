@@ -54,7 +54,6 @@ static const NSInteger kUploadTag = 2;
 @property (nonatomic, strong) YYTextView *defaultTextView;
 @property (nonatomic, strong) NSMutableAttributedString *attrString;
 @property (nonatomic, strong) IFlyRecognizerView *iflyRecognizerView;
-@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UISwitch *verticalSwitch;
 @property (nonatomic, strong) VNNote *note;
 @property (nonatomic, strong) NSDate *selectedDate;
@@ -95,7 +94,6 @@ static const NSInteger kUploadTag = 2;
     }
 
     [self initVertical];
-    [self initImageView];
     [self initMediaPick];
     [self initTextView];
 
@@ -128,7 +126,7 @@ static const NSInteger kUploadTag = 2;
 // 使用懒加载 UI
 - (UIBarButtonItem *)photoBarButton {
     if (!_photoBarButton) {
-        _photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_photo_white"] style:UIBarButtonItemStylePlain target:self action:@selector(addPhoto)];
+        _photoBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_font_white"] style:UIBarButtonItemStylePlain target:self action:@selector(setFont)];
         _photoBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
     }
     return _photoBarButton;
@@ -221,43 +219,6 @@ static const NSInteger kUploadTag = 2;
                           CRMediaPickerControllerSourceTypeLastPhotoTaken; // Prompt
 }
 
-- (void)setExclusionPathEnabled:(BOOL)enabled {
-    if (enabled) {
-        NSLog(@"Execute setExclusionPathEnabled:YES");
-        [self.textView addSubview:self.imageView];
-        // 获取 ImageView 的贝赛尔曲线路径
-        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.imageView.frame
-                                                        cornerRadius:self.imageView.layer.cornerRadius];
-        // 它允许开发者设置一个 NSBezierPath 数组来指定不可填充文本的区域。
-        self.textView.exclusionPaths = @[ path ];
-    } else {
-        [self.imageView removeFromSuperview];
-        self.textView.exclusionPaths = nil;
-    }
-}
-
-- (void)initImageView {
-    NSData *data = [NSData dataNamed:@"default_image.png"];
-    UIImage *image = [[YYImage alloc] initWithData:data scale:2];
-    UIImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
-    imageView.clipsToBounds = YES;
-    imageView.userInteractionEnabled = YES;
-    imageView.layer.cornerRadius = imageView.height / 2;
-    imageView.center = CGPointMake(kScreenWidth / 2, kScreenWidth / 2);
-    self.imageView = imageView;
-
-    __weak typeof(self) _self = self;
-    UIPanGestureRecognizer *g = [[UIPanGestureRecognizer alloc] initWithActionBlock:^(UIPanGestureRecognizer *g) {
-        __strong typeof(_self) self = _self;
-        if (!self) return;
-        CGPoint p = [g locationInView:self.textView];
-        self.imageView.center = p;
-        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.imageView.frame
-                                                        cornerRadius:self.imageView.layer.cornerRadius];
-        self.textView.exclusionPaths = @[ path ];
-    }];
-    [imageView addGestureRecognizer:g];
-}
 
 - (void)edit:(UIBarButtonItem *)item {
     if (_textView.isFirstResponder) {
@@ -443,9 +404,8 @@ static const NSInteger kUploadTag = 2;
 #pragma mark === UIBarButtonItemAction ===
 #pragma mark -
 
-- (void)addPhoto {
-    //    NSLog(@"Executed me?");
-    [self setExclusionPathEnabled:YES];
+- (void)setFont {
+    
 }
 
 - (void)addMedia {

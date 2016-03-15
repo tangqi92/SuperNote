@@ -63,7 +63,7 @@ static NSString *kCellReuseIdentifier = @"ListCell";
     UITableView *tv = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
     tv.delegate = self;
     tv.dataSource = self;
-    [self addObserver:self forKeyPath:@"dataSource" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+    [self addObserver:self forKeyPath:@"dataSource" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
     [self.view addSubview:tv];
     self.tableView = tv;
 
@@ -337,7 +337,8 @@ static NSString *kCellReuseIdentifier = @"ListCell";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqual:@"dataSource"]) {
-        NSUInteger count = self.dataSource.count;
+        NSMutableArray *arry = change[NSKeyValueChangeNewKey];
+        NSUInteger count = arry.count;
         NSString *str = [NSString stringWithFormat:@"共 %ld 条笔记", (long) count];
         self.countLabel.text = str;
     }
