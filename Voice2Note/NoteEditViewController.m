@@ -50,8 +50,7 @@ static const NSInteger kUploadTag = 2;
  *  YYTextView - The API and behavior is similar to UITextView, but provides more features.
  *  第一，它是文本系统用来绘制的视图；第二，它是处理所有的用户交互
  */
-@property (nonatomic, assign) YYTextView *textView;
-@property (nonatomic, strong) YYTextView *defaultTextView;
+@property (nonatomic, strong) YYTextView *textView;
 @property (nonatomic, strong) NSMutableAttributedString *attrString;
 @property (nonatomic, strong) IFlyRecognizerView *iflyRecognizerView;
 @property (nonatomic, strong) UISwitch *verticalSwitch;
@@ -219,7 +218,6 @@ static const NSInteger kUploadTag = 2;
                           CRMediaPickerControllerSourceTypeLastPhotoTaken; // Prompt
 }
 
-
 - (void)edit:(UIBarButtonItem *)item {
     if (_textView.isFirstResponder) {
         [_textView resignFirstResponder];
@@ -233,42 +231,39 @@ static const NSInteger kUploadTag = 2;
         if (self.note) {
             _attrString = [[NSMutableAttributedString alloc] initWithString:self.note.content];
         } else {
-            _attrString = [[NSMutableAttributedString alloc] initWithString:@"请输入内容："];
+            // This is a tricky method
+            _attrString = [[NSMutableAttributedString alloc] initWithString:@" "];
         }
-        _attrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:20];
+        _attrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:18];
         _attrString.yy_lineSpacing = 4;
         _attrString.yy_firstLineHeadIndent = 20;
     }
     return _attrString;
 }
 
-- (YYTextView *)defaultTextView {
-    if (!_defaultTextView) {
-        _defaultTextView = [YYTextView new];
-        _defaultTextView.attributedText = self.attrString;
-        _defaultTextView.size = self.view.size;
-        _defaultTextView.autocorrectionType = UITextAutocorrectionTypeNo;
-        _defaultTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _defaultTextView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
-        _defaultTextView.delegate = self;
-        if (kiOS7Later) {
-            _defaultTextView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-        } else {
-            _defaultTextView.height -= 64;
-        }
-        _defaultTextView.contentInset = UIEdgeInsetsMake(self.toolbar.bottom, 0, 0, 0);
-        _defaultTextView.scrollIndicatorInsets = _defaultTextView.contentInset;
-        _defaultTextView.selectedRange = NSMakeRange(self.attrString.length, 0);
-        _defaultTextView.inputAccessoryView = self.comps;
-        [self.view insertSubview:_defaultTextView belowSubview:self.toolbar];
-    }
-    return _defaultTextView;
-}
-
 - (void)initTextView {
-    self.textView = self.defaultTextView;
+
+    if (!_textView) {
+        _textView = [YYTextView new];
+        _textView.attributedText = self.attrString;
+        _textView.size = self.view.size;
+        _textView.autocorrectionType = UITextAutocorrectionTypeNo;
+        _textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _textView.textContainerInset = UIEdgeInsetsMake(10, 10, 10, 10);
+        _textView.delegate = self;
+        if (kiOS7Later) {
+            _textView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+        } else {
+            _textView.height -= 64;
+        }
+        _textView.contentInset = UIEdgeInsetsMake(self.toolbar.bottom, 0, 0, 0);
+        _textView.scrollIndicatorInsets = _textView.contentInset;
+        _textView.selectedRange = NSMakeRange(self.attrString.length, 0);
+        _textView.inputAccessoryView = self.comps;
+        [self.view insertSubview:_textView belowSubview:self.toolbar];
+    }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.defaultTextView becomeFirstResponder];
+        [self.textView becomeFirstResponder];
     });
 }
 
@@ -405,7 +400,6 @@ static const NSInteger kUploadTag = 2;
 #pragma mark -
 
 - (void)setFont {
-    
 }
 
 - (void)addMedia {
@@ -653,16 +647,17 @@ static const NSInteger kUploadTag = 2;
                 UIImage *image = [UIImage imageWithCGImage:representation.fullScreenImage];
 
                 image = [UIImage imageWithCGImage:image.CGImage scale:5 orientation:UIImageOrientationUp];
-
+                
                 NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:image contentMode:UIViewContentModeCenter attachmentSize:image.size alignToFont:self.attrString.yy_font alignment:YYTextVerticalAlignmentCenter];
 
-                [self.attrString appendAttributedString:attachText];
-                [self.attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
-                NSLog(@"%@", self.attrString);
+                NSMutableAttributedString *newAttrString = [[NSMutableAttributedString alloc] initWithString:self.textView.text];
+                [newAttrString appendAttributedString:attachText];
+                // 插入图片后，重新设置样式
+                newAttrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:18];
+                newAttrString.yy_lineSpacing = 4;
+                newAttrString.yy_firstLineHeadIndent = 20;
 
-                // FIXME: 样式改变了（ ＴДＴ）
-                self.defaultTextView.attributedText = self.attrString;
-                self.textView = self.defaultTextView;
+                self.textView.attributedText = newAttrString;
 
             } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
 
