@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3503A2E41C9BD1CD003F9FBF /* QTClickImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3503A2E31C9BD1CD003F9FBF /* QTClickImageView.m */; };
 		351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37E21C245AD20098F423 /* HSDatePickerViewController.m */; };
 		351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */; };
 		351D37EA1C25569B0098F423 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 351D37E91C25569B0098F423 /* MessageUI.framework */; };
@@ -149,6 +150,8 @@
 
 /* Begin PBXFileReference section */
 		350341A01C4103FF00844C2A /* CRMediaPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CRMediaPickerController.h; path = "../../../../Downloads/CRMediaPickerController-master/CRMediaPickerController/CRMediaPickerController.h"; sourceTree = "<group>"; };
+		3503A2E21C9BD1CD003F9FBF /* QTClickImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTClickImageView.h; sourceTree = "<group>"; };
+		3503A2E31C9BD1CD003F9FBF /* QTClickImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTClickImageView.m; sourceTree = "<group>"; };
 		351D37E11C245AD20098F423 /* HSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSDatePickerViewController.h; sourceTree = "<group>"; };
 		351D37E21C245AD20098F423 /* HSDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSDatePickerViewController.m; sourceTree = "<group>"; };
 		351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HSDatePickerViewController.xib; sourceTree = "<group>"; };
@@ -411,6 +414,8 @@
 		351764AC1C77049C00F31FF8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3503A2E21C9BD1CD003F9FBF /* QTClickImageView.h */,
+				3503A2E31C9BD1CD003F9FBF /* QTClickImageView.m */,
 				C7821AE619499F47008B952D /* NoteListCell.h */,
 				C7821AE719499F47008B952D /* NoteListCell.m */,
 			);
@@ -990,6 +995,7 @@
 				355D5C611C23EFBE00409FFC /* NoteEditViewController.m in Sources */,
 				C7821ABD194804A4008B952D /* NoteListViewController.m in Sources */,
 				355D5C801C23F64B00409FFC /* YYTextExampleHelper.m in Sources */,
+				3503A2E41C9BD1CD003F9FBF /* QTClickImageView.m in Sources */,
 				C7821AED1949AB2B008B952D /* AppDelegate.m in Sources */,
 				355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */,
 				355D5C941C2415BC00409FFC /* SignViewController.m in Sources */,

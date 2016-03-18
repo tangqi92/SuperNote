@@ -14,6 +14,7 @@
 #import "NSData+YYAdd.h"
 #import "NSString+YYAdd.h"
 #import "NoteEditViewController.h"
+#import "QTClickImageView.h"
 #import "SVProgressHUD.h"
 #import "SignViewController.h"
 #import "UIColor+VNHex.h"
@@ -647,8 +648,10 @@ static const NSInteger kUploadTag = 2;
                 UIImage *image = [UIImage imageWithCGImage:representation.fullScreenImage];
 
                 image = [UIImage imageWithCGImage:image.CGImage scale:5 orientation:UIImageOrientationUp];
-                
-                NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:image contentMode:UIViewContentModeCenter attachmentSize:image.size alignToFont:self.attrString.yy_font alignment:YYTextVerticalAlignmentCenter];
+
+                QTClickImageView *clickImage = [[QTClickImageView alloc] initWithImage:image];
+
+                NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:clickImage contentMode:UIViewContentModeCenter attachmentSize:clickImage.size alignToFont:self.attrString.yy_font alignment:YYTextVerticalAlignmentCenter];
 
                 NSMutableAttributedString *newAttrString = [[NSMutableAttributedString alloc] initWithString:self.textView.text];
                 [newAttrString appendAttributedString:attachText];
