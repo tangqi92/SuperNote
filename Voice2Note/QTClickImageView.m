@@ -34,7 +34,6 @@ static float kDuration = 0.3;
 /**
  *  StoryBoard 中初始化
  */
-
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
@@ -85,7 +84,7 @@ static float kDuration = 0.3;
 
 - (void)showImage:(UIImageView *)originImageView {
 
-    // !!!
+    // 为获取应用程序的 window
     UIWindow *window = [UIApplication sharedApplication].windows[0];
 
     // 获取当前显示的 image

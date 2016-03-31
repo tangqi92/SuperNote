@@ -20,7 +20,7 @@
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, strong) NSDate *createdDate;
 @property (nonatomic, strong) NSDate *updatedDate;
-@property (nonatomic, assign) NSUInteger index;
+@property (nonatomic, assign) NSInteger index;
 // 行高缓存
 @property (nonatomic, assign) CGFloat cellHeight;
 

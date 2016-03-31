@@ -8,7 +8,6 @@
 
 #import "AppContext.h"
 #import "CALayer+YYAdd.h"
-#import "CRMediaPickerController.h"
 #import "HSDatePickerViewController.h"
 #import "NSBundle+YYAdd.h"
 #import "NSData+YYAdd.h"
@@ -44,8 +43,12 @@ static const CGFloat kVoiceButtonWidth = 100;
 static const CGFloat kVerticalMargin = 10;
 static const NSInteger kLockTag = 1;
 static const NSInteger kUploadTag = 2;
+static const NSInteger kMoreActionTag = 3;
+static const NSInteger kPickImageTag = 4;
 
-@interface NoteEditViewController () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, CRMediaPickerControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
+
+
+@interface NoteEditViewController () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate>
 
 /**
  *  YYTextView - The API and behavior is similar to UITextView, but provides more features.
@@ -61,10 +64,6 @@ static const NSInteger kUploadTag = 2;
 @property (nonatomic, strong) UIToolbar *comps;
 @property (nonatomic, strong) UIView *toolbar;
 @property (nonatomic, strong) UIBarButtonItem *photoBarButton, *mediaBarButton, *alarmBarButton, *voiceBarButton, *brushBarButton, *doneBarButton;
-@property (nonatomic, strong) MPMoviePlayerController *moviePlayer;
-@property (nonatomic, strong) CRMediaPickerController *mediaPickerController;
-@property (nonatomic, assign) CRMediaPickerControllerMediaType selectedMediaType;
-@property (nonatomic, assign) CRMediaPickerControllerSourceType selectedSourceType;
 @property (nonatomic, assign) BOOL allowsEditing;
 @property (nonatomic, assign) BOOL cameraOverlay;
 @property (nonatomic, assign) NSInteger deviceCameraSelected;
@@ -94,7 +93,6 @@ static const NSInteger kUploadTag = 2;
     }
 
     [self initVertical];
-    [self initMediaPick];
     [self initTextView];
 
     [[YYTextKeyboardManager defaultManager] addObserver:self];
@@ -113,10 +111,6 @@ static const NSInteger kUploadTag = 2;
 - (void)dealloc {
     [[YYTextKeyboardManager defaultManager] removeObserver:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.mediaPickerController = nil;
-    [self.moviePlayer stop];
-    [self.moviePlayer.view removeFromSuperview];
-    self.moviePlayer = nil;
 }
 
 #pragma mark -
@@ -134,7 +128,7 @@ static const NSInteger kUploadTag = 2;
 
 - (UIBarButtonItem *)mediaBarButton {
     if (!_mediaBarButton) {
-        _mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_media_white"] style:UIBarButtonItemStylePlain target:self action:@selector(addMedia)];
+        _mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_media_white"] style:UIBarButtonItemStylePlain target:self action:@selector(pickImage)];
         _mediaBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
     }
     return _mediaBarButton;
@@ -209,14 +203,6 @@ static const NSInteger kUploadTag = 2;
         [_iflyRecognizerView setParameter:@"plain" forKey:[IFlySpeechConstant RESULT_TYPE]];
     }
     return _iflyRecognizerView;
-}
-
-- (void)initMediaPick {
-    _selectedMediaType = CRMediaPickerControllerMediaTypeImage | CRMediaPickerControllerMediaTypeVideo; // Both
-    _selectedSourceType = CRMediaPickerControllerSourceTypePhotoLibrary |
-                          CRMediaPickerControllerSourceTypeCamera |
-                          CRMediaPickerControllerSourceTypeSavedPhotosAlbum |
-                          CRMediaPickerControllerSourceTypeLastPhotoTaken; // Prompt
 }
 
 - (void)edit:(UIBarButtonItem *)item {
@@ -401,18 +387,7 @@ static const NSInteger kUploadTag = 2;
 #pragma mark -
 
 - (void)setFont {
-}
-
-- (void)addMedia {
-    [self hideKeyboard];
-    self.mediaPickerController = [[CRMediaPickerController alloc] init];
-    self.mediaPickerController.delegate = self;
-    self.mediaPickerController.mediaType = self.selectedMediaType;
-    self.mediaPickerController.sourceType = self.selectedSourceType;
-    self.mediaPickerController.allowsEditing = self.allowsEditing;
-    self.mediaPickerController.cameraDevice = (UIImagePickerControllerCameraDevice) self.deviceCameraSelected;
-
-    [self.mediaPickerController show];
+    //TODO:
 }
 
 - (void)addAlarm {
@@ -464,8 +439,6 @@ static const NSInteger kUploadTag = 2;
 #pragma mark === More Action ===
 #pragma mark -
 
-#define MORE_ACTION 3
-
 - (void)moreAction {
     [self hideKeyboard];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -475,13 +448,25 @@ static const NSInteger kUploadTag = 2;
                                                     otherButtonTitles:NSLocalizedString(@"ActionSheetShare", @""),
                                                                       NSLocalizedString(@"ActionSheetCopy", @""),
                                                                       NSLocalizedString(@"ActionSheetLock", @""), nil];
-    actionSheet.tag = MORE_ACTION;
+    actionSheet.tag = kMoreActionTag;
+    [actionSheet showInView:self.view];
+}
+
+- (void)pickImage {
+    [self hideKeyboard];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"ActionSheetCancel", @"")
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:NSLocalizedString(@"ActionSheetPhoto", @""),
+                                                                      NSLocalizedString(@"ActionSheetAlbum", @""), nil];
+    actionSheet.tag = kPickImageTag;
     [actionSheet showInView:self.view];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 
-    if (actionSheet.tag == MORE_ACTION) {
+    if (actionSheet.tag == kMoreActionTag) {
         if (buttonIndex == 0) {
             [self shareToSocial];
         } else if (buttonIndex == 1) {
@@ -491,6 +476,14 @@ static const NSInteger kUploadTag = 2;
             [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CopySuccess", @"")];
         } else if (buttonIndex == 2) {
             [self lockTextAction];
+        }
+    } else if(actionSheet.tag == kPickImageTag) {
+        if (buttonIndex == 0) {
+            // 拍照选取
+            [self photoFromCamera];
+        } else if (buttonIndex == 1) {
+            // 从相册选取照片
+            [self photoFromAlbum];
         }
     }
 }
@@ -635,58 +628,92 @@ static const NSInteger kUploadTag = 2;
     }
 }
 
-#pragma mark - CPDMediaPickerControllerDelegate
-
-- (void)CRMediaPickerController:(CRMediaPickerController *)mediaPickerController didFinishPickingAsset:(ALAsset *)asset error:(NSError *)error {
-    if (!error) {
-
-        if (asset) {
-
-            if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-
-                ALAssetRepresentation *representation = asset.defaultRepresentation;
-                UIImage *image = [UIImage imageWithCGImage:representation.fullScreenImage];
-
-                image = [UIImage imageWithCGImage:image.CGImage scale:5 orientation:UIImageOrientationUp];
-
-                QTClickImageView *clickImage = [[QTClickImageView alloc] initWithImage:image];
-
-                NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:clickImage contentMode:UIViewContentModeCenter attachmentSize:clickImage.size alignToFont:self.attrString.yy_font alignment:YYTextVerticalAlignmentCenter];
-
-                NSMutableAttributedString *newAttrString = [[NSMutableAttributedString alloc] initWithString:self.textView.text];
-                [newAttrString appendAttributedString:attachText];
-                // 插入图片后，重新设置样式
-                newAttrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:18];
-                newAttrString.yy_lineSpacing = 4;
-                newAttrString.yy_firstLineHeadIndent = 20;
-
-                self.textView.attributedText = newAttrString;
-
-            } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-
-                self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:asset.defaultRepresentation.url];
-                self.moviePlayer.movieSourceType = MPMediaTypeMovie;
-                self.moviePlayer.controlStyle = MPMovieControlStyleDefault;
-                self.moviePlayer.scalingMode = MPMovieScalingModeAspectFit;
-                self.moviePlayer.repeatMode = MPMovieRepeatModeNone;
-                self.moviePlayer.allowsAirPlay = NO;
-                self.moviePlayer.shouldAutoplay = NO;
-
-                // TODO: 获取视频后操作
-                [self.moviePlayer prepareToPlay];
-            }
-
-        } else {
-            NSLog(@"No media selected");
-        }
-
-    } else {
-        NSLog(@"%@", error.localizedDescription);
+// 从相机获取图片
+- (void)photoFromCamera {
+    
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;//设置类型为相机
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];//初始化
+        picker.delegate = self;//设置代理
+        picker.allowsEditing = YES;//设置照片可编辑
+        picker.sourceType = sourceType;
+        //picker.showsCameraControls = NO;//默认为YES
+        //创建叠加层
+        UIView *overLayView=[[UIView alloc]initWithFrame:CGRectMake(0, 120, 320, 254)];
+        //取景器的背景图片，该图片中间挖掉了一块变成透明，用来显示摄像头获取的图片；
+        UIImage *overLayImag=[UIImage imageNamed:@"zhaoxiangdingwei"];
+        UIImageView *bgImageView=[[UIImageView alloc]initWithImage:overLayImag];
+        [overLayView addSubview:bgImageView];
+        picker.cameraOverlayView=overLayView;
+        picker.cameraDevice=UIImagePickerControllerCameraDeviceFront;//选择前置摄像头或后置摄像头
+        [self presentViewController:picker animated:YES completion:^{
+        }];
     }
+    else {
+        NSLog(@"该设备无相机");
+    }
+    
+}
+// 从相册获取图片
+- (void)photoFromAlbum {
+    
+    UIImagePickerController *pickerImage = [[UIImagePickerController alloc] init];
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        pickerImage.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        //pickerImage.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        pickerImage.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:pickerImage.sourceType];
+    }
+    pickerImage.delegate = self;
+    pickerImage.allowsEditing = NO;
+    [self presentViewController:pickerImage animated:YES completion:^{
+    }];
+    
 }
 
-- (void)CRMediaPickerControllerDidCancel:(CRMediaPickerController *)mediaPickerController {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+// 从相册选择图片后操作
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    [picker dismissViewControllerAnimated:YES completion:^{
+    }];
+    //保存原始图片
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    [self saveImage:image withName:@"currentImage.png"];
+    
+}
+
+// 保存图片
+- (void)saveImage:(UIImage *)currentImage withName:(NSString *)imageName
+{
+    NSData *imageData = UIImageJPEGRepresentation(currentImage, 0.5);
+    // 获取沙盒目录
+    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:imageName];
+    // 将图片写入文件
+    [imageData writeToFile:fullPath atomically:NO];
+    // 将选择的图片显示出来
+    UIImage *image = [UIImage imageWithContentsOfFile:fullPath];
+    image = [UIImage imageWithCGImage:image.CGImage scale:8 orientation:UIImageOrientationUp];
+
+    QTClickImageView *clickImage = [[QTClickImageView alloc] initWithImage:image];
+    NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:clickImage contentMode:UIViewContentModeCenter attachmentSize:clickImage.size alignToFont:self.attrString.yy_font alignment:YYTextVerticalAlignmentCenter];
+    
+    NSMutableAttributedString *newAttrString = [[NSMutableAttributedString alloc] initWithString:self.textView.text];
+    [newAttrString appendAttributedString:attachText];
+    // 插入图片后，重新设置样式
+    newAttrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:18];
+    newAttrString.yy_lineSpacing = 4;
+    newAttrString.yy_firstLineHeadIndent = 20;
+    
+    self.textView.attributedText = newAttrString;
+
+    //将图片保存到disk
+//    UIImageWriteToSavedPhotosAlbum(currentImage, nil, nil, nil);
+}
+
+// 取消操作时调用
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:^{
+    }];
 }
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		350204F81CA529E400FDCB76 /* QTKeyChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 350204F71CA529E400FDCB76 /* QTKeyChain.m */; };
+		350204FB1CA52F1500FDCB76 /* QTNotePWDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 350204FA1CA52F1500FDCB76 /* QTNotePWDManager.m */; };
 		3503A2E41C9BD1CD003F9FBF /* QTClickImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3503A2E31C9BD1CD003F9FBF /* QTClickImageView.m */; };
 		351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 351D37E21C245AD20098F423 /* HSDatePickerViewController.m */; };
 		351D37E51C245AD20098F423 /* HSDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 351D37E31C245AD20098F423 /* HSDatePickerViewController.xib */; };
@@ -27,7 +29,6 @@
 		355D5C8E1C24156100409FFC /* SignViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 355D5C8C1C24156100409FFC /* SignViewController.xib */; };
 		355D5C931C2415BC00409FFC /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C901C2415BC00409FFC /* ImageViewController.m */; };
 		355D5C941C2415BC00409FFC /* SignViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355D5C921C2415BC00409FFC /* SignViewController.m */; };
-		355FE2381C8052DD00F01AC2 /* CRMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 355FE2371C8052DD00F01AC2 /* CRMediaPickerController.m */; };
 		355FE2601C8147D200F01AC2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355FE25F1C8147D200F01AC2 /* Security.framework */; };
 		355FE2651C81483100F01AC2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 355FE2641C81483100F01AC2 /* libsqlite3.0.tbd */; };
 		355FE2671C81483F00F01AC2 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355FE2661C81483F00F01AC2 /* CoreTelephony.framework */; };
@@ -149,7 +150,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		350341A01C4103FF00844C2A /* CRMediaPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CRMediaPickerController.h; path = "../../../../Downloads/CRMediaPickerController-master/CRMediaPickerController/CRMediaPickerController.h"; sourceTree = "<group>"; };
+		350204F61CA529E400FDCB76 /* QTKeyChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTKeyChain.h; sourceTree = "<group>"; };
+		350204F71CA529E400FDCB76 /* QTKeyChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTKeyChain.m; sourceTree = "<group>"; };
+		350204F91CA52F1500FDCB76 /* QTNotePWDManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTNotePWDManager.h; sourceTree = "<group>"; };
+		350204FA1CA52F1500FDCB76 /* QTNotePWDManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTNotePWDManager.m; sourceTree = "<group>"; };
 		3503A2E21C9BD1CD003F9FBF /* QTClickImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTClickImageView.h; sourceTree = "<group>"; };
 		3503A2E31C9BD1CD003F9FBF /* QTClickImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTClickImageView.m; sourceTree = "<group>"; };
 		351D37E11C245AD20098F423 /* HSDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSDatePickerViewController.h; sourceTree = "<group>"; };
@@ -185,7 +189,6 @@
 		355D5C901C2415BC00409FFC /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		355D5C911C2415BC00409FFC /* SignViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignViewController.h; sourceTree = "<group>"; };
 		355D5C921C2415BC00409FFC /* SignViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignViewController.m; sourceTree = "<group>"; };
-		355FE2371C8052DD00F01AC2 /* CRMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMediaPickerController.m; sourceTree = "<group>"; };
 		355FE25F1C8147D200F01AC2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		355FE2611C8147F200F01AC2 /* libiconv.2.4.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.4.0.tbd; path = usr/lib/libiconv.2.4.0.tbd; sourceTree = SDKROOT; };
 		355FE2641C81483100F01AC2 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -359,7 +362,6 @@
 				355FE2921C8156EE00F01AC2 /* UMSocial_Sdk_5.0 */,
 				355FE26E1C814DCA00F01AC2 /* UMSocial_Sdk_Extra_Frameworks */,
 				351764AB1C77042B00F31FF8 /* SignViewController */,
-				351764AA1C7703E100F31FF8 /* CRMediaPickerController */,
 				351764A91C76F9B200F31FF8 /* YYText */,
 				351D37E01C245AD20098F423 /* HSDatePickerViewController */,
 			);
@@ -389,15 +391,6 @@
 				355D5C771C23F5AC00409FFC /* UIGestureRecognizer+YYAdd.h */,
 			);
 			name = YYText;
-			sourceTree = "<group>";
-		};
-		351764AA1C7703E100F31FF8 /* CRMediaPickerController */ = {
-			isa = PBXGroup;
-			children = (
-				350341A01C4103FF00844C2A /* CRMediaPickerController.h */,
-				355FE2371C8052DD00F01AC2 /* CRMediaPickerController.m */,
-			);
-			name = CRMediaPickerController;
 			sourceTree = "<group>";
 		};
 		351764AB1C77042B00F31FF8 /* SignViewController */ = {
@@ -539,6 +532,10 @@
 				C7470A91196164CB00FD154B /* AppContext.m */,
 				C71140521A076EDB00E027E4 /* VNConstants.h */,
 				C71140531A076EDB00E027E4 /* VNConstants.m */,
+				350204F61CA529E400FDCB76 /* QTKeyChain.h */,
+				350204F71CA529E400FDCB76 /* QTKeyChain.m */,
+				350204F91CA52F1500FDCB76 /* QTNotePWDManager.h */,
+				350204FA1CA52F1500FDCB76 /* QTNotePWDManager.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -999,7 +996,7 @@
 				C7821AED1949AB2B008B952D /* AppDelegate.m in Sources */,
 				355D5C671C23F54A00409FFC /* UIView+YYAdd.m in Sources */,
 				355D5C941C2415BC00409FFC /* SignViewController.m in Sources */,
-				355FE2381C8052DD00F01AC2 /* CRMediaPickerController.m in Sources */,
+				350204F81CA529E400FDCB76 /* QTKeyChain.m in Sources */,
 				351D37E41C245AD20098F423 /* HSDatePickerViewController.m in Sources */,
 				355D5C931C2415BC00409FFC /* ImageViewController.m in Sources */,
 				C7821A9319480417008B952D /* main.m in Sources */,
@@ -1009,6 +1006,7 @@
 				355D5C641C23F53600409FFC /* UIImage+YYWebImage.m in Sources */,
 				C7470A92196164CB00FD154B /* AppContext.m in Sources */,
 				355D5C6D1C23F57D00409FFC /* NSString+YYAdd.m in Sources */,
+				350204FB1CA52F1500FDCB76 /* QTNotePWDManager.m in Sources */,
 				355D5C791C23F5AC00409FFC /* UIGestureRecognizer+YYAdd.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
