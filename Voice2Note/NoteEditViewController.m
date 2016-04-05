@@ -33,7 +33,6 @@
 #import "iflyMSC/IFlyRecognizerView.h"
 #import "iflyMSC/IFlySpeechConstant.h"
 #import "iflyMSC/IFlySpeechUtility.h"
-@import MediaPlayer;
 
 // 多用类型常量，少用 #define 预处理指令（Effective - 4）
 static const CGFloat kViewOriginY = 70;
@@ -44,11 +43,9 @@ static const CGFloat kVerticalMargin = 10;
 static const NSInteger kLockTag = 1;
 static const NSInteger kUploadTag = 2;
 static const NSInteger kMoreActionTag = 3;
-static const NSInteger kPickImageTag = 4;
+static const NSInteger kPickPhotoTag = 4;
 
-
-
-@interface NoteEditViewController () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate>
+@interface NoteEditViewController () <YYTextViewDelegate, YYTextKeyboardObserver, IFlyRecognizerViewDelegate, HSDatePickerViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, QTClickImageViewDelegate>
 
 /**
  *  YYTextView - The API and behavior is similar to UITextView, but provides more features.
@@ -128,7 +125,7 @@ static const NSInteger kPickImageTag = 4;
 
 - (UIBarButtonItem *)mediaBarButton {
     if (!_mediaBarButton) {
-        _mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_media_white"] style:UIBarButtonItemStylePlain target:self action:@selector(pickImage)];
+        _mediaBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_media_white"] style:UIBarButtonItemStylePlain target:self action:@selector(pickPhoto)];
         _mediaBarButton.width = ceilf(self.view.frame.size.width) / 6 - 12;
     }
     return _mediaBarButton;
@@ -452,7 +449,7 @@ static const NSInteger kPickImageTag = 4;
     [actionSheet showInView:self.view];
 }
 
-- (void)pickImage {
+- (void)pickPhoto {
     [self hideKeyboard];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
@@ -460,7 +457,7 @@ static const NSInteger kPickImageTag = 4;
                                                destructiveButtonTitle:nil
                                                     otherButtonTitles:NSLocalizedString(@"ActionSheetPhoto", @""),
                                                                       NSLocalizedString(@"ActionSheetAlbum", @""), nil];
-    actionSheet.tag = kPickImageTag;
+    actionSheet.tag = kPickPhotoTag;
     [actionSheet showInView:self.view];
 }
 
@@ -477,7 +474,7 @@ static const NSInteger kPickImageTag = 4;
         } else if (buttonIndex == 2) {
             [self lockTextAction];
         }
-    } else if(actionSheet.tag == kPickImageTag) {
+    } else if (actionSheet.tag == kPickPhotoTag) {
         if (buttonIndex == 0) {
             // 拍照选取
             [self photoFromCamera];
@@ -628,38 +625,40 @@ static const NSInteger kPickImageTag = 4;
     }
 }
 
+#pragma mark -
+#pragma mark === PickPhoto ===
+#pragma mark -
+
 // 从相机获取图片
 - (void)photoFromCamera {
-    
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    {
-        UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;//设置类型为相机
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];//初始化
-        picker.delegate = self;//设置代理
-        picker.allowsEditing = YES;//设置照片可编辑
+
+    // returns YES if source is available (i.e. camera present)
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera; //设置类型为相机
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];               //初始化
+        picker.delegate = self;                                                                 //设置代理
+        picker.allowsEditing = YES;                                                             //设置照片可编辑
         picker.sourceType = sourceType;
         //picker.showsCameraControls = NO;//默认为YES
         //创建叠加层
-        UIView *overLayView=[[UIView alloc]initWithFrame:CGRectMake(0, 120, 320, 254)];
+        UIView *overLayView = [[UIView alloc] initWithFrame:CGRectMake(0, 120, 320, 254)];
         //取景器的背景图片，该图片中间挖掉了一块变成透明，用来显示摄像头获取的图片；
-        UIImage *overLayImag=[UIImage imageNamed:@"zhaoxiangdingwei"];
-        UIImageView *bgImageView=[[UIImageView alloc]initWithImage:overLayImag];
+        UIImage *overLayImag = [UIImage imageNamed:@"zhaoxiangdingwei"];
+        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:overLayImag];
         [overLayView addSubview:bgImageView];
-        picker.cameraOverlayView=overLayView;
-        picker.cameraDevice=UIImagePickerControllerCameraDeviceFront;//选择前置摄像头或后置摄像头
+        picker.cameraOverlayView = overLayView;
+        picker.cameraDevice = UIImagePickerControllerCameraDeviceFront; //选择前置摄像头或后置摄像头
         [self presentViewController:picker animated:YES completion:^{
         }];
-    }
-    else {
+    } else {
         NSLog(@"该设备无相机");
     }
-    
 }
 // 从相册获取图片
 - (void)photoFromAlbum {
-    
+
     UIImagePickerController *pickerImage = [[UIImagePickerController alloc] init];
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         pickerImage.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         //pickerImage.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         pickerImage.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:pickerImage.sourceType];
@@ -668,23 +667,20 @@ static const NSInteger kPickImageTag = 4;
     pickerImage.allowsEditing = NO;
     [self presentViewController:pickerImage animated:YES completion:^{
     }];
-    
 }
 
 // 从相册选择图片后操作
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
+
     [picker dismissViewControllerAnimated:YES completion:^{
     }];
     //保存原始图片
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self saveImage:image withName:@"currentImage.png"];
-    
 }
 
 // 保存图片
-- (void)saveImage:(UIImage *)currentImage withName:(NSString *)imageName
-{
+- (void)saveImage:(UIImage *)currentImage withName:(NSString *)imageName {
     NSData *imageData = UIImageJPEGRepresentation(currentImage, 0.5);
     // 获取沙盒目录
     NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:imageName];
@@ -692,28 +688,37 @@ static const NSInteger kPickImageTag = 4;
     [imageData writeToFile:fullPath atomically:NO];
     // 将选择的图片显示出来
     UIImage *image = [UIImage imageWithContentsOfFile:fullPath];
-    image = [UIImage imageWithCGImage:image.CGImage scale:8 orientation:UIImageOrientationUp];
+    image = [UIImage imageWithCGImage:image.CGImage scale:10 orientation:UIImageOrientationUp];
 
     QTClickImageView *clickImage = [[QTClickImageView alloc] initWithImage:image];
+    clickImage.delegate = self;
     NSMutableAttributedString *attachText = [NSMutableAttributedString yy_attachmentStringWithContent:clickImage contentMode:UIViewContentModeCenter attachmentSize:clickImage.size alignToFont:self.attrString.yy_font alignment:YYTextVerticalAlignmentCenter];
-    
+
     NSMutableAttributedString *newAttrString = [[NSMutableAttributedString alloc] initWithString:self.textView.text];
     [newAttrString appendAttributedString:attachText];
+    [newAttrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
     // 插入图片后，重新设置样式
     newAttrString.yy_font = [UIFont fontWithName:@"Times New Roman" size:18];
     newAttrString.yy_lineSpacing = 4;
     newAttrString.yy_firstLineHeadIndent = 20;
-    
+
     self.textView.attributedText = newAttrString;
 
     //将图片保存到disk
-//    UIImageWriteToSavedPhotosAlbum(currentImage, nil, nil, nil);
+    //    UIImageWriteToSavedPhotosAlbum(currentImage, nil, nil, nil);
 }
 
 // 取消操作时调用
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:^{
     }];
+}
+
+#pragma mark - QTClickImageViewDelegate
+
+- (void)didSelectItemWith {
+    NSLog(@"------------(UIImageView *)view");
+    [self hideKeyboard];
 }
 
 @end

@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol QTClickImageViewDelegate <NSObject>
+
+// 代理方法
+- (void)didSelectItemWith;
+
+@end
+
 @interface QTClickImageView : UIImageView
+
+// 声明了一个代理的属性
+@property (nonatomic, weak) id<QTClickImageViewDelegate> delegate;
 
 @end

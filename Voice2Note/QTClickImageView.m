@@ -78,7 +78,8 @@ static float kDuration = 0.3;
 }
 
 - (void)tapImage:(UITapGestureRecognizer *)sender {
-
+    // 回调给 Controller 处理（关闭键盘操作）
+    [self.delegate didSelectItemWith];
     [self showImage:(UIImageView *) sender.view];
 }
 

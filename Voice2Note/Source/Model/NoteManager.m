@@ -98,8 +98,7 @@
     [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
 }
 
-- (VNNote *)readNoteWithID:(NSString *)noteID;
-{
+- (VNNote *)readNoteWithID:(NSString *)noteID {
     NSString *dataPath = [self.docPath stringByAppendingPathComponent:noteID];
     NSData *codedData = [[NSData alloc] initWithContentsOfFile:dataPath];
     if (codedData == nil) {

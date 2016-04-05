@@ -329,6 +329,8 @@ static NSString *kCellReuseIdentifier = @"ListCell";
         [[NoteManager sharedManager] deleteNote:note];
         [self.dataSource removeObjectAtIndex:indexPath.row]; // 从数组中移除
         [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationLeft];
+        // 触发 KVO
+        [self reloadData];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) // 添加模式
     {
         NSLog(@"UITableViewCellEditingStyleInsert--");
