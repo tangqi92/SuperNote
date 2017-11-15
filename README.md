@@ -1,5 +1,5 @@
 
-超级记事本
+This project is no longer maintained.
 =========
 
 >**超级记事本** - 一款功能强大的笔记应用。
