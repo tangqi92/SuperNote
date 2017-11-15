@@ -65,8 +65,8 @@
 
 ## Contact - 联系我
 
-- Weibo：[汤奇V](http://weibo.com/qiktang)
-- Blog: [http://itangqi.me](http://itangqi.me)
+- Weibo：[@Tang](http://weibo.com/qiktang)
+- Blog: [http://imtangqi.com](http://imtangqi.com)
 - Gmail：[imtangqi#gmail.com](mailto:imtangqi@gmail.com "欢迎与我联系")
 
 ## License - 许可协议
